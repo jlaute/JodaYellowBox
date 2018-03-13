@@ -1,6 +1,15 @@
 <?xml version="1.0" encoding="utf-8"?>
-<phpunit bootstrap="../../../tests/Functional/bootstrap.php">
-<testsuite name="JodaYellowBox Test Suite">
-    <directory>tests</directory>
-</testsuite>
+<phpunit xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:noNamespaceSchemaLocation="https://schema.phpunit.de/5.5/phpunit.xsd"
+         bootstrap="./tests/Unit/bootstrap.php"
+         colors="true"
+         beStrictAboutOutputDuringTests="true"
+         beStrictAboutResourceUsageDuringSmallTests="true"
+         beStrictAboutTestsThatDoNotTestAnything="true"
+         beStrictAboutTodoAnnotatedTests="true"
+         verbose="true">
+
+    <testsuite name="JodaYellowBox Test Suite">
+        <directory>tests</directory>
+    </testsuite>
 </phpunit>
