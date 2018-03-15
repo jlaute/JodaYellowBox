@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace JodaYellowBox\Models;
 
 use Shopware\Components\Model\ModelRepository;

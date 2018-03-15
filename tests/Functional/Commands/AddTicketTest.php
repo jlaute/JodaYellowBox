@@ -13,6 +13,7 @@ class AddTicketTest extends \Shopware\Components\Test\Plugin\TestCase
         $kernel = Shopware()->Container()->get('kernel');
         $application = new \Shopware\Components\Console\Application($kernel);
         $command = new \JodaYellowBox\Commands\AddTicket('joda:ticket:add');
+        $command->setContainer(Shopware()->Container());
         $application->add($command);
 
         $this->commandTester = new \Symfony\Component\Console\Tester\CommandTester($command);

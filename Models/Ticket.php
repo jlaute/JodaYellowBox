@@ -1,9 +1,12 @@
 <?php
 
+declare(strict_types=1);
+
 namespace JodaYellowBox\Models;
 
 use Shopware\Components\Model\ModelEntity;
 use Doctrine\ORM\Mapping as ORM;
+use SM\StateMachine\StateMachineInterface;
 
 /**
  * @ORM\Table(name="s_plugin_yellow_box_ticket")
@@ -68,10 +71,13 @@ class Ticket extends ModelEntity
      */
     private $changedAt;
 
-    public function __construct()
+    public function __construct(string $name, string $number = null, string $description = null)
     {
         $this->createdAt = new \DateTime();
         $this->state = self::STATE_OPEN;
+        $this->name = $name;
+        $this->number = $number;
+        $this->description = $description;
     }
 
     /**
@@ -122,11 +128,6 @@ class Ticket extends ModelEntity
         return $this->state;
     }
 
-    public function setState(string $state)
-    {
-        $this->state = $state;
-    }
-
     public function getCreatedAt(): \DateTime
     {
         return $this->createdAt;
@@ -135,5 +136,26 @@ class Ticket extends ModelEntity
     public function getChangedAt(): \DateTime
     {
         return $this->changedAt;
+    }
+
+    public function approve(StateMachineInterface $stateMachine)
+    {
+        if ($stateMachine->can('approve')) {
+            $stateMachine->apply('approve');
+        }
+    }
+
+    public function reject(StateMachineInterface $stateMachine)
+    {
+        if ($stateMachine->can('reject')) {
+            $stateMachine->apply('reject');
+        }
+    }
+
+    public function reopen(StateMachineInterface $stateMachine)
+    {
+        if ($stateMachine->can('reopen')) {
+            $stateMachine->apply('reopen');
+        }
     }
 }

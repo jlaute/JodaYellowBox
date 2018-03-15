@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace JodaYellowBox\Setup;
 
 use Doctrine\ORM\Tools\SchemaTool;

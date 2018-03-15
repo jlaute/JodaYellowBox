@@ -11,17 +11,21 @@
         </service>
 
         <!-- Statemachine -->
-        <service id="sm.factory" class="SM\Factory\Factory">
+        <service id="joda_yellow_box.sm.factory" class="SM\Factory\Factory">
             <argument>%joda_yellow_box.sm.configs%</argument>
             <argument type="service" id="fake.service" on-invalid="null" />
-            <argument type="service" id="sm.callback_factory" />
+            <argument type="service" id="joda_yellow_box.sm.callback_factory" />
         </service>
-        <service id="sm.callback_factory" class="JodaYellowBox\Components\StateMachine\Callback\ContainerAwareCallbackFactory">
+        <service id="joda_yellow_box.sm.callback_factory" class="JodaYellowBox\Components\StateMachine\Callback\ContainerAwareCallbackFactory">
             <argument>JodaYellowBox\Components\StateMachine\Callback\ContainerAwareCallback</argument>
             <argument type="service" id="service_container" />
         </service>
 
         <service id="joda.test.callback" class="JodaYellowBox\Components\StateMachine\TestCallback">
+        </service>
+
+        <service id="joda_yellow_box.ticket_creator" class="JodaYellowBox\Components\Ticket\TicketCreator">
+            <argument type="service" id="models" />
         </service>
     </services>
 </container>

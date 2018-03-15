@@ -1,5 +1,12 @@
 <?php
 return array_merge($this->loadConfig($this->AppPath() . 'Configs/Default.php'), [
+    'db' => [
+        'username' => 'root',
+        'password' => 'root',
+        'dbname' => 'kuchenfreude',
+        'host' => '127.0.0.1',
+        'port' => '3306',
+    ],
     'front' => [
         'throwExceptions' => true,
         'disableOutputBuffering' => false,

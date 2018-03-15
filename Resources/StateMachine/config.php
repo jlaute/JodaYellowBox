@@ -13,11 +13,11 @@ return $config = [
     ],
     'transitions' => [
         'approve' => [
-            'from' => ['open'],
+            'from' => ['open', 'reopened'],
             'to'   => 'approved'
         ],
         'reject' => [
-            'from' => ['open'],
+            'from' => ['open', 'reopen'],
             'to'   => 'rejected'
         ],
         'reopen' => [
