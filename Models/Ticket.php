@@ -1,7 +1,4 @@
 <?php
-/**
- * © solutionDrive GmbH
- */
 
 namespace JodaYellowBox\Models;
 
@@ -10,11 +7,16 @@ use Doctrine\ORM\Mapping as ORM;
 
 /**
  * @ORM\Table(name="s_plugin_yellow_box_ticket")
- * @ORM\Entity
+ * @ORM\Entity(repositoryClass="Repository")
  * @ORM\HasLifecycleCallbacks
  */
 class Ticket extends ModelEntity
 {
+    const STATE_OPEN = 'open';
+    const STATE_APPROVED = 'approved';
+    const STATE_REJECTED = 'rejected';
+    const STATE_REOPENED = 'reopened';
+
     /**
      * @var int
      *
@@ -46,6 +48,13 @@ class Ticket extends ModelEntity
     private $description;
 
     /**
+     * @var string
+     *
+     * @ORM\Column(name="state", type="string", nullable=false)
+     */
+    private $state;
+
+    /**
      * @var \DateTime
      *
      * @ORM\Column(name="created_at", type="datetime", nullable=false)
@@ -62,6 +71,7 @@ class Ticket extends ModelEntity
     public function __construct()
     {
         $this->createdAt = new \DateTime();
+        $this->state = self::STATE_OPEN;
     }
 
     /**
@@ -105,6 +115,16 @@ class Ticket extends ModelEntity
     public function setDescription(string $description)
     {
         $this->description = $description;
+    }
+
+    public function getState()
+    {
+        return $this->state;
+    }
+
+    public function setState(string $state)
+    {
+        $this->state = $state;
     }
 
     public function getCreatedAt(): \DateTime

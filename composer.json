@@ -1,0 +1,26 @@
+{
+    "name": "joda/shopware-yellow-box",
+    "keywords": ["shopware", "yellowbox", "plugin"],
+    "description": "Yellow Box for Shopware",
+    "license": "MIT",
+    "type": "shopware-plugin",
+    "extra": {
+        "installer-name": "JodaYellowBox"
+    },
+    "replace": {
+        "symfony/polyfill-mbstring": "~1.0"
+    },
+    "require": {
+        "php" : "^7.0",
+        "winzou/state-machine": "^0.3",
+        "composer/installers": "~1.0",
+        "roave/security-advisories": "dev-master"
+    },
+    "require-dev": {
+        "phpspec/phpspec": "^4.3"
+    },
+    "scripts": {
+        "test": "phpunit -c tests",
+        "test-spec": "phpspec run --format dot"
+    }
+}

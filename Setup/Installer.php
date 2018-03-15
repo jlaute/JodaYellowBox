@@ -1,7 +1,4 @@
 <?php
-/**
- * © solutionDrive GmbH
- */
 
 namespace JodaYellowBox\Setup;
 

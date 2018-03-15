@@ -4,9 +4,24 @@
            xsi:schemaLocation="http://symfony.com/schema/dic/services http://symfony.com/schema/dic/services/services-1.0.xsd">
 
     <services>
+        <!-- Commands -->
         <service id="joda_yellow_box.command.add_ticket" class="JodaYellowBox\Commands\AddTicket">
             <argument type="string">joda:ticket:add</argument>
             <tag name="console.command" />
+        </service>
+
+        <!-- Statemachine -->
+        <service id="sm.factory" class="SM\Factory\Factory">
+            <argument>%joda_yellow_box.sm.configs%</argument>
+            <argument type="service" id="fake.service" on-invalid="null" />
+            <argument type="service" id="sm.callback_factory" />
+        </service>
+        <service id="sm.callback_factory" class="JodaYellowBox\Components\StateMachine\Callback\ContainerAwareCallbackFactory">
+            <argument>JodaYellowBox\Components\StateMachine\Callback\ContainerAwareCallback</argument>
+            <argument type="service" id="service_container" />
+        </service>
+
+        <service id="joda.test.callback" class="JodaYellowBox\Components\StateMachine\TestCallback">
         </service>
     </services>
 </container>

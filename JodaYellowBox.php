@@ -7,6 +7,10 @@ use Shopware\Components\Plugin;
 use Shopware\Components\Plugin\Context\UninstallContext;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
 
+if (file_exists(__DIR__ . '/vendor/autoload.php')) {
+    require_once __DIR__ . '/vendor/autoload.php';
+}
+
 class JodaYellowBox extends Plugin
 {
     /**
@@ -15,6 +19,10 @@ class JodaYellowBox extends Plugin
     public function build(ContainerBuilder $container)
     {
         $container->setParameter('joda_yellow_box.plugin_dir', $this->getPath());
+
+        $config = include $this->getPath() . '/Resources/StateMachine/config.php';
+        $container->setParameter('joda_yellow_box.sm.configs', [$config]);
+
         parent::build($container);
     }
 
