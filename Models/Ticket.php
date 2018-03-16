@@ -123,7 +123,7 @@ class Ticket extends ModelEntity
         $this->description = $description;
     }
 
-    public function getState()
+    public function getState(): string
     {
         return $this->state;
     }
@@ -140,22 +140,23 @@ class Ticket extends ModelEntity
 
     public function approve(StateMachineInterface $stateMachine)
     {
-        if ($stateMachine->can('approve')) {
-            $stateMachine->apply('approve');
-        }
+        $this->changeState($stateMachine, 'approve');
     }
 
     public function reject(StateMachineInterface $stateMachine)
     {
-        if ($stateMachine->can('reject')) {
-            $stateMachine->apply('reject');
-        }
+        $this->changeState($stateMachine, 'reject');
     }
 
     public function reopen(StateMachineInterface $stateMachine)
     {
-        if ($stateMachine->can('reopen')) {
-            $stateMachine->apply('reopen');
+        $this->changeState($stateMachine, 'reopen');
+    }
+
+    protected function changeState(StateMachineInterface $stateMachine, string $state)
+    {
+        if ($stateMachine->can($state)) {
+            $stateMachine->apply($state);
         }
     }
 }
