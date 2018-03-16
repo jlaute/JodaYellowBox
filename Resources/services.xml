@@ -10,12 +10,18 @@
             <tag name="console.command" />
         </service>
 
+        <service id="joda_yellow_box.command.remove_ticket" class="JodaYellowBox\Commands\RemoveTicket">
+            <argument type="string">joda:ticket:remove</argument>
+            <tag name="console.command" />
+        </service>
+
         <!-- Statemachine -->
         <service id="joda_yellow_box.sm.factory" class="SM\Factory\Factory">
             <argument>%joda_yellow_box.sm.configs%</argument>
             <argument type="service" id="fake.service" on-invalid="null" />
             <argument type="service" id="joda_yellow_box.sm.callback_factory" />
         </service>
+
         <service id="joda_yellow_box.sm.callback_factory" class="JodaYellowBox\Components\StateMachine\Callback\ContainerAwareCallbackFactory">
             <argument>JodaYellowBox\Components\StateMachine\Callback\ContainerAwareCallback</argument>
             <argument type="service" id="service_container" />
@@ -25,6 +31,10 @@
 
         <!-- Services -->
         <service id="joda_yellow_box.ticket_creator" class="JodaYellowBox\Components\Ticket\TicketCreator">
+            <argument type="service" id="models" />
+        </service>
+
+        <service id="joda_yellow_box.ticket_destroyer" class="JodaYellowBox\Components\Ticket\TicketDestroyer">
             <argument type="service" id="models" />
         </service>
     </services>
