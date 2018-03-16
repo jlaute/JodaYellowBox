@@ -19,6 +19,9 @@
     "require-dev": {
         "phpspec/phpspec": "^4.3"
     },
+    "config": {
+        "bin-dir": "bin"
+    },
     "scripts": {
         "test": "phpunit -c tests",
         "test-spec": "phpspec run --format dot"
