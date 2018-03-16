@@ -90,7 +90,7 @@ class Ticket extends ModelEntity
 
     public function getId(): int
     {
-        return $this->id;
+        return $this->id ?: 0;
     }
 
     public function setNumber(string $number)
@@ -126,6 +126,11 @@ class Ticket extends ModelEntity
     public function getState(): string
     {
         return $this->state;
+    }
+
+    public function setState(string $state)
+    {
+        $this->state = $state;
     }
 
     public function getCreatedAt(): \DateTime
