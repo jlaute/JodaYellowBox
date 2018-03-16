@@ -23,7 +23,7 @@
         "bin-dir": "bin"
     },
     "scripts": {
-        "test": "phpunit -c tests",
+        "test": "phpunit",
         "test-spec": "phpspec run --format dot"
     }
 }
