@@ -7,9 +7,9 @@ use Symfony\Component\Console\Tester\CommandTester;
 
 class RemoveTicketTest extends TestCase
 {
-
-    /** @var AddTicket */
-    private $addCommand;
+    protected static $ensureLoadedPlugins = [
+        'JodaYellowBox' => []
+    ];
 
     /** @var RemoveTicket */
     private $removeCommand;

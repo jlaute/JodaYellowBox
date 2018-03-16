@@ -10,6 +10,9 @@ use Symfony\Component\Console\Tester\CommandTester;
  */
 class AddTicketTest extends TestCase
 {
+    protected static $ensureLoadedPlugins = [
+        'JodaYellowBox' => []
+    ];
 
     /** @var CommandTester */
     private $commandTester;
