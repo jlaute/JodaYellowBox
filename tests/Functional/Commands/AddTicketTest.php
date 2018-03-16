@@ -19,6 +19,19 @@ class AddTicketTest extends \Shopware\Components\Test\Plugin\TestCase
         $this->commandTester = new \Symfony\Component\Console\Tester\CommandTester($command);
     }
 
+    public function tearDown()
+    {
+        $em = Shopware()->Container()->get('models');
+        $ticketRepo = $em->getRepository(\JodaYellowBox\Models\Ticket::class);
+
+        $ticket = $ticketRepo->findOneBy(['name' => 'New Testing Ticket!']);
+
+        if (!empty($ticket)) {
+            $em->remove($ticket);
+            $em->flush();
+        }
+    }
+
     public function testExecute()
     {
         $this->commandTester->execute(['name' => 'New Testing Ticket!']);
