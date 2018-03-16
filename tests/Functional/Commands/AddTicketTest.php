@@ -1,7 +1,7 @@
 <?php
 
+use JodaYellowBox\Models\Ticket;
 use JodaYellowBox\Commands\AddTicket;
-use Shopware\Components\Model\ModelManager;
 use Shopware\Components\Test\Plugin\TestCase;
 use Symfony\Component\Console\Tester\CommandTester;
 
@@ -10,18 +10,9 @@ use Symfony\Component\Console\Tester\CommandTester;
  */
 class AddTicketTest extends TestCase
 {
-    /** @var ModelManager */
-    private static $em;
 
     /** @var CommandTester */
     private $commandTester;
-
-    public static function setUpBeforeClass()
-    {
-        parent::setUpBeforeClass();
-
-        static::$em = Shopware()->Container()->get('models');
-    }
 
     public function setUp()
     {
@@ -33,13 +24,14 @@ class AddTicketTest extends TestCase
 
     public function tearDown()
     {
-        $ticketRepo = static::$em->getRepository(\JodaYellowBox\Models\Ticket::class);
+        $em = Shopware()->Container()->get('models');
+        $ticketRepo = $em->getRepository(Ticket::class);
 
         $ticket = $ticketRepo->findOneBy(['name' => 'New Testing Ticket!']);
 
         if (!empty($ticket)) {
-            static::$em->remove($ticket);
-            static::$em->flush();
+            $em->remove($ticket);
+            $em->flush();
         }
     }
 
