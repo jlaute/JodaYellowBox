@@ -6,6 +6,7 @@ namespace JodaYellowBox\Components\StateMachine\Logger;
 use JodaYellowBox\Models\Ticket;
 use JodaYellowBox\Models\TicketHistory;
 use Shopware\Components\Model\ModelManager;
+use SM\Event\TransitionEvent;
 
 /**
  * @author    Jörg Lautenschlager <joerg.lautenschlager@gmail.com>
@@ -25,10 +26,14 @@ class SqlLogger implements StateLogger
     /**
      * @inheritdoc
      */
-    public function log(Ticket $ticket)
+    public function log(Ticket $ticket, TransitionEvent $event)
     {
         $ticketId = $ticket->getId();
-        $oldState = 'old';
+        if (!$ticketId) {
+            return null;
+        }
+
+        $oldState = $event->getState();
         $newState = $ticket->getState();
 
         $history = new TicketHistory($ticketId, $oldState, $newState);

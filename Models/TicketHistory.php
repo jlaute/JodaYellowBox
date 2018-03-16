@@ -8,6 +8,7 @@ use Doctrine\ORM\Mapping as ORM;
 
 /**
  * @ORM\Table(name="s_plugin_yellow_box_ticket_history")
+ * @ORM\Entity
  */
 class TicketHistory extends ModelEntity
 {
@@ -30,14 +31,14 @@ class TicketHistory extends ModelEntity
     /**
      * @var string
      *
-     * @ORM\Column(name="state", type="string", nullable=false)
+     * @ORM\Column(name="old_state", type="string", nullable=false)
      */
     private $oldState;
 
     /**
      * @var string
      *
-     * @ORM\Column(name="state", type="string", nullable=false)
+     * @ORM\Column(name="new_state", type="string", nullable=false)
      */
     private $newState;
 
