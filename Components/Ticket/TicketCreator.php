@@ -38,7 +38,7 @@ class TicketCreator
         $ticket = new Ticket($name, $number, $description);
 
         $this->em->persist($ticket);
-        $this->em->flush($ticket);
+        $this->em->flush();
 
         return $ticket;
     }
@@ -50,12 +50,6 @@ class TicketCreator
     protected function ticketExist(string $name): bool
     {
         $ticketRepo = $this->em->getRepository(Ticket::class);
-        $ticket = $ticketRepo->findOneBy(['name' => $name]);
-
-        if ($ticket) {
-            return true;
-        }
-
-        return false;
+        return $ticketRepo->existsTicket($name);
     }
 }

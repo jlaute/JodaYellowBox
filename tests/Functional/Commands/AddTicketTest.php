@@ -1,34 +1,45 @@
 <?php
 
+use JodaYellowBox\Commands\AddTicket;
+use Shopware\Components\Model\ModelManager;
+use Shopware\Components\Test\Plugin\TestCase;
+use Symfony\Component\Console\Tester\CommandTester;
+
 /**
  * @author    Jörg Lautenschlager <joerg.lautenschlager@gmail.com>
  */
-class AddTicketTest extends \Shopware\Components\Test\Plugin\TestCase
+class AddTicketTest extends TestCase
 {
-    /** @var \Symfony\Component\Console\Tester\CommandTester */
+    /** @var ModelManager */
+    private static $em;
+
+    /** @var CommandTester */
     private $commandTester;
+
+    public static function setUpBeforeClass()
+    {
+        parent::setUpBeforeClass();
+
+        static::$em = Shopware()->Container()->get('models');
+    }
 
     public function setUp()
     {
-        $kernel = Shopware()->Container()->get('kernel');
-        $application = new \Shopware\Components\Console\Application($kernel);
-        $command = new \JodaYellowBox\Commands\AddTicket('joda:ticket:add');
+        $command = new AddTicket('joda:ticket:add');
         $command->setContainer(Shopware()->Container());
-        $application->add($command);
 
-        $this->commandTester = new \Symfony\Component\Console\Tester\CommandTester($command);
+        $this->commandTester = new CommandTester($command);
     }
 
     public function tearDown()
     {
-        $em = Shopware()->Container()->get('models');
-        $ticketRepo = $em->getRepository(\JodaYellowBox\Models\Ticket::class);
+        $ticketRepo = static::$em->getRepository(\JodaYellowBox\Models\Ticket::class);
 
         $ticket = $ticketRepo->findOneBy(['name' => 'New Testing Ticket!']);
 
         if (!empty($ticket)) {
-            $em->remove($ticket);
-            $em->flush();
+            static::$em->remove($ticket);
+            static::$em->flush();
         }
     }
 
