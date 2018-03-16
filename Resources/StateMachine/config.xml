@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="utf-8"?>
+<statemachine xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+              xsi:noNamespaceSchemaLocation="statemachine.xsd">
+
+    <class>\JodaYellowBox\Models\Ticket</class>
+    <graph>default</graph>
+    <property_path>state</property_path>
+    <states>
+        <state>open</state>
+        <state>approved</state>
+        <state>rejected</state>
+        <state>reopened</state>
+    </states>
+    <transitions>
+        <transition name="approve">
+            <from>open</from>
+            <from>reopened</from>
+            <to>approved</to>
+        </transition>
+        <transition name="reject">
+            <from>open</from>
+            <from>reopened</from>
+            <to>rejected</to>
+        </transition>
+        <transition name="reopen">
+            <from>rejected</from>
+            <to>reopened</to>
+        </transition>
+    </transitions>
+    <callbacks>
+        <callback time="after" name="on-change">
+            <on>approve</on>
+            <on>reject</on>
+            <on>reopen</on>
+            <do class="@joda_yellow_box.sql_state_logger" fnc="log"/>
+            <args>object</args>
+            <args>event</args>
+        </callback>
+    </callbacks>
+</statemachine>

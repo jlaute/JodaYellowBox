@@ -1,0 +1,59 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<xsd:schema xmlns:xsd="http://www.w3.org/2001/XMLSchema" elementFormDefault="qualified">
+    <xsd:element name="statemachine" type="statemachineType"/>
+
+    <xsd:complexType name="statemachineType">
+        <xsd:sequence>
+            <xsd:element name="class" type="xsd:string"/>
+            <xsd:element name="graph" type="xsd:string"/>
+            <xsd:element name="property_path" type="xsd:string"/>
+            <xsd:element name="states" type="statesType"/>
+            <xsd:element name="transitions" type="transitionsType"/>
+            <xsd:element name="callbacks" type="callbacksType" minOccurs="0"/>
+        </xsd:sequence>
+    </xsd:complexType>
+
+    <xsd:complexType name="statesType">
+        <xsd:sequence>
+            <xsd:element name="state" type="xsd:string" maxOccurs="unbounded"/>
+        </xsd:sequence>
+    </xsd:complexType>
+
+    <xsd:complexType name="transitionsType">
+        <xsd:sequence>
+            <xsd:element name="transition" type="singleTransitionType" maxOccurs="unbounded"/>
+        </xsd:sequence>
+    </xsd:complexType>
+
+    <xsd:complexType name="singleTransitionType">
+        <xsd:sequence>
+            <xsd:element name="from" type="xsd:string" minOccurs="0" maxOccurs="unbounded"/>
+            <xsd:element name="to" type="xsd:string"/>
+        </xsd:sequence>
+        <xsd:attribute name="name" type="xsd:string"/>
+    </xsd:complexType>
+
+    <xsd:complexType name="callbacksType">
+        <xsd:sequence>
+            <xsd:element name="callback" type="singleCallbackType"/>
+        </xsd:sequence>
+    </xsd:complexType>
+
+    <xsd:complexType name="singleCallbackType">
+        <xsd:sequence>
+            <xsd:element name="from" type="xsd:string" minOccurs="0" maxOccurs="unbounded"/>
+            <xsd:element name="to" type="xsd:string" minOccurs="0"/>
+            <xsd:element name="on" type="xsd:string" minOccurs="0" maxOccurs="unbounded"/>
+            <xsd:element name="do" type="doType"/>
+            <xsd:element name="args" type="xsd:string" minOccurs="0" maxOccurs="2"/>
+        </xsd:sequence>
+        <xsd:attribute name="time" type="xsd:string"/>
+        <xsd:attribute name="name" type="xsd:string"/>
+    </xsd:complexType>
+
+    <xsd:complexType name="doType">
+        <xsd:attribute name="class" type="xsd:string"/>
+        <xsd:attribute name="fnc" type="xsd:string"/>
+    </xsd:complexType>
+</xsd:schema>
