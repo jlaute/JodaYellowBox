@@ -17,7 +17,7 @@ return $config = [
             'to'   => 'approved'
         ],
         'reject' => [
-            'from' => ['open', 'reopen'],
+            'from' => ['open', 'reopened'],
             'to'   => 'rejected'
         ],
         'reopen' => [
@@ -27,10 +27,10 @@ return $config = [
     ],
     'callbacks' => [
         'after' => [
-            'on-approve' => [
-                'on' => 'approve',                     # call the callback on a specific transition
-                'do' => ['@joda.test.callback', 'testThisCallback'],  # will call the method of this Symfony service
-                'args' => ['object']
+            'on-change' => [
+                'on'   => ['approve', 'reject', 'reopen'],               # call the callback on a specific transition
+                'do'   => ['@joda_yellow_box.sql_state_logger', 'log'],  # will call the method of this Symfony service
+                'args' => ['object', 'event']
             ]
         ]
     ]

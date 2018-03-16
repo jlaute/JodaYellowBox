@@ -15,7 +15,7 @@ class RemoveTicket extends ShopwareCommand
 {
     protected function configure()
     {
-        $this->addArgument('name', InputArgument::OPTIONAL, 'Name of the ticket');
+        $this->addArgument('name', InputArgument::REQUIRED, 'Name of the ticket');
     }
 
     protected function execute(InputInterface $input, OutputInterface $output)
