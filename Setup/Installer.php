@@ -6,6 +6,7 @@ namespace JodaYellowBox\Setup;
 
 use Doctrine\ORM\Tools\SchemaTool;
 use JodaYellowBox\Models\Ticket;
+use JodaYellowBox\Models\TicketHistory;
 use Shopware\Components\DependencyInjection\Container;
 use Shopware\Components\Plugin\Context\InstallContext;
 use Shopware\Components\Plugin\Context\UninstallContext;
@@ -50,7 +51,8 @@ class Installer
     protected function getClassesMetadata()
     {
         return [
-            $this->em->getClassMetadata(Ticket::class)
+            $this->em->getClassMetadata(Ticket::class),
+            $this->em->getClassMetadata(TicketHistory::class),
         ];
     }
 }

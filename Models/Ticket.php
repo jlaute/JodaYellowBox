@@ -130,12 +130,12 @@ class Ticket extends ModelEntity
 
     public function getCreatedAt(): \DateTime
     {
-        return $this->createdAt;
+        return clone $this->createdAt;
     }
 
     public function getChangedAt(): \DateTime
     {
-        return $this->changedAt;
+        return clone $this->changedAt;
     }
 
     public function approve(StateMachineInterface $stateMachine)
