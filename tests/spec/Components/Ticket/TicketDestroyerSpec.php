@@ -2,7 +2,6 @@
 
 namespace spec\JodaYellowBox\Components\Ticket;
 
-use JodaYellowBox\Components\Ticket\TicketAlreadyExistException;
 use JodaYellowBox\Components\Ticket\TicketDestroyer;
 use JodaYellowBox\Components\Ticket\TicketNotExistException;
 use JodaYellowBox\Models\Repository;
