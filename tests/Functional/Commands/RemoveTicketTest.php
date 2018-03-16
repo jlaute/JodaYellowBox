@@ -25,14 +25,12 @@ class RemoveTicketTest extends TestCase
 
     public function testExecute()
     {
-        $commandTester = new CommandTester($this->addCommand);
-        $commandTester->execute(['name' => 'New Testing Ticket!']);
+        $addTester = new CommandTester($this->addCommand);
+        $addTester->execute(['name' => 'New Testing Ticket!']);
 
-        $this->assertContains('success', $commandTester->getDisplay());
+        $removeTester = new CommandTester($this->removeCommand);
+        $removeTester->execute(['name' => 'New Testing Ticket!']);
 
-        $commandTester = new CommandTester($this->removeCommand);
-        $commandTester->execute(['name' => 'New Testing Ticket!']);
-
-        $this->assertContains('success', $commandTester->getDisplay());
+        $this->assertContains('success', $removeTester->getDisplay());
     }
 }
