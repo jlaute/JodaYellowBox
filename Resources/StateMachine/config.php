@@ -25,13 +25,5 @@ return $config = [
             'to'   => 'reopened'
         ]
     ],
-    'callbacks' => [
-        'after' => [
-            'on-change' => [
-                'on'   => ['approve', 'reject', 'reopen'],               # call the callback on a specific transition
-                'do'   => ['@joda_yellow_box.sql_state_logger', 'log'],  # will call the method of this Symfony service
-                'args' => ['object', 'event']
-            ]
-        ]
-    ]
+    'callbacks' => []
 ];
