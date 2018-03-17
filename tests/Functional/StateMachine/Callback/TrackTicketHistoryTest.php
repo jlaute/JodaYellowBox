@@ -11,6 +11,11 @@ use \JodaYellowBox\Models\Ticket;
 class TrackTicketHistoryTest extends TestCase
 {
     /**
+     * @var Ticket
+     */
+    protected $ticket;
+
+    /**
      * @var TicketHistory
      */
     protected $ticketHistory;
@@ -22,15 +27,17 @@ class TrackTicketHistoryTest extends TestCase
     public function testTrackStateChange()
     {
         $ticketCreator = Shopware()->Container()->get('joda_yellow_box.ticket_creator');
-        $ticket = $ticketCreator->createTicket('New Testing Ticket!');
+        $this->ticket = $ticketCreator->createTicket('New Testing Ticket!');
 
         $smFactory = Shopware()->Container()->get('joda_yellow_box.sm.factory');
-        $sm = $smFactory->get($ticket);
+        $sm = $smFactory->get($this->ticket);
 
-        $ticket->approve($sm);
+        $this->ticket->approve($sm);
+        Shopware()->Models()->persist($this->ticket);
+        Shopware()->Models()->flush($this->ticket);
 
         $ticketHistoryRepo = Shopware()->Models()->getRepository(TicketHistory::class);
-        $this->ticketHistory = $ticketHistoryRepo->findOneBy(['ticketId' => $ticket->getId()]);
+        $this->ticketHistory = $ticketHistoryRepo->findOneBy(['ticketId' => $this->ticket->getId()]);
 
         $this->assertEquals('open', $this->ticketHistory->getOldState());
         $this->assertEquals('approved', $this->ticketHistory->getNewState());
@@ -39,12 +46,9 @@ class TrackTicketHistoryTest extends TestCase
     public function tearDown()
     {
         $em = Shopware()->Container()->get('models');
-        $ticketRepo = $em->getRepository(Ticket::class);
 
-        $ticket = $ticketRepo->findOneBy(['name' => 'New Testing Ticket!']);
-
-        if (!empty($ticket)) {
-            $em->remove($ticket);
+        if (!empty($this->ticket)) {
+            $em->remove($this->ticket);
         }
         if ($this->ticketHistory) {
             $em->remove($this->ticketHistory);

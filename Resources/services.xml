@@ -37,8 +37,8 @@
         </service>
 
         <!-- State logger -->
-        <service id="joda_yellow_box.sql_state_logger" class="JodaYellowBox\Components\StateMachine\Logger\SqlLogger">
-            <argument type="service" id="models" />
+        <service id="joda_yellow_box.doctrine.ticket_subscriber" class="JodaYellowBox\Doctrine\TicketSubscriber">
+            <tag name="doctrine.event_subscriber" />
         </service>
     </services>
 </container>
