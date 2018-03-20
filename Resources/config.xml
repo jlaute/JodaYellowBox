@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="utf-8"?>
+<config xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xsi:noNamespaceSchemaLocation="../../../../engine/Shopware/Components/Plugin/schema/config.xsd">
+
+    <elements>
+        <!-- Box Settings -->
+        <element type="number" required="true" scope="shop">
+            <name>JodaYellowBoxMaxWidth</name>
+            <label lang="de">Box maximal Breite (Standard: 500)</label>
+            <label lang="en">Box maximum width (Default: 500)</label>
+            <value>500</value>
+        </element>
+    </elements>
+</config>
