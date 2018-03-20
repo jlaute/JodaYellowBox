@@ -2,25 +2,24 @@
 
 namespace spec\JodaYellowBox\Components\Config;
 
-use JodaYellowBox\Components\Config\PluginConfigInterface;
 use PhpSpec\ObjectBehavior;
 use Shopware\Components\Plugin\ConfigReader;
 use JodaYellowBox\Components\Config\PluginConfig;
+use JodaYellowBox\Components\Config\PluginConfigInterface;
 
 /**
  * @mixin PluginConfig
  */
 class PluginConfigSpec extends ObjectBehavior
 {
-
-    public function let(ConfigReader $configReader)
+    function let(ConfigReader $configReader)
     {
         $configReader->getByPluginName('JodaYellowBox')->willReturn([
             'testConfig' => 'test',
             'JodaYellowBoxMaxWidth' => 100
         ]);
 
-        $this->beConstructedWith($configReader);
+        $this->beConstructedWith('JodaYellowBox', $configReader);
     }
 
     function it_is_initializable()
