@@ -3,8 +3,8 @@ declare(strict_types=1);
 
 namespace JodaYellowBox\Models;
 
-use Shopware\Components\Model\ModelEntity;
 use Doctrine\ORM\Mapping as ORM;
+use Shopware\Components\Model\ModelEntity;
 
 /**
  * @ORM\Table(name="s_plugin_yellow_box_ticket_history")
@@ -50,7 +50,7 @@ class TicketHistory extends ModelEntity
     private $date;
 
     /**
-     * @param int $ticketId
+     * @param int    $ticketId
      * @param string $oldState
      * @param string $newState
      */

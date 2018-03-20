@@ -18,7 +18,7 @@ class TicketSubscriber implements EventSubscriber
     public function getSubscribedEvents()
     {
         return [
-            Events::preUpdate
+            Events::preUpdate,
         ];
     }
 
@@ -43,7 +43,7 @@ class TicketSubscriber implements EventSubscriber
             'ticket_id' => $object->getId(),
             'old_state' => $oldState,
             'new_state' => $newState,
-            'date'      => $date->format('Y-m-d H:i:s')
+            'date' => $date->format('Y-m-d H:i:s'),
         ]);
     }
 }

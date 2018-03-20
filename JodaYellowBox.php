@@ -16,8 +16,8 @@ if (file_exists(__DIR__ . '/vendor/autoload.php')) {
 class JodaYellowBox extends Plugin
 {
     /**
-    * @param ContainerBuilder $container
-    */
+     * @param ContainerBuilder $container
+     */
     public function build(ContainerBuilder $container)
     {
         $container->setParameter('joda_yellow_box.plugin_dir', $this->getPath());

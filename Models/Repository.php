@@ -11,9 +11,9 @@ use Shopware\Components\Model\ModelRepository;
  */
 class Repository extends ModelRepository
 {
-
     /**
      * @param string $name
+     *
      * @return bool
      */
     public function existsTicket(string $name): bool
@@ -23,6 +23,7 @@ class Repository extends ModelRepository
 
     /**
      * @param string $name
+     *
      * @return null|object
      */
     public function getTicketByName(string $name)
