@@ -36,6 +36,11 @@
             <argument type="service" id="models" />
         </service>
 
+        <service id="joda_yellow_box.plugin_config" class="JodaYellowBox\Components\Config\PluginConfig">
+            <argument type="string">%joda_yellow_box.plugin_name%</argument>
+            <argument type="service" id="shopware.plugin.cached_config_reader" />
+        </service>
+
         <!-- State logger -->
         <service id="joda_yellow_box.doctrine.ticket_subscriber" class="JodaYellowBox\Doctrine\TicketSubscriber">
             <tag name="doctrine.event_subscriber" />
