@@ -17,7 +17,8 @@
         "roave/security-advisories": "dev-master"
     },
     "require-dev": {
-        "phpspec/phpspec": "^4.3"
+        "phpspec/phpspec": "^4.3",
+        "mikey179/vfsStream": "1.6.*"
     },
     "config": {
         "bin-dir": "bin"
