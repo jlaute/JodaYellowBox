@@ -10,7 +10,11 @@
                     {block name="frontend_yellow_box_content"}
                         <ul class="list">
                             {block name="frontend_yellow_box_content_list"}
-                                <li class="list--entry">number - name - description</li>
+                                {foreach $currentTickets as $ticket}
+                                    <li class="list--entry">Number: {$ticket.number} - Name: {$ticket.name} - Description: {$ticket.description} </li>
+                                {foreachelse}
+                                    <li>No Tickets found</li>
+                                {/foreach}
                             {/block}
                         </ul>
                     {/block}
