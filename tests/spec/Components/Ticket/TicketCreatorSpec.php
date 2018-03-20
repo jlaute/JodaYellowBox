@@ -1,13 +1,13 @@
-<?php
+<?php declare(strict_types=1);
 
 namespace spec\JodaYellowBox\Components\Ticket;
 
-use JodaYellowBox\Models\Ticket;
-use JodaYellowBox\Models\Repository;
-use JodaYellowBox\Components\Ticket\TicketCreator;
 use JodaYellowBox\Components\Ticket\TicketAlreadyExistException;
-use Prophecy\Argument;
+use JodaYellowBox\Components\Ticket\TicketCreator;
+use JodaYellowBox\Models\Repository;
+use JodaYellowBox\Models\Ticket;
 use PhpSpec\ObjectBehavior;
+use Prophecy\Argument;
 use Shopware\Components\Model\ModelManager;
 
 /**
