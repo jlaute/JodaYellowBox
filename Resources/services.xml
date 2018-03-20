@@ -52,6 +52,12 @@
             <tag name="doctrine.event_subscriber" />
         </service>
 
+        <!-- Subscriber -->
+        <service id="joda_yellow_box.subscriber.template" class="JodaYellowBox\Subscriber\Template">
+            <argument type="string">%joda_yellow_box.view_dir%</argument>
+            <tag name="shopware.event_subscriber" />
+        </service>
+
         <service id="joda_yellow_box.subscriber.assets" class="JodaYellowBox\Subscriber\Assets">
             <argument type="string">%joda_yellow_box.public.less_dir%</argument>
             <argument type="string">%joda_yellow_box.public.js_dir%</argument>
