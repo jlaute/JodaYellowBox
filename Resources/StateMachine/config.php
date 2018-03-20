@@ -1,29 +1,28 @@
-<?php
-
+<?php declare(strict_types=1);
 // TODO: Parse config from XML
 return $config = [
-    'class'         => \JodaYellowBox\Models\Ticket::class, # class of your domain object
-    'graph'         => 'default', // Name of the current graph - there can be many of them attached to the same object
+    'class' => \JodaYellowBox\Models\Ticket::class, // class of your domain object
+    'graph' => 'default', // Name of the current graph - there can be many of them attached to the same object
     'property_path' => 'state',       // Property path of the object actually holding the state
-    'states'        => [
+    'states' => [
         'open',
         'approved',
         'rejected',
-        'reopened'
+        'reopened',
     ],
     'transitions' => [
         'approve' => [
             'from' => ['open', 'reopened'],
-            'to'   => 'approved'
+            'to' => 'approved',
         ],
         'reject' => [
             'from' => ['open', 'reopened'],
-            'to'   => 'rejected'
+            'to' => 'rejected',
         ],
         'reopen' => [
             'from' => ['rejected'],
-            'to'   => 'reopened'
-        ]
+            'to' => 'reopened',
+        ],
     ],
-    'callbacks' => []
+    'callbacks' => [],
 ];

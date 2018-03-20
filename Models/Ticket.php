@@ -4,8 +4,8 @@ declare(strict_types=1);
 
 namespace JodaYellowBox\Models;
 
-use Shopware\Components\Model\ModelEntity;
 use Doctrine\ORM\Mapping as ORM;
+use Shopware\Components\Model\ModelEntity;
 use SM\StateMachine\StateMachineInterface;
 
 /**

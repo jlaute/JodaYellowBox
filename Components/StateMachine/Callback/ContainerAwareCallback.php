@@ -23,7 +23,7 @@ class ContainerAwareCallback extends Callback
     }
 
     /**
-     * @inheritdoc
+     * {@inheritdoc}
      */
     public function call(TransitionEvent $event)
     {
@@ -31,7 +31,7 @@ class ContainerAwareCallback extends Callback
         if (
             \is_array($this->callable)
             && \is_string($this->callable[0])
-            && 0 === \strpos($this->callable[0], '@')
+            && \strpos($this->callable[0], '@') === 0
         ) {
             $serviceId = \substr($this->callable[0], 1);
             $this->callable[0] = $this->container->get($serviceId);
