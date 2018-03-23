@@ -24,6 +24,24 @@ class TicketManager
     }
 
     /**
+     * @param mixed $ident Id or name of ticket
+     * @return Ticket|null
+     */
+    public function getTicket($ident)
+    {
+        return $this->ticketRepository->findTicket($ident);
+    }
+
+    /**
+     * @param $ident
+     * @return bool
+     */
+    public function existsTicket($ident)
+    {
+        return $this->ticketRepository->existsTicket($ident);
+    }
+
+    /**
      * @return array
      */
     public function getCurrentTickets()

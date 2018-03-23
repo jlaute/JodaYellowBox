@@ -12,19 +12,48 @@ use Shopware\Components\Model\ModelRepository;
 class Repository extends ModelRepository
 {
     /**
-     * @param string $name
+     * @param mixed $ident
      * @return bool
      */
-    public function existsTicket(string $name): bool
+    public function existsTicket($ident): bool
     {
-        return $this->getTicketByName($name) !== null;
+        if (is_int($ident)) {
+            $ticket = $this->getTicketById($ident);
+        } else {
+            $ticket = $this->getTicketByName($ident);
+        }
+
+        return $ticket !== null;
     }
 
     /**
-     * @param string $name
+     * Finds a ticket by any ident
+     * @param mixed $ident
      * @return null|object
      */
-    public function getTicketByName(string $name)
+    public function findTicket($ident)
+    {
+        if (is_int($ident)) {
+            return $this->getTicketById($ident);
+        }
+
+        return $this->getTicketByName($ident);
+    }
+
+    /**
+     * @param int $id
+     * @return null|object
+     */
+    public function getTicketById(int $id)
+    {
+        return $this->findOneBy(['id' => $id]);
+    }
+
+    /**
+     * @param mixed $name
+     * @return null|object
+     */
+    public function getTicketByName($name)
     {
         return $this->findOneBy(['name' => $name]);
     }
