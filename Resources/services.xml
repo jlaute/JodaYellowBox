@@ -53,6 +53,7 @@
 
         <!-- State logger -->
         <service id="joda_yellow_box.doctrine.ticket_subscriber" class="JodaYellowBox\Doctrine\TicketSubscriber">
+            <argument type="service" id="joda_yellow_box.sm.factory" />
             <tag name="doctrine.event_subscriber" />
         </service>
 

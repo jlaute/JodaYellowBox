@@ -71,6 +71,11 @@ class Ticket extends ModelEntity
      */
     private $changedAt;
 
+    /**
+     * @var array
+     */
+    protected $possibleTransitions = [];
+
     public function __construct(string $name, string $number = null, string $description = null)
     {
         $this->createdAt = new \DateTime();
@@ -100,7 +105,7 @@ class Ticket extends ModelEntity
 
     public function getNumber(): string
     {
-        return $this->number;
+        return $this->number ?: '';
     }
 
     public function setName(string $name)
@@ -115,7 +120,7 @@ class Ticket extends ModelEntity
 
     public function getDescription(): string
     {
-        return $this->description;
+        return $this->description ?: '';
     }
 
     public function setDescription(string $description)
@@ -143,6 +148,22 @@ class Ticket extends ModelEntity
         return clone $this->changedAt;
     }
 
+    /**
+     * @return array
+     */
+    public function getPossibleTransitions(): array
+    {
+        return $this->possibleTransitions;
+    }
+
+    /**
+     * @param array $possibleTransitions
+     */
+    public function setPossibleTransitions(array $possibleTransitions)
+    {
+        $this->possibleTransitions = $possibleTransitions;
+    }
+
     public function approve(StateMachineInterface $stateMachine)
     {
         $this->changeState($stateMachine, 'approve');
@@ -162,6 +183,24 @@ class Ticket extends ModelEntity
     {
         if ($stateMachine->can($state)) {
             $stateMachine->apply($state);
+            $this->setState($state);
         }
+    }
+
+    /**
+     * @return array
+     */
+    public function toArray()
+    {
+        return [
+            'id' => $this->getId(),
+            'number' => $this->getNumber(),
+            'name' => $this->getName(),
+            'description' => $this->getDescription(),
+            'state' => $this->getState(),
+            'createdAt' => $this->getCreatedAt(),
+            'changedAt' => $this->getChangedAt(),
+            'possibleTransitions' => $this->getPossibleTransitions()
+        ];
     }
 }

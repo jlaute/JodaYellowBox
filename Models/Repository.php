@@ -4,6 +4,9 @@ declare(strict_types=1);
 
 namespace JodaYellowBox\Models;
 
+use Doctrine\Common\EventArgs;
+use Doctrine\ORM\Event\LifecycleEventArgs;
+use Doctrine\ORM\Events;
 use Shopware\Components\Model\ModelRepository;
 
 /**
@@ -65,11 +68,10 @@ class Repository extends ModelRepository
     {
         return $this
             ->getEntityManager()
-            ->getConnection()
             ->createQueryBuilder()
-            ->select('*')
-            ->from('s_plugin_yellow_box_ticket')
-            ->execute()
-            ->fetchAll(\PDO::FETCH_ASSOC);
+            ->from(Ticket::class, 'ticket')
+            ->select('ticket')
+            ->getQuery()
+            ->getResult();
     }
 }

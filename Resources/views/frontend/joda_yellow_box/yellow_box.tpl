@@ -14,14 +14,11 @@
                         {foreach $currentTickets as $ticket}
                             <li class="list--entry">
                                 <div class="entry--actions">
-                                    <!-- approve -->
-                                    <button class="btn" data-ticket-transition="approve" data-ticket-id="{$ticket.id}">
-                                        <i class="icon--check"></i>
-                                    </button>
-                                    <!-- reject -->
-                                    <button class="btn" data-ticket-transition="reject" data-ticket-id="{$ticket.id}">
-                                        <i class="icon--cross"></i>
-                                    </button>
+                                    {foreach $ticket.possibleTransitions as $transition}
+                                        <button class="btn" data-ticket-transition="{$transition}" data-ticket-id="{$ticket.id}">
+                                            <i class="icon--transition-{$transition}"></i>
+                                        </button>
+                                    {/foreach}
                                 </div>
                                 Number: {$ticket.number}
                                 - Name: {$ticket.name}

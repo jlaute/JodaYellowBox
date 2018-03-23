@@ -43,9 +43,17 @@ class TicketManager
 
     /**
      * @return array
+     *
+     * @todo: please delete this, have no solution for getCurrentTickets
+     *        with array hydrator + events (ticket subscriber)
      */
-    public function getCurrentTickets()
+    public function getCurrentTickets(): array
     {
-        return $this->ticketRepository->getCurrentTickets();
+        $tickets = $this->ticketRepository->getCurrentTickets();
+        foreach ($tickets as &$ticket) {
+            $ticket = $ticket->toArray();
+        }
+
+        return $tickets;
     }
 }
