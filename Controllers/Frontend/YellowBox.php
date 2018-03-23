@@ -47,7 +47,6 @@ class Shopware_Controllers_Frontend_YellowBox extends Enlight_Controller_Action
 
         try {
             $stateMaschine = $this->stateManager->get($ticket);
-            $ticket->reopen($stateMaschine);
             $stateMaschine->apply($ticketTransition);
         } catch (SMException $ex) {
             // Invalid transition state
