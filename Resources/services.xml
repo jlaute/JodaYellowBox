@@ -69,6 +69,11 @@
             <tag name="shopware.event_subscriber" />
         </service>
 
+        <service id="joda_yellow_box.subscriber.controllers" class="JodaYellowBox\Subscriber\Controllers">
+            <argument type="string">%joda_yellow_box.plugin_dir%</argument>
+            <tag name="shopware.event_subscriber" />
+        </service>
+
         <service id="joda_yellow_box.subscriber.yellow_box" class="JodaYellowBox\Subscriber\YellowBox">
             <tag name="shopware.event_subscriber" />
         </service>
