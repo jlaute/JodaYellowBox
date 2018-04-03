@@ -4,9 +4,6 @@ declare(strict_types=1);
 
 namespace JodaYellowBox\Models;
 
-use Doctrine\Common\EventArgs;
-use Doctrine\ORM\Event\LifecycleEventArgs;
-use Doctrine\ORM\Events;
 use Shopware\Components\Model\ModelRepository;
 
 /**

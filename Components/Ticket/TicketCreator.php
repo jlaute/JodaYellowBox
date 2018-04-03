@@ -17,6 +17,9 @@ class TicketCreator
      */
     protected $em;
 
+    /**
+     * @param ModelManager $em
+     */
     public function __construct(ModelManager $em)
     {
         $this->em = $em;
