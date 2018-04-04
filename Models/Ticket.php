@@ -71,7 +71,7 @@ class Ticket extends ModelEntity
      */
     private $changedAt;
 
-    public function __construct(string $name, string $number = null, string $description = null)
+    public function __construct(string $name, string $number = '', string $description = '')
     {
         $this->createdAt = new \DateTime();
         $this->state = self::STATE_OPEN;
