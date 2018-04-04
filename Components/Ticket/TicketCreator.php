@@ -32,7 +32,7 @@ class TicketCreator
      * @return Ticket
      * @throws TicketAlreadyExistException
      */
-    public function createTicket(string $name, string $number = null, string $description = null): Ticket
+    public function createTicket(string $name, string $number = '', string $description = ''): Ticket
     {
         if ($this->ticketExist($name)) {
             throw new TicketAlreadyExistException("Ticket '$name' can`t be created, because it already exists");
