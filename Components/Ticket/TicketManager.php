@@ -16,11 +16,18 @@ class TicketManager
     protected $ticketRepository;
 
     /**
-     * @param EntityManagerInterface $em
+     * @var TicketModifierInterface
      */
-    public function __construct(EntityManagerInterface $em)
+    private $ticketModifier;
+
+    /**
+     * @param EntityManagerInterface $em
+     * @param TicketModifierInterface $ticketModifier
+     */
+    public function __construct(EntityManagerInterface $em, TicketModifierInterface $ticketModifier)
     {
         $this->ticketRepository = $em->getRepository(Ticket::class);
+        $this->ticketModifier = $ticketModifier;
     }
 
     /**
@@ -36,24 +43,18 @@ class TicketManager
      * @param $ident
      * @return bool
      */
-    public function existsTicket($ident)
+    public function existsTicket($ident): bool
     {
         return $this->ticketRepository->existsTicket($ident);
     }
 
     /**
      * @return array
-     *
-     * @todo: please delete this, have no solution for getCurrentTickets
-     *        with array hydrator + events (ticket subscriber)
      */
     public function getCurrentTickets(): array
     {
         $tickets = $this->ticketRepository->getCurrentTickets();
-        foreach ($tickets as &$ticket) {
-            $ticket = $ticket->toArray();
-        }
-
+        $tickets = $this->ticketModifier->modify($tickets);
         return $tickets;
     }
 }
