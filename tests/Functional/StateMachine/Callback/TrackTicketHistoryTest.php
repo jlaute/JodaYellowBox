@@ -40,7 +40,7 @@ class TrackTicketHistoryTest extends TestCase
         $this->ticketHistory = $ticketHistoryRepo->findOneBy(['ticketId' => $this->ticket->getId()]);
 
         $this->assertEquals('open', $this->ticketHistory->getOldState());
-        $this->assertEquals('approved', $this->ticketHistory->getNewState());
+        $this->assertEquals('approve', $this->ticketHistory->getNewState());
     }
 
     public function tearDown()
