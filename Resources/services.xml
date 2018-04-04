@@ -82,5 +82,10 @@
         <service id="joda_yellow_box.subscriber.yellow_box" class="JodaYellowBox\Subscriber\YellowBox">
             <tag name="shopware.event_subscriber" />
         </service>
+
+        <service id="joda_yellow_box.subscriber.ticket_modifier" class="JodaYellowBox\Subscriber\TicketModifier">
+            <argument type="service" id="joda_yellow_box.sm.factory" />
+            <tag name="shopware.event_subscriber" />
+        </service>
     </services>
 </container>
