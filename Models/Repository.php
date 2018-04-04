@@ -69,6 +69,6 @@ class Repository extends ModelRepository
             ->from(Ticket::class, 'ticket')
             ->select('ticket')
             ->getQuery()
-            ->getResult();
+            ->getArrayResult();
     }
 }
