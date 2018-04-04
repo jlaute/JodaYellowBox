@@ -41,7 +41,9 @@ class TicketModifier implements SubscriberInterface
 
         if (!$filterTicket instanceof Ticket) {
             $ticket = new Ticket('');
-            $ticket->fromArray($filterTicket);
+            $ticket->fromArray($filterTicket, [
+                'state'
+            ]);
         }
 
         $stateMachine = $this->stateManagerFactory->get($ticket);
