@@ -44,6 +44,7 @@
 
         <service id="joda_yellow_box.services.ticket_manager" class="JodaYellowBox\Components\Ticket\TicketManager">
             <argument type="service" id="models" />
+            <argument type="service" id="joda_yellow_box.services.ticket_modifier" />
         </service>
 
         <service id="joda_yellow_box.services.plugin_config" class="JodaYellowBox\Components\Config\PluginConfig">
@@ -57,7 +58,6 @@
 
         <!-- State logger -->
         <service id="joda_yellow_box.doctrine.ticket_subscriber" class="JodaYellowBox\Doctrine\TicketSubscriber">
-            <argument type="service" id="joda_yellow_box.sm.factory" />
             <tag name="doctrine.event_subscriber" />
         </service>
 
