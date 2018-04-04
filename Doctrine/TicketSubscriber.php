@@ -3,11 +3,10 @@ declare(strict_types=1);
 
 namespace JodaYellowBox\Doctrine;
 
-use Doctrine\Common\EventSubscriber;
-use Doctrine\ORM\Event\PreUpdateEventArgs;
 use Doctrine\ORM\Events;
+use Doctrine\ORM\Event\PreUpdateEventArgs;
+use Doctrine\Common\EventSubscriber;
 use JodaYellowBox\Models\Ticket;
-use SM\Factory\Factory;
 
 /**
  * @author    Jörg Lautenschlager <joerg.lautenschlager@gmail.com>
@@ -16,24 +15,10 @@ class TicketSubscriber implements EventSubscriber
 {
     const STATE_PROPERTY = 'state';
 
-    /**
-     * @var Factory
-     */
-    private $stateManagerFactory;
-
-    /**
-     * @param Factory $stateManagerFactory
-     */
-    public function __construct(Factory $stateManagerFactory)
-    {
-        $this->stateManagerFactory = $stateManagerFactory;
-    }
-
     public function getSubscribedEvents()
     {
         return [
             Events::preUpdate,
-            Events::postLoad,
         ];
     }
 
@@ -63,18 +48,5 @@ class TicketSubscriber implements EventSubscriber
             'new_state' => $newState,
             'date' => $date->format('Y-m-d H:i:s'),
         ]);
-    }
-
-    public function postLoad($tst)
-    {
-        $object = $tst->getObject();
-
-        if (!$object instanceof Ticket) {
-            return;
-        }
-
-        $stateMachine = $this->stateManagerFactory->get($object);
-        $transitions = $stateMachine->getPossibleTransitions();
-        $object->setPossibleTransitions($transitions);
     }
 }
