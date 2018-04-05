@@ -71,6 +71,11 @@ class Ticket extends ModelEntity
      */
     private $changedAt;
 
+    /**
+     * @param string $name
+     * @param string $number
+     * @param string $description
+     */
     public function __construct(string $name, string $number = '', string $description = '')
     {
         $this->createdAt = new \DateTime();
@@ -88,76 +93,122 @@ class Ticket extends ModelEntity
         $this->changedAt = new \DateTime();
     }
 
+    /**
+     * @return int
+     */
     public function getId(): int
     {
         return $this->id ?: 0;
     }
 
+    /**
+     * @param string $number
+     */
     public function setNumber(string $number)
     {
         $this->number = $number;
     }
 
+    /**
+     * @return string
+     */
     public function getNumber(): string
     {
         return $this->number ?: '';
     }
 
+    /**
+     * @param string $name
+     */
     public function setName(string $name)
     {
         $this->name = $name;
     }
 
+    /**
+     * @return string
+     */
     public function getName(): string
     {
         return $this->name;
     }
 
+    /**
+     * @return string
+     */
     public function getDescription(): string
     {
         return $this->description ?: '';
     }
 
+    /**
+     * @param string $description
+     */
     public function setDescription(string $description)
     {
         $this->description = $description;
     }
 
+    /**
+     * @return string
+     */
     public function getState(): string
     {
         return $this->state;
     }
 
+    /**
+     * @param string $state
+     */
     public function setState(string $state)
     {
         $this->state = $state;
     }
 
+    /**
+     * @return \DateTime
+     */
     public function getCreatedAt(): \DateTime
     {
         return clone $this->createdAt;
     }
 
+    /**
+     * @return \DateTime
+     */
     public function getChangedAt(): \DateTime
     {
         return clone $this->changedAt;
     }
 
+    /**
+     * @param StateMachineInterface $stateMachine
+     */
     public function approve(StateMachineInterface $stateMachine)
     {
         $this->changeState($stateMachine, 'approve');
     }
 
+    /**
+     * @param StateMachineInterface $stateMachine
+     */
     public function reject(StateMachineInterface $stateMachine)
     {
         $this->changeState($stateMachine, 'reject');
     }
 
+    /**
+     * @param StateMachineInterface $stateMachine
+     */
     public function reopen(StateMachineInterface $stateMachine)
     {
         $this->changeState($stateMachine, 'reopen');
     }
 
+    /**
+     * @param StateMachineInterface $stateMachine
+     * @param string $state
+     */
     protected function changeState(StateMachineInterface $stateMachine, string $state)
     {
         if ($stateMachine->can($state)) {

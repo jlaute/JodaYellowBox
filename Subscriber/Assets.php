@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace JodaYellowBox\Subscriber;
 
 use Enlight\Event\SubscriberInterface;
@@ -48,6 +50,9 @@ class Assets implements SubscriberInterface
         ];
     }
 
+    /**
+     * @return LessDefinition
+     */
     public function onCollectLess()
     {
         return new LessDefinition($this->lessConfig, [
@@ -55,6 +60,9 @@ class Assets implements SubscriberInterface
         ]);
     }
 
+    /**
+     * @return ArrayCollection
+     */
     public function onCollectJavascript()
     {
         return new ArrayCollection([
