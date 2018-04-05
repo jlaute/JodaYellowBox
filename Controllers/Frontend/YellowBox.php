@@ -18,8 +18,8 @@ class Shopware_Controllers_Frontend_YellowBox extends Enlight_Controller_Action
 
     public function init()
     {
-        $this->stateManager = Shopware()->Container()->get('joda_yellow_box.sm.factory');
-        $this->ticketManager = Shopware()->Container()->get('joda_yellow_box.services.ticket_manager');
+        $this->stateManager = $this->get('joda_yellow_box.sm.factory');
+        $this->ticketManager = $this->get('joda_yellow_box.services.ticket_manager');
     }
 
     public function indexAction()
