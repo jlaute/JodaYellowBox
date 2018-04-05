@@ -1,4 +1,5 @@
 <?php
+
 return array_merge($this->loadConfig($this->AppPath() . 'Configs/Default.php'), [
     'front' => [
         'throwExceptions' => true,

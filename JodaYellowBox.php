@@ -26,12 +26,18 @@ class JodaYellowBox extends Plugin
         parent::build($container);
     }
 
+    /**
+     * @param Plugin\Context\InstallContext $context
+     */
     public function install(Plugin\Context\InstallContext $context)
     {
         $installer = new Installer($this->container);
         $installer->install($context);
     }
 
+    /**
+     * @param UninstallContext $context
+     */
     public function uninstall(UninstallContext $context)
     {
         $installer = new Installer($this->container);

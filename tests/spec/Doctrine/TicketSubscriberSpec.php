@@ -24,8 +24,7 @@ class TicketSubscriberSpec extends ObjectBehavior
         Ticket $ticket,
         EntityManager $em,
         Connection $con
-    )
-    {
+    ) {
         $args->getObject()->shouldBeCalled()->willReturn($ticket);
         $args->hasChangedField(Argument::exact(TicketSubscriber::STATE_PROPERTY))->shouldBeCalled()->willReturn(true);
         $args->getOldValue(Argument::exact(TicketSubscriber::STATE_PROPERTY))->shouldBeCalled()->willReturn('old');
