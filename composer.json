@@ -26,6 +26,10 @@
     },
     "scripts": {
         "test": "phpunit",
-        "test-spec": "phpspec run --format dot"
+        "test-spec": "phpspec run --format dot",
+        "cs-fixer": "php-cs-fixer fix --dry-run --allow-risky=yes",
+        "preCommit": "curl -sS https://gist.githubusercontent.com/jlaute/a5c863cdea8ecb7d968c409bb6a2b559/raw/8cd08b8dcbaaf368d4dbef7e4f1779977ab6a8a5/pre-commit.sh > .git/hooks/pre-commit && chmod +x .git/hooks/pre-commit",
+        "post-install-cmd": "@preCommit",
+        "post-update-cmd": "@preCommit"
     }
 }
