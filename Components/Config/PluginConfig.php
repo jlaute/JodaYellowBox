@@ -1,4 +1,4 @@
-<?php
+<?php declare(strict_types=1);
 
 namespace JodaYellowBox\Components\Config;
 
@@ -12,7 +12,7 @@ class PluginConfig implements PluginConfigInterface
     protected $config;
 
     /**
-     * @param string $pluginName
+     * @param string       $pluginName
      * @param ConfigReader $configReader
      */
     public function __construct(string $pluginName, ConfigReader $configReader)
@@ -21,7 +21,7 @@ class PluginConfig implements PluginConfigInterface
     }
 
     /**
-     * @inheritdoc
+     * {@inheritdoc}
      */
     public function set(string $key, $value)
     {
@@ -29,7 +29,7 @@ class PluginConfig implements PluginConfigInterface
     }
 
     /**
-     * @inheritdoc
+     * {@inheritdoc}
      */
     public function get($key)
     {

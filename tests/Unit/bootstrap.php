@@ -1,7 +1,6 @@
-<?php
-
-use Shopware\Models\Shop\Shop;
+<?php declare(strict_types=1);
 use Shopware\Models\Shop\Repository;
+use Shopware\Models\Shop\Shop;
 
 require __DIR__ . '/../../../../../autoload.php';
 

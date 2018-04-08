@@ -1,7 +1,6 @@
-<?php
-
-use JodaYellowBox\Models\Ticket;
+<?php declare(strict_types=1);
 use JodaYellowBox\Commands\AddTicket;
+use JodaYellowBox\Models\Ticket;
 use Shopware\Components\Test\Plugin\TestCase;
 use Symfony\Component\Console\Tester\CommandTester;
 
@@ -11,7 +10,7 @@ use Symfony\Component\Console\Tester\CommandTester;
 class AddTicketTest extends TestCase
 {
     protected static $ensureLoadedPlugins = [
-        'JodaYellowBox' => []
+        'JodaYellowBox' => [],
     ];
 
     /** @var CommandTester */

@@ -3,17 +3,12 @@
 declare(strict_types=1);
 
 use JodaYellowBox\Subscriber\Template;
-use Shopware\Components\Test\Plugin\TestCase;
 use org\bovigo\vfs\vfsStream;
 use org\bovigo\vfs\vfsStreamDirectory;
+use Shopware\Components\Test\Plugin\TestCase;
 
 class TemplateTest extends TestCase
 {
-    /**
-     * @var vfsStreamDirectory
-     */
-    private $fileSystem;
-
     /**
      * @var Template
      */
@@ -23,8 +18,12 @@ class TemplateTest extends TestCase
      * @var array
      */
     protected static $ensureLoadedPlugins = [
-        'JodaYellowBox' => []
+        'JodaYellowBox' => [],
     ];
+    /**
+     * @var vfsStreamDirectory
+     */
+    private $fileSystem;
 
     public function setUp()
     {
@@ -32,8 +31,8 @@ class TemplateTest extends TestCase
             'testPlugin' => [
                 'views' => [
                     'test.tpl',
-                ]
-            ]
+                ],
+            ],
         ];
 
         $this->fileSystem = vfsStream::setup('root', 444, $directory);

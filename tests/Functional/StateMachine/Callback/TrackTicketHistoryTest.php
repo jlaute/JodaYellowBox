@@ -1,9 +1,9 @@
 <?php
 declare(strict_types=1);
 
+use JodaYellowBox\Models\Ticket;
+use JodaYellowBox\Models\TicketHistory;
 use Shopware\Components\Test\Plugin\TestCase;
-use \JodaYellowBox\Models\TicketHistory;
-use \JodaYellowBox\Models\Ticket;
 
 /**
  * @author    Jörg Lautenschlager <joerg.lautenschlager@gmail.com>
@@ -21,8 +21,21 @@ class TrackTicketHistoryTest extends TestCase
     protected $ticketHistory;
 
     protected static $ensureLoadedPlugins = [
-        'JodaYellowBox' => []
+        'JodaYellowBox' => [],
     ];
+
+    public function tearDown()
+    {
+        $em = Shopware()->Container()->get('models');
+
+        if (!empty($this->ticket)) {
+            $em->remove($this->ticket);
+        }
+        if ($this->ticketHistory) {
+            $em->remove($this->ticketHistory);
+        }
+        $em->flush();
+    }
 
     public function testTrackStateChange()
     {
@@ -41,18 +54,5 @@ class TrackTicketHistoryTest extends TestCase
 
         $this->assertEquals('open', $this->ticketHistory->getOldState());
         $this->assertEquals('approved', $this->ticketHistory->getNewState());
-    }
-
-    public function tearDown()
-    {
-        $em = Shopware()->Container()->get('models');
-
-        if (!empty($this->ticket)) {
-            $em->remove($this->ticket);
-        }
-        if ($this->ticketHistory) {
-            $em->remove($this->ticketHistory);
-        }
-        $em->flush();
     }
 }
