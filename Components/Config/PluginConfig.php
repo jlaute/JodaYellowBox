@@ -1,6 +1,4 @@
-<?php
-
-declare(strict_types=1);
+<?php declare(strict_types=1);
 
 namespace JodaYellowBox\Components\Config;
 
@@ -10,7 +8,7 @@ use Doctrine\Common\Collections\ArrayCollection;
 class PluginConfig extends ArrayCollection implements PluginConfigInterface
 {
     /**
-     * @param string $pluginName
+     * @param string       $pluginName
      * @param ConfigReader $configReader
      */
     public function __construct(string $pluginName, ConfigReader $configReader)
@@ -20,8 +18,7 @@ class PluginConfig extends ArrayCollection implements PluginConfigInterface
     }
 
     /**
-     * Gets the whole config
-     * @return array
+     * @inheritdoc
      */
     public function getConfig(): array
     {
@@ -29,8 +26,7 @@ class PluginConfig extends ArrayCollection implements PluginConfigInterface
     }
 
     /**
-     * Gets the config for less integration
-     * @return array
+     * @inheritdoc
      */
     public function getLessConfiguration(): array
     {

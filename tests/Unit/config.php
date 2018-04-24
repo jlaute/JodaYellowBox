@@ -1,4 +1,4 @@
-<?php
+<?php declare(strict_types=1);
 
 return array_merge($this->loadConfig($this->AppPath() . 'Configs/Default.php'), [
     'front' => [

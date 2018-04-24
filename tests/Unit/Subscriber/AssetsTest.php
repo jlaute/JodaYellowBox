@@ -2,19 +2,14 @@
 
 declare(strict_types=1);
 
-use JodaYellowBox\Subscriber\Assets;
 use JodaYellowBox\Components\Config\PluginConfigInterface;
-use Shopware\Components\Test\Plugin\TestCase;
+use JodaYellowBox\Subscriber\Assets;
 use org\bovigo\vfs\vfsStream;
 use org\bovigo\vfs\vfsStreamDirectory;
+use Shopware\Components\Test\Plugin\TestCase;
 
 class AssetsTest extends TestCase
 {
-    /**
-     * @var vfsStreamDirectory
-     */
-    private $fileSystem;
-
     /**
      * @var Assets
      */
@@ -24,8 +19,12 @@ class AssetsTest extends TestCase
      * @var array
      */
     protected static $ensureLoadedPlugins = [
-        'JodaYellowBox' => []
+        'JodaYellowBox' => [],
     ];
+    /**
+     * @var vfsStreamDirectory
+     */
+    private $fileSystem;
 
     public function setUp()
     {
@@ -39,8 +38,8 @@ class AssetsTest extends TestCase
                 'js' => [
                     'jquery.yellow-box.js',
                     'jquery.unused.js',
-                ]
-            ]
+                ],
+            ],
         ];
 
         $this->fileSystem = vfsStream::setup('root', 444, $directory);

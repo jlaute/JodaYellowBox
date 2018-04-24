@@ -26,11 +26,13 @@ class TicketCreator
     }
 
     /**
-     * @param string $name
+     * @param string      $name
      * @param string|null $number
-     * @param string $description
-     * @return Ticket
+     * @param string      $description
+     *
      * @throws TicketAlreadyExistException
+     *
+     * @return Ticket
      */
     public function createTicket(string $name, string $number = '', string $description = ''): Ticket
     {
@@ -48,11 +50,13 @@ class TicketCreator
 
     /**
      * @param string $name
+     *
      * @return bool
      */
     protected function ticketExist(string $name): bool
     {
         $ticketRepo = $this->em->getRepository(Ticket::class);
+
         return $ticketRepo->existsTicket($name);
     }
 }
