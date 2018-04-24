@@ -5,8 +5,6 @@
         defaults: {
             minimizeClass: 'minimized',
 
-            indexUrl: null,
-
             transitionUrl: null,
 
             transitionButtonSelector: '.entry--actions .btn'
@@ -84,32 +82,6 @@
             });
 
             $.publish('plugin/jodaYellowBox/onTransitionButtonClick', [ me, event ]);
-        },
-
-        /**
-         * Loads the yellow box
-         */
-        loadYellowBox: function () {
-            var me = this,
-                opts = me.opts;
-
-            $.loadingIndicator.open({
-                closeOnClick: false,
-                renderElement: me.$el
-            });
-
-            $.ajax({
-                'url': opts.indexUrl,
-                'success': function (content) {
-                    $.loadingIndicator.close(function () {
-                        me._setContent(content);
-                        me._removeEvents();
-                        me.registerEvents();
-                    });
-
-                    $.publish('plugin/jodaYellowBox/onLoadYellowBoxSuccess', [ me, content ]);
-                }
-            });
         },
 
         /**
