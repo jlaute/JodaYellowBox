@@ -207,7 +207,7 @@ class Ticket extends ModelEntity
 
     /**
      * @param StateMachineInterface $stateMachine
-     * @param string $state
+     * @param string                $state
      */
     protected function changeState(StateMachineInterface $stateMachine, string $state)
     {

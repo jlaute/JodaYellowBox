@@ -2,10 +2,10 @@
 
 declare(strict_types=1);
 
-use SM\StateMachine\StateMachine;
-use SM\Factory\Factory as StateManagerFactory;
 use JodaYellowBox\Subscriber\TicketModifier;
 use Shopware\Components\Test\Plugin\TestCase;
+use SM\Factory\Factory as StateManagerFactory;
+use SM\StateMachine\StateMachine;
 
 class TicketModifierTest extends TestCase
 {
@@ -18,7 +18,7 @@ class TicketModifierTest extends TestCase
      * @var array
      */
     protected static $ensureLoadedPlugins = [
-        'JodaYellowBox' => []
+        'JodaYellowBox' => [],
     ];
 
     public function setUp()
@@ -37,7 +37,7 @@ class TicketModifierTest extends TestCase
     {
         $args = new Enlight_Event_EventArgs();
         $args->setReturn([
-            'test'
+            'test',
         ]);
 
         $ticket = $this->modifierSubscriber->onFilterTicket($args);
@@ -46,8 +46,8 @@ class TicketModifierTest extends TestCase
         $this->assertSame($ticket, [
             'test', 'possibleTransitions' => [
                 'trans1',
-                'trans2'
-            ]
+                'trans2',
+            ],
         ]);
     }
 
@@ -75,7 +75,7 @@ class TicketModifierTest extends TestCase
             ->method('getPossibleTransitions')
             ->willReturn([
                 'trans1',
-                'trans2'
+                'trans2',
             ]);
 
         return $stateMaschine;

@@ -4,9 +4,9 @@ declare(strict_types=1);
 
 namespace JodaYellowBox\Doctrine;
 
-use Doctrine\ORM\Events;
-use Doctrine\ORM\Event\PreUpdateEventArgs;
 use Doctrine\Common\EventSubscriber;
+use Doctrine\ORM\Event\PreUpdateEventArgs;
+use Doctrine\ORM\Events;
 use JodaYellowBox\Models\Ticket;
 
 /**

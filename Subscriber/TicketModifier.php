@@ -4,8 +4,8 @@ declare(strict_types=1);
 
 namespace JodaYellowBox\Subscriber;
 
-use JodaYellowBox\Models\Ticket;
 use Enlight\Event\SubscriberInterface;
+use JodaYellowBox\Models\Ticket;
 use SM\Factory\AbstractFactory as StateManagerFactory;
 
 class TicketModifier implements SubscriberInterface
@@ -35,6 +35,7 @@ class TicketModifier implements SubscriberInterface
 
     /**
      * @param \Enlight_Event_EventArgs $args
+     *
      * @return array
      */
     public function onFilterTicket(\Enlight_Event_EventArgs $args)
@@ -44,7 +45,7 @@ class TicketModifier implements SubscriberInterface
         if (!$filterTicket instanceof Ticket) {
             $ticket = new Ticket('');
             $ticket->fromArray($filterTicket, [
-                'state'
+                'state',
             ]);
         }
 

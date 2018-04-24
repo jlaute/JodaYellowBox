@@ -2,8 +2,8 @@
 
 namespace JodaYellowBox\Components\Config;
 
-use Shopware\Components\Plugin\ConfigReader;
 use Doctrine\Common\Collections\ArrayCollection;
+use Shopware\Components\Plugin\ConfigReader;
 
 class PluginConfig extends ArrayCollection implements PluginConfigInterface
 {
@@ -18,7 +18,7 @@ class PluginConfig extends ArrayCollection implements PluginConfigInterface
     }
 
     /**
-     * @inheritdoc
+     * {@inheritdoc}
      */
     public function getConfig(): array
     {
@@ -26,7 +26,7 @@ class PluginConfig extends ArrayCollection implements PluginConfigInterface
     }
 
     /**
-     * @inheritdoc
+     * {@inheritdoc}
      */
     public function getLessConfiguration(): array
     {

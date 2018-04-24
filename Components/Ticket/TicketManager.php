@@ -4,9 +4,9 @@ declare(strict_types=1);
 
 namespace JodaYellowBox\Components\Ticket;
 
-use JodaYellowBox\Models\Ticket;
-use JodaYellowBox\Models\Repository;
 use Doctrine\ORM\EntityManagerInterface;
+use JodaYellowBox\Models\Repository;
+use JodaYellowBox\Models\Ticket;
 
 class TicketManager
 {
@@ -21,7 +21,7 @@ class TicketManager
     private $ticketModifier;
 
     /**
-     * @param EntityManagerInterface $em
+     * @param EntityManagerInterface  $em
      * @param TicketModifierInterface $ticketModifier
      */
     public function __construct(EntityManagerInterface $em, TicketModifierInterface $ticketModifier)
@@ -32,6 +32,7 @@ class TicketManager
 
     /**
      * @param mixed $ident Id or name of ticket
+     *
      * @return Ticket|null
      */
     public function getTicket($ident)
@@ -41,6 +42,7 @@ class TicketManager
 
     /**
      * @param $ident
+     *
      * @return bool
      */
     public function existsTicket($ident): bool
@@ -55,6 +57,7 @@ class TicketManager
     {
         $tickets = $this->ticketRepository->getCurrentTickets();
         $tickets = $this->ticketModifier->modify($tickets);
+
         return $tickets;
     }
 }

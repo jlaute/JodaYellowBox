@@ -23,6 +23,7 @@ class TicketModifier implements TicketModifierInterface
 
     /**
      * @param array $tickets
+     *
      * @return array
      */
     public function modify(array $tickets): array

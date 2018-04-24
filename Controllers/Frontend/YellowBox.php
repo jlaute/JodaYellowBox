@@ -1,8 +1,7 @@
-<?php
-
-use SM\SMException;
-use SM\Factory\Factory;
+<?php declare(strict_types=1);
 use JodaYellowBox\Components\Ticket\TicketManager;
+use SM\Factory\Factory;
+use SM\SMException;
 
 class Shopware_Controllers_Frontend_YellowBox extends Enlight_Controller_Action
 {
@@ -37,7 +36,7 @@ class Shopware_Controllers_Frontend_YellowBox extends Enlight_Controller_Action
         if ($this->ticketManager->existsTicket($ticketId) === false) {
             return $this->view->assign([
                 'success' => false,
-                'error' => 'ticket does not exists'
+                'error' => 'ticket does not exists',
             ]);
         }
 
@@ -51,12 +50,13 @@ class Shopware_Controllers_Frontend_YellowBox extends Enlight_Controller_Action
             // Invalid transition state
             return $this->view->assign([
                 'success' => false,
-                'error' => $ex->getMessage()
+                'error' => $ex->getMessage(),
             ]);
         }
 
         // Success
         $this->getModelManager()->flush($ticket);
+
         return $this->view->assign('success', true);
     }
 }

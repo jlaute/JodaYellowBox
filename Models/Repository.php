@@ -13,6 +13,7 @@ class Repository extends ModelRepository
 {
     /**
      * @param mixed $ident
+     *
      * @return bool
      */
     public function existsTicket($ident): bool
@@ -28,7 +29,9 @@ class Repository extends ModelRepository
 
     /**
      * Finds a ticket by any ident
+     *
      * @param mixed $ident
+     *
      * @return null|object
      */
     public function findTicket($ident)
@@ -42,6 +45,7 @@ class Repository extends ModelRepository
 
     /**
      * @param int $id
+     *
      * @return null|object
      */
     public function getTicketById(int $id)
@@ -51,6 +55,7 @@ class Repository extends ModelRepository
 
     /**
      * @param mixed $name
+     *
      * @return null|object
      */
     public function getTicketByName($name)
