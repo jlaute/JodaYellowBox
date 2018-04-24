@@ -5,9 +5,10 @@
         defaults: {
             minimizeClass: 'minimized',
 
-            indexUrl: window.controller.joda_yellow_box_index || null,
+            indexUrl: null,
 
-            transitionUrl: window.controller.joda_yellow_box_transition || null,
+            transitionUrl: null,
+
             transitionButtonSelector: '.entry--actions .btn'
         },
 

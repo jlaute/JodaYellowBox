@@ -24,7 +24,6 @@ class Shopware_Controllers_Frontend_YellowBox extends Enlight_Controller_Action
 
     public function indexAction()
     {
-        $this->view->loadTemplate('frontend/joda_yellow_box/yellow_box.tpl');
     }
 
     /**
