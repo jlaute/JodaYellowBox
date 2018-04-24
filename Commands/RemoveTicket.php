@@ -28,6 +28,7 @@ class RemoveTicket extends ShopwareCommand
             $ticketDestroyer->deleteTicket($input->getArgument('name'));
         } catch (TicketNotExistException $e) {
             $io->error($e->getMessage());
+
             return null;
         }
 

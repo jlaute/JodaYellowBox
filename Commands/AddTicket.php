@@ -34,6 +34,7 @@ class AddTicket extends ShopwareCommand
             $ticketCreator->createTicket($input->getArgument('name'));
         } catch (TicketAlreadyExistException $e) {
             $io->error($e->getMessage());
+
             return null;
         }
 

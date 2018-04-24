@@ -1,5 +1,4 @@
-<?php
-
+<?php declare(strict_types=1);
 use JodaYellowBox\Commands\RemoveTicket;
 use Shopware\Components\Test\Plugin\TestCase;
 use Symfony\Component\Console\Tester\CommandTester;
@@ -7,7 +6,7 @@ use Symfony\Component\Console\Tester\CommandTester;
 class RemoveTicketTest extends TestCase
 {
     protected static $ensureLoadedPlugins = [
-        'JodaYellowBox' => []
+        'JodaYellowBox' => [],
     ];
 
     /** @var RemoveTicket */
