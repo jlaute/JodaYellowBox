@@ -16,18 +16,11 @@ class TicketManager
     protected $ticketRepository;
 
     /**
-     * @var TicketModifierInterface
+     * @param EntityManagerInterface $em
      */
-    private $ticketModifier;
-
-    /**
-     * @param EntityManagerInterface  $em
-     * @param TicketModifierInterface $ticketModifier
-     */
-    public function __construct(EntityManagerInterface $em, TicketModifierInterface $ticketModifier)
+    public function __construct(EntityManagerInterface $em)
     {
         $this->ticketRepository = $em->getRepository(Ticket::class);
-        $this->ticketModifier = $ticketModifier;
     }
 
     /**
@@ -55,9 +48,6 @@ class TicketManager
      */
     public function getCurrentTickets(): array
     {
-        $tickets = $this->ticketRepository->getCurrentTickets();
-        $tickets = $this->ticketModifier->modify($tickets);
-
-        return $tickets;
+        return $this->ticketRepository->getCurrentTickets();
     }
 }

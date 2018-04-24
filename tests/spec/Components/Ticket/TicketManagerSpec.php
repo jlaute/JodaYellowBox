@@ -4,7 +4,6 @@ namespace spec\JodaYellowBox\Components\Ticket;
 
 use Doctrine\ORM\EntityManagerInterface;
 use JodaYellowBox\Components\Ticket\TicketManager;
-use JodaYellowBox\Components\Ticket\TicketModifierInterface;
 use JodaYellowBox\Models\Repository;
 use JodaYellowBox\Models\Ticket;
 use PhpSpec\ObjectBehavior;
@@ -15,13 +14,11 @@ use Prophecy\Argument;
  */
 class TicketManagerSpec extends ObjectBehavior
 {
-
     public function let(
         EntityManagerInterface $em,
-        TicketModifierInterface $ticketModifier,
         Repository $ticketRepository
     ) {
-        $this->beConstructedWith($em, $ticketModifier);
+        $this->beConstructedWith($em);
 
         $em->getRepository(Ticket::class)->shouldBeCalled()->willReturn(
             $this->getTicketRepositoryMock($ticketRepository)
@@ -44,14 +41,11 @@ class TicketManagerSpec extends ObjectBehavior
         $this->existsTicket('not exists')->shouldReturn(false);
     }
 
-    public function it_is_able_to_get_all_current_tickets(
-        TicketModifierInterface $ticketModifier
-    ) {
+    public function it_is_able_to_get_all_current_tickets() {
         $articles = [
             'fakeArticle'
         ];
 
-        $ticketModifier->modify($articles)->shouldBeCalled()->willReturn($articles);
         $this->getCurrentTickets()->shouldReturn($articles);
     }
 
