@@ -7,8 +7,10 @@ namespace JodaYellowBox\Components\Ticket;
 use Doctrine\ORM\EntityManagerInterface;
 use JodaYellowBox\Models\Repository;
 use JodaYellowBox\Models\Ticket;
+use SM\Factory\Factory as StateMachineFactory;
+use SM\SMException;
 
-class TicketManager
+class TicketManager implements TicketManagerInterface
 {
     /**
      * @var Repository
@@ -16,27 +18,30 @@ class TicketManager
     protected $ticketRepository;
 
     /**
-     * @param EntityManagerInterface $em
+     * @var StateMachineFactory
      */
-    public function __construct(EntityManagerInterface $em)
+    protected $stateMachineFactory;
+
+    /**
+     * @param EntityManagerInterface $em
+     * @param StateMachineFactory    $stateMachineFactory
+     */
+    public function __construct(EntityManagerInterface $em, StateMachineFactory $stateMachineFactory)
     {
         $this->ticketRepository = $em->getRepository(Ticket::class);
+        $this->stateMachineFactory = $stateMachineFactory;
     }
 
     /**
-     * @param mixed $ident Id or name of ticket
-     *
-     * @return Ticket|null
+     * {@inheritdoc}
      */
-    public function getTicket($ident)
+    public function getTicket($ident): Ticket
     {
         return $this->ticketRepository->findTicket($ident);
     }
 
     /**
-     * @param $ident
-     *
-     * @return bool
+     * {@inheritdoc}
      */
     public function existsTicket($ident): bool
     {
@@ -44,10 +49,35 @@ class TicketManager
     }
 
     /**
-     * @return array
+     * {@inheritdoc}
      */
     public function getCurrentTickets(): array
     {
         return $this->ticketRepository->getCurrentTickets();
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function getPossibleTransitions(Ticket $ticket): array
+    {
+        $stateMachine = $this->stateMachineFactory->get($ticket);
+
+        return $stateMachine->getPossibleTransitions();
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function changeState(Ticket $ticket, string $state)
+    {
+        $stateMachine = $this->stateMachineFactory->get($ticket);
+        try {
+            $stateMachine->apply($state);
+        } catch (SMException $e) {
+            throw new ChangeStateException(
+                sprintf('State "%s" for Ticket %s could not be applied!', $state, $ticket->getName())
+            );
+        }
     }
 }

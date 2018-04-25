@@ -44,6 +44,7 @@
 
         <service id="joda_yellow_box.services.ticket_manager" class="JodaYellowBox\Components\Ticket\TicketManager">
             <argument type="service" id="models" />
+            <argument type="service" id="joda_yellow_box.sm.factory" />
         </service>
 
         <service id="joda_yellow_box.services.plugin_config" class="JodaYellowBox\Components\Config\PluginConfig">

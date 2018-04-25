@@ -55,42 +55,4 @@ class TicketSpec extends ObjectBehavior
     {
         $this->getState()->shouldReturn(Ticket::STATE_OPEN);
     }
-
-    public function it_can_change_state_from_open_to_approved(StateMachineInterface $stateMachine)
-    {
-        $stateMachine->can(Argument::exact('approve'))->shouldBeCalled()->willReturn(true);
-        $stateMachine->apply(Argument::exact('approve'))->shouldBeCalled()->willReturn(true);
-
-        $this->approve($stateMachine);
-    }
-
-    public function it_can_change_state_from_open_to_rejected(StateMachineInterface $stateMachine)
-    {
-        $stateMachine->can(Argument::exact('reject'))->shouldBeCalled()->willReturn(true);
-        $stateMachine->apply(Argument::exact('reject'))->shouldBeCalled()->willReturn(true);
-
-        $this->reject($stateMachine);
-    }
-
-    public function it_can_change_state_from_rejected_to_reopened(StateMachineInterface $stateMachine)
-    {
-        $stateMachine->can(Argument::exact('reject'))->shouldBeCalled()->willReturn(true);
-        $stateMachine->apply(Argument::exact('reject'))->shouldBeCalled()->willReturn(true);
-        $this->reject($stateMachine);
-
-        $stateMachine->can(Argument::exact('reopen'))->shouldBeCalled()->willReturn(true);
-        $stateMachine->apply(Argument::exact('reopen'))->shouldBeCalled()->willReturn(true);
-        $this->reopen($stateMachine);
-    }
-
-    public function it_cant_change_state_from_approved_to_rejected(StateMachineInterface $stateMachine)
-    {
-        $stateMachine->can(Argument::exact('approve'))->shouldBeCalled()->willReturn(true);
-        $stateMachine->apply(Argument::exact('approve'))->shouldBeCalled()->willReturn(true);
-        $this->approve($stateMachine);
-
-        $stateMachine->can(Argument::exact('reject'))->shouldBeCalled();
-        $stateMachine->apply(Argument::exact('reject'))->shouldNotBeCalled();
-        $this->reject($stateMachine);
-    }
 }

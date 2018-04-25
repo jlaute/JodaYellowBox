@@ -19,8 +19,6 @@
             me.applyDataAttributes();
             me.registerEvents();
 
-            me.loadYellowBox();
-
             $.publish('plugin/jodaYellowBox/init', [ me ]);
         },
 

@@ -4,8 +4,10 @@ namespace spec\JodaYellowBox\Components\Ticket;
 
 use Doctrine\ORM\EntityManagerInterface;
 use JodaYellowBox\Components\Ticket\TicketManager;
+use JodaYellowBox\Components\Ticket\TicketManagerInterface;
 use JodaYellowBox\Models\Repository;
 use JodaYellowBox\Models\Ticket;
+use SM\Factory\Factory as StateMachineFactory;
 use PhpSpec\ObjectBehavior;
 use Prophecy\Argument;
 
@@ -16,9 +18,10 @@ class TicketManagerSpec extends ObjectBehavior
 {
     public function let(
         EntityManagerInterface $em,
+        StateMachineFactory $stateMachineFactory,
         Repository $ticketRepository
     ) {
-        $this->beConstructedWith($em);
+        $this->beConstructedWith($em, $stateMachineFactory);
 
         $em->getRepository(Ticket::class)->shouldBeCalled()->willReturn(
             $this->getTicketRepositoryMock($ticketRepository)
@@ -28,6 +31,7 @@ class TicketManagerSpec extends ObjectBehavior
     public function it_is_initializable()
     {
         $this->shouldHaveType(TicketManager::class);
+        $this->shouldBeAnInstanceOf(TicketManagerInterface::class);
     }
 
     public function it_is_able_to_get_a_ticket()

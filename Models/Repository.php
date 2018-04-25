@@ -18,7 +18,7 @@ class Repository extends ModelRepository
      */
     public function existsTicket($ident): bool
     {
-        if (is_int($ident)) {
+        if (\is_int($ident)) {
             $ticket = $this->getTicketById($ident);
         } else {
             $ticket = $this->getTicketByName($ident);
@@ -36,7 +36,7 @@ class Repository extends ModelRepository
      */
     public function findTicket($ident)
     {
-        if (is_int($ident)) {
+        if (\is_int($ident)) {
             return $this->getTicketById($ident);
         }
 
@@ -68,12 +68,6 @@ class Repository extends ModelRepository
      */
     public function getCurrentTickets(): array
     {
-        return $this
-            ->getEntityManager()
-            ->createQueryBuilder()
-            ->from(Ticket::class, 'ticket')
-            ->select('ticket')
-            ->getQuery()
-            ->getArrayResult();
+        return $this->findAll();
     }
 }
