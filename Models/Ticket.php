@@ -106,14 +106,15 @@ class Ticket extends ModelEntity
      */
     public function onPostLoad()
     {
-        if (!$this->stateMachine) {
-            // @TODO: this would be better if does not depend on Shopware Container
-            $stateMachineFactory = Shopware()->Container()->get('joda_yellow_box.sm.factory');
-            /* @var StateMachineInterface $stateMachine */
-            $this->stateMachine = $stateMachineFactory->get($this);
-        }
+        $this->updatePossibleTransitions();
+    }
 
-        $this->possibleTransitions = $this->stateMachine->getPossibleTransitions();
+    /**
+     * @ORM\PostUpdate
+     */
+    public function onPostUpdate()
+    {
+        $this->updatePossibleTransitions();
     }
 
     /**
@@ -226,5 +227,17 @@ class Ticket extends ModelEntity
     public function setPossibleTransitions(array $transitions)
     {
         $this->possibleTransitions = $transitions;
+    }
+
+    protected function updatePossibleTransitions()
+    {
+        if (!$this->stateMachine) {
+            // @TODO: this would be better if does not depend on Shopware Container
+            $stateMachineFactory = Shopware()->Container()->get('joda_yellow_box.sm.factory');
+            /* @var StateMachineInterface $stateMachine */
+            $this->stateMachine = $stateMachineFactory->get($this);
+        }
+
+        $this->possibleTransitions = $this->stateMachine->getPossibleTransitions();
     }
 }
