@@ -82,6 +82,15 @@ class TicketManagerSpec extends ObjectBehavior
         $this->shouldThrow(ChangeStateException::class)->during('changeState', [$ticket, 'asdf']);
     }
 
+    public function it_is_able_to_delete_a_ticket(
+        Repository $ticketRepository,
+        Ticket $ticket
+    ) {
+        $ticketRepository->remove($ticket)->shouldBeCalled();
+
+        $this->deleteTicket($ticket);
+    }
+
     /**
      * @param Repository $ticketRepository
      * @return Repository

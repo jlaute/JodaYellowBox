@@ -38,10 +38,6 @@
             <argument type="service" id="models" />
         </service>
 
-        <service id="joda_yellow_box.ticket_destroyer" class="JodaYellowBox\Components\Ticket\TicketDestroyer">
-            <argument type="service" id="models" />
-        </service>
-
         <service id="joda_yellow_box.services.ticket_manager" class="JodaYellowBox\Components\Ticket\TicketManager">
             <argument type="service" id="models" />
             <argument type="service" id="joda_yellow_box.sm.factory" />

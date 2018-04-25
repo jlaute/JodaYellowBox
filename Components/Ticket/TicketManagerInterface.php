@@ -41,4 +41,9 @@ interface TicketManagerInterface
      * @throws ChangeStateException
      */
     public function changeState(Ticket $ticket, string $state);
+
+    /**
+     * @param Ticket $ticket
+     */
+    public function deleteTicket(Ticket $ticket);
 }

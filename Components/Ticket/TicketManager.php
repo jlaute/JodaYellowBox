@@ -10,6 +10,9 @@ use JodaYellowBox\Models\Ticket;
 use SM\Factory\Factory as StateMachineFactory;
 use SM\SMException;
 
+/**
+ * Class TicketManager
+ */
 class TicketManager implements TicketManagerInterface
 {
     /**
@@ -79,5 +82,13 @@ class TicketManager implements TicketManagerInterface
                 sprintf('State "%s" for Ticket %s could not be applied!', $state, $ticket->getName())
             );
         }
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function deleteTicket(Ticket $ticket)
+    {
+        $this->ticketRepository->remove($ticket);
     }
 }

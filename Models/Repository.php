@@ -76,4 +76,15 @@ class Repository extends ModelRepository
 
         return $qb->getQuery()->getResult();
     }
+
+    /**
+     * @param Ticket $ticket
+     *
+     * @throws \Doctrine\ORM\OptimisticLockException
+     */
+    public function remove(Ticket $ticket)
+    {
+        $this->getEntityManager()->remove($ticket);
+        $this->getEntityManager()->flush($ticket);
+    }
 }
