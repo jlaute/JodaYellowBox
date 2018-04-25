@@ -71,8 +71,8 @@ class TicketManager implements TicketManagerInterface
      */
     public function changeState(Ticket $ticket, string $state)
     {
-        $stateMachine = $this->stateMachineFactory->get($ticket);
         try {
+            $stateMachine = $this->stateMachineFactory->get($ticket);
             $stateMachine->apply($state);
         } catch (SMException $e) {
             throw new ChangeStateException(

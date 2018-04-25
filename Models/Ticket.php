@@ -77,6 +77,11 @@ class Ticket extends ModelEntity
     private $possibleTransitions = [];
 
     /**
+     * @var StateMachineInterface
+     */
+    private $stateMachine;
+
+    /**
      * @param string                $name
      * @param string                $number
      * @param string                $description
@@ -93,10 +98,22 @@ class Ticket extends ModelEntity
         $this->name = $name;
         $this->number = $number;
         $this->description = $description;
+        $this->stateMachine = $stateMachine ?: null;
+    }
 
-        if ($stateMachine) {
-            $this->possibleTransitions = $stateMachine->getPossibleTransitions();
+    /**
+     * @ORM\PostLoad
+     */
+    public function onPostLoad()
+    {
+        if (!$this->stateMachine) {
+            // @TODO: this would be better if does not depend on Shopware Container
+            $stateMachineFactory = Shopware()->Container()->get('joda_yellow_box.sm.factory');
+            /* @var StateMachineInterface $stateMachine */
+            $this->stateMachine = $stateMachineFactory->get($this);
         }
+
+        $this->possibleTransitions = $this->stateMachine->getPossibleTransitions();
     }
 
     /**

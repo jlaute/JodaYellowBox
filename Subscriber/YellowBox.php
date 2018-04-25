@@ -28,9 +28,6 @@ class YellowBox implements SubscriberInterface
 
         $view = $controller->View();
         $currentTickets = $ticketManager->getCurrentTickets();
-        foreach ($currentTickets as $key => $ticket) {
-            $currentTickets[$key]->setPossibleTransitions($ticketManager->getPossibleTransitions($ticket));
-        }
         $view->assign('currentTickets', $currentTickets);
     }
 }
