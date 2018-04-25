@@ -98,7 +98,7 @@ class Ticket extends ModelEntity
         $this->name = $name;
         $this->number = $number;
         $this->description = $description;
-        $this->stateMachine = $stateMachine ?: null;
+        $this->stateMachine = $stateMachine;
     }
 
     /**
