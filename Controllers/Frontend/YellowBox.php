@@ -40,9 +40,8 @@ class Shopware_Controllers_Frontend_YellowBox extends \Enlight_Controller_Action
         $ticketTransition = $this->request->get('ticketTransition');
 
         try {
-            $stateMaschine = $this->stateManager->get($ticket);
-            $stateMaschine->apply($ticketTransition);
-        } catch (SMException $ex) {
+            $this->ticketManager->changeState($ticket, $ticketTransition);
+        } catch (\JodaYellowBox\Components\Ticket\ChangeStateException $ex) {
             // Invalid transition state
             return $this->view->assign([
                 'success' => false,

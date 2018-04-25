@@ -68,6 +68,12 @@ class Repository extends ModelRepository
      */
     public function getCurrentTickets(): array
     {
-        return $this->findAll();
+        $qb = $this->createQueryBuilder('ticket');
+
+        $qb->where(
+            $qb->expr()->in('ticket.state', [Ticket::STATE_OPEN, Ticket::STATE_REOPENED])
+        );
+
+        return $qb->getQuery()->getResult();
     }
 }
