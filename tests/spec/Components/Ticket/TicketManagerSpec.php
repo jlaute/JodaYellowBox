@@ -3,6 +3,7 @@
 namespace spec\JodaYellowBox\Components\Ticket;
 
 use Doctrine\ORM\EntityManagerInterface;
+use JodaYellowBox\Components\Ticket\ChangeStateException;
 use JodaYellowBox\Components\Ticket\TicketManager;
 use JodaYellowBox\Components\Ticket\TicketManagerInterface;
 use JodaYellowBox\Models\Repository;
@@ -10,6 +11,8 @@ use JodaYellowBox\Models\Ticket;
 use SM\Factory\Factory as StateMachineFactory;
 use PhpSpec\ObjectBehavior;
 use Prophecy\Argument;
+use SM\SMException;
+use SM\StateMachine\StateMachineInterface;
 
 /**
  * @mixin TicketManager
@@ -51,6 +54,32 @@ class TicketManagerSpec extends ObjectBehavior
         ];
 
         $this->getCurrentTickets()->shouldReturn($articles);
+    }
+
+    public function it_can_change_state_of_a_ticket(
+        Ticket $ticket,
+        StateMachineFactory $stateMachineFactory,
+        StateMachineInterface $stateMachine
+    )
+    {
+        $stateMachineFactory->get($ticket)->shouldBeCalled()->willReturn($stateMachine);
+        $stateMachine->apply('approved')->shouldBeCalled();
+
+        $this->changeState($ticket, 'approved');
+    }
+
+    public function it_throws_an_exception_when_invalid_state_should_be_applied(
+        Ticket $ticket,
+        StateMachineFactory $stateMachineFactory,
+        StateMachineInterface $stateMachine
+    )
+    {
+        $ticket->getName()->willReturn('TicketName');
+        $stateMachineFactory->get($ticket)->shouldBeCalled()->willReturn($stateMachine);
+        $stateMachine->beConstructedWith([]);
+        $stateMachine->apply('asdf')->shouldBeCalled()->willThrow(SMException::class);
+
+        $this->shouldThrow(ChangeStateException::class)->during('changeState', [$ticket, 'asdf']);
     }
 
     /**
