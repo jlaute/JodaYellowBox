@@ -12,10 +12,10 @@
                 <ul class="list">
                     {block name="frontend_yellow_box_content_list"}
                         {foreach $currentTickets as $ticket}
-                            <li class="list--entry">
+                            <li class="list--entry" data-ticket-id="{$ticket->getId()}">
                                 <div class="entry--actions">
                                     {foreach $ticket->getPossibleTransitions() as $transition}
-                                        <button class="btn" data-ticket-transition="{$transition}" data-ticket-id="{$ticket->getId()}">
+                                        <button class="btn" data-ticket-transition="{$transition}" title="{$transition}">
                                             <i class="icon--transition-{$transition}"></i>
                                         </button>
                                     {/foreach}

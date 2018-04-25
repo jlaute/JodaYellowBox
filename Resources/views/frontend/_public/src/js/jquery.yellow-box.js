@@ -52,7 +52,9 @@
         onTransitionButtonClick: function (event) {
             var me = this,
                 opts = me.opts,
-                $button = $(event.target);
+                $button = $(event.target).is('i') ? $(event.target).parent() : $(event.target), //sometimes the target is the underlying 'i' element. Makes no sense, but the console doesn`t lie
+                ticketId = $button.closest('li').data('ticket-id'),
+                transition = $button.data('ticket-transition');
 
             event.preventDefault();
             event.stopPropagation();
@@ -65,8 +67,8 @@
             $.ajax({
                 'url': opts.transitionUrl,
                 'data': {
-                    ticketId: $button.data('ticket-id'),
-                    ticketTransition: $button.data('ticket-transition')
+                    ticketId: ticketId,
+                    ticketTransition: transition
                 },
                 'success': function (content) {
                     $.loadingIndicator.close(function () {
