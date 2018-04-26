@@ -50,6 +50,7 @@
 
         <service id="joda_yellow_box.services.release_manager" class="JodaYellowBox\Services\ReleaseManager">
             <argument type="service" id="joda_yellow_box.repository.release" />
+            <argument type="service" id="joda_yellow_box.services.plugin_config" />
         </service>
 
         <service id="joda_yellow_box.services.plugin_config" class="JodaYellowBox\Components\Config\PluginConfig">

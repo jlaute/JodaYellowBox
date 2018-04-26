@@ -2,6 +2,7 @@
 
 namespace JodaYellowBox\Models;
 
+use Doctrine\ORM\Query;
 use Doctrine\ORM\Tools\Pagination\Paginator;
 use Shopware\Components\Model\ModelManager;
 
@@ -27,16 +28,53 @@ class ReleaseRepository
      */
     public function findLatestRelease()
     {
-        $qb = $this->repository->createQueryBuilder('release');
-        $query = $qb->select('release', 'tickets')
-            ->join('release.tickets', 'tickets')
-            ->orderBy('release.releaseDate', 'DESC')
-            ->setMaxResults(1)
+        $qb = $this->createBasicQueryBuilder();
+        $query = $qb->orderBy('release.releaseDate', 'DESC')
             ->getQuery();
 
+        $paginator = $this->createPaginator($query);
+
+        return $paginator->getIterator()->current();
+    }
+
+    /**
+     * @param string $name
+     *
+     * @return Release|null
+     */
+    public function findReleaseByName(string $name)
+    {
+        $qb = $this->createBasicQueryBuilder();
+        $query = $qb->where($qb->expr()->eq('release.name', ':name'))
+            ->setParameter('name', $name)
+            ->getQuery();
+
+        $paginator = $this->createPaginator($query);
+
+        return $paginator->getIterator()->current();
+    }
+
+    /**
+     * @return \Doctrine\ORM\QueryBuilder
+     */
+    protected function createBasicQueryBuilder(): \Doctrine\ORM\QueryBuilder
+    {
+        return $this->repository->createQueryBuilder('release')
+            ->select('release', 'tickets')
+            ->join('release.tickets', 'tickets')
+            ->setMaxResults(1);
+    }
+
+    /**
+     * @param Query $query
+     *
+     * @return Paginator
+     */
+    protected function createPaginator(Query $query): Paginator
+    {
         $paginator = new Paginator($query);
         $paginator->setUseOutputWalkers(false);
 
-        return $paginator->getIterator()->current();
+        return $paginator;
     }
 }
