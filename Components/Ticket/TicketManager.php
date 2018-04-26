@@ -87,7 +87,7 @@ class TicketManager implements TicketManagerInterface
     /**
      * {@inheritdoc}
      */
-    public function deleteTicket(Ticket $ticket)
+    public function delete(Ticket $ticket)
     {
         $this->ticketRepository->remove($ticket);
     }

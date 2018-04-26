@@ -88,7 +88,7 @@ class TicketManagerSpec extends ObjectBehavior
     ) {
         $ticketRepository->remove($ticket)->shouldBeCalled();
 
-        $this->deleteTicket($ticket);
+        $this->delete($ticket);
     }
 
     /**

@@ -45,5 +45,5 @@ interface TicketManagerInterface
     /**
      * @param Ticket $ticket
      */
-    public function deleteTicket(Ticket $ticket);
+    public function delete(Ticket $ticket);
 }

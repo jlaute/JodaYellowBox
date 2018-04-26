@@ -22,7 +22,7 @@ class RemoveTicket extends ShopwareCommand
         $ticketManager = $this->container->get('joda_yellow_box.services.ticket_manager');
 
         $ticket = $ticketManager->getTicket($input->getArgument('name'));
-        $ticketManager->deleteTicket($ticket);
+        $ticketManager->delete($ticket);
 
         $io = new SymfonyStyle($input, $output);
         $io->success('Ticket was successfully deleted');
