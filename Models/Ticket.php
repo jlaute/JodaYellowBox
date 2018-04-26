@@ -98,8 +98,8 @@ class Ticket extends ModelEntity
      */
     public function __construct(
         string $name,
-        string $number = '',
-        string $description = '',
+        string $number = null,
+        string $description = null,
         StateMachineInterface $stateMachine = null
     ) {
         $this->createdAt = new \DateTime();
