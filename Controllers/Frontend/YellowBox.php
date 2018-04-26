@@ -1,5 +1,5 @@
 <?php declare(strict_types=1);
-use JodaYellowBox\Components\Ticket\TicketManager;
+use JodaYellowBox\Services\TicketManager;
 use SM\Factory\Factory;
 
 class Shopware_Controllers_Frontend_YellowBox extends \Enlight_Controller_Action

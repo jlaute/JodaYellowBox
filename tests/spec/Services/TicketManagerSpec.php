@@ -1,11 +1,11 @@
 <?php
 
-namespace spec\JodaYellowBox\Components\Ticket;
+namespace spec\JodaYellowBox\Services;
 
 use Doctrine\ORM\EntityManagerInterface;
-use JodaYellowBox\Components\Ticket\ChangeStateException;
-use JodaYellowBox\Components\Ticket\TicketManager;
-use JodaYellowBox\Components\Ticket\TicketManagerInterface;
+use JodaYellowBox\Exception\ChangeStateException;
+use JodaYellowBox\Services\TicketManager;
+use JodaYellowBox\Services\TicketManagerInterface;
 use JodaYellowBox\Models\Repository;
 use JodaYellowBox\Models\Ticket;
 use SM\Factory\Factory as StateMachineFactory;

@@ -1,9 +1,9 @@
 <?php declare(strict_types=1);
 
-namespace spec\JodaYellowBox\Components\Ticket;
+namespace spec\JodaYellowBox\Services;
 
-use JodaYellowBox\Components\Ticket\TicketAlreadyExistException;
-use JodaYellowBox\Components\Ticket\TicketCreator;
+use JodaYellowBox\Exception\TicketAlreadyExistException;
+use JodaYellowBox\Services\TicketCreator;
 use JodaYellowBox\Models\Repository;
 use JodaYellowBox\Models\Ticket;
 use PhpSpec\ObjectBehavior;

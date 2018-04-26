@@ -34,11 +34,11 @@
         </service>
 
         <!-- Services -->
-        <service id="joda_yellow_box.ticket_creator" class="JodaYellowBox\Components\Ticket\TicketCreator">
+        <service id="joda_yellow_box.ticket_creator" class="JodaYellowBox\Services\TicketCreator">
             <argument type="service" id="models" />
         </service>
 
-        <service id="joda_yellow_box.services.ticket_manager" class="JodaYellowBox\Components\Ticket\TicketManager">
+        <service id="joda_yellow_box.services.ticket_manager" class="JodaYellowBox\Services\TicketManager">
             <argument type="service" id="models" />
             <argument type="service" id="joda_yellow_box.sm.factory" />
         </service>

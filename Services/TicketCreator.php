@@ -2,8 +2,9 @@
 
 declare(strict_types=1);
 
-namespace JodaYellowBox\Components\Ticket;
+namespace JodaYellowBox\Services;
 
+use JodaYellowBox\Exception\TicketAlreadyExistException;
 use JodaYellowBox\Models\Ticket;
 use Shopware\Components\Model\ModelManager;
 

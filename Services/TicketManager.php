@@ -2,9 +2,10 @@
 
 declare(strict_types=1);
 
-namespace JodaYellowBox\Components\Ticket;
+namespace JodaYellowBox\Services;
 
 use Doctrine\ORM\EntityManagerInterface;
+use JodaYellowBox\Exception\ChangeStateException;
 use JodaYellowBox\Models\Repository;
 use JodaYellowBox\Models\Ticket;
 use SM\Factory\Factory as StateMachineFactory;
