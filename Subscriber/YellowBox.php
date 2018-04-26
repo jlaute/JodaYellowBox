@@ -24,10 +24,10 @@ class YellowBox implements SubscriberInterface
     public function onFrontendPostDispatch(\Enlight_Controller_ActionEventArgs $args)
     {
         $controller = $args->getSubject();
-        $ticketManager = $controller->get('joda_yellow_box.services.ticket_manager');
+        $releaseManager = $controller->get('joda_yellow_box.services.release_manager');
 
         $view = $controller->View();
-        $currentTickets = $ticketManager->getCurrentTickets();
-        $view->assign('currentTickets', $currentTickets);
+        $currentRelease = $releaseManager->getCurrentRelease();
+        $view->assign('currentRelease', $currentRelease);
     }
 }

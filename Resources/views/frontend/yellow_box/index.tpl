@@ -11,7 +11,7 @@
             {block name="frontend_yellow_box_content"}
                 <ul class="list">
                     {block name="frontend_yellow_box_content_list"}
-                        {foreach $currentTickets as $ticket}
+                        {foreach $currentRelease->getTickets() as $ticket}
                             <li class="list--entry" data-ticket-id="{$ticket->getId()}">
                                 <div class="entry--actions">
                                     {foreach $ticket->getPossibleTransitions() as $transition}

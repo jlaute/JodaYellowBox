@@ -2,8 +2,8 @@
 
 namespace JodaYellowBox\Models;
 
-use Doctrine\ORM\EntityManager;
-use Shopware\Components\Model\ModelRepository;
+use Doctrine\ORM\Tools\Pagination\Paginator;
+use Shopware\Components\Model\ModelManager;
 
 /**
  * This repository is not a normal doctrine repository. It is registered as a service, to enable multiple benefits.
@@ -13,25 +13,30 @@ use Shopware\Components\Model\ModelRepository;
 class ReleaseRepository
 {
     /**
-     * @var ModelRepository
+     * @var ModelManager
      */
     private $repository;
 
-    public function __construct(EntityManager $em)
+    public function __construct(ModelManager $em)
     {
-        $this->repository = $em->getRepository(Ticket::class);
+        $this->repository = $em->getRepository(Release::class);
     }
 
     /**
-     * @return Release
+     * @return Release|null
      */
-    public function findLatestRelease(): Release
+    public function findLatestRelease()
     {
         $qb = $this->repository->createQueryBuilder('release');
-        $query = $qb->orderBy('release.releaseDate', 'DESC')
+        $query = $qb->select('release', 'tickets')
+            ->join('release.tickets', 'tickets')
+            ->orderBy('release.releaseDate', 'DESC')
             ->setMaxResults(1)
             ->getQuery();
 
-        return $query->getOneOrNullResult();
+        $paginator = new Paginator($query);
+        $paginator->setUseOutputWalkers(false);
+
+        return $paginator->getIterator()->current();
     }
 }
