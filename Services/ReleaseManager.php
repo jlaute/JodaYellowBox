@@ -21,9 +21,9 @@ class ReleaseManager implements ReleaseManagerInterface
     }
 
     /**
-     * @return Release
+     * @return Release|null
      */
-    public function getCurrentRelease(): Release
+    public function getCurrentRelease()
     {
         return $this->releaseRepository->findLatestRelease();
     }
