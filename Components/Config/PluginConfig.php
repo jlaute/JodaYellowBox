@@ -34,4 +34,12 @@ class PluginConfig extends ArrayCollection implements PluginConfigInterface
             'JodaYellowBoxMaxWidth' => $this->get('JodaYellowBoxMaxWidth'),
         ];
     }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function getReleaseToDisplay(): string
+    {
+        return (string) $this->get('JodaYellowBoxReleaseToDisplay');
+    }
 }

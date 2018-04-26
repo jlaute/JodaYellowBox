@@ -4,13 +4,44 @@ declare(strict_types=1);
 
 namespace JodaYellowBox\Models;
 
+use Doctrine\ORM\EntityManager;
 use Shopware\Components\Model\ModelRepository;
 
 /**
- * @author    Jörg Lautenschlager <joerg.lautenschlager@gmail.com>
+ * This repository is not a normal doctrine repository. It is registered as a service, to enable multiple benefits.
+ * See https://www.tomasvotruba.cz/blog/2017/10/16/how-to-use-repository-with-doctrine-as-service-in-symfony/
+ * for more information
  */
-class Repository extends ModelRepository
+class TicketRepository
 {
+    /**
+     * @var ModelRepository
+     */
+    private $repository;
+
+    /**
+     * @var EntityManager
+     */
+    private $em;
+
+    public function __construct(EntityManager $em)
+    {
+        $this->repository = $em->getRepository(Ticket::class);
+        $this->em = $em;
+    }
+
+    /**
+     * @param $id
+     * @param null $lockMode
+     * @param null $lockVersion
+     *
+     * @return Ticket|null
+     */
+    public function find($id, $lockMode = null, $lockVersion = null)
+    {
+        return $this->repository->find($id, $lockMode, $lockVersion);
+    }
+
     /**
      * @param mixed $ident
      *
@@ -32,7 +63,7 @@ class Repository extends ModelRepository
      *
      * @param mixed $ident
      *
-     * @return null|object
+     * @return Ticket|null
      */
     public function findTicket($ident)
     {
@@ -46,21 +77,21 @@ class Repository extends ModelRepository
     /**
      * @param int $id
      *
-     * @return null|object
+     * @return Ticket|null
      */
     public function getTicketById(int $id)
     {
-        return $this->findOneBy(['id' => $id]);
+        return $this->repository->findOneBy(['id' => $id]);
     }
 
     /**
      * @param mixed $name
      *
-     * @return null|object
+     * @return Ticket|null
      */
     public function getTicketByName($name)
     {
-        return $this->findOneBy(['name' => $name]);
+        return $this->repository->findOneBy(['name' => $name]);
     }
 
     /**
@@ -68,7 +99,7 @@ class Repository extends ModelRepository
      */
     public function getCurrentTickets(): array
     {
-        $qb = $this->createQueryBuilder('ticket');
+        $qb = $this->repository->createQueryBuilder('ticket');
 
         $qb->where(
             $qb->expr()->in('ticket.state', [Ticket::STATE_OPEN, Ticket::STATE_REOPENED])
@@ -84,7 +115,7 @@ class Repository extends ModelRepository
      */
     public function remove(Ticket $ticket)
     {
-        $this->getEntityManager()->remove($ticket);
-        $this->getEntityManager()->flush($ticket);
+        $this->em->remove($ticket);
+        $this->em->flush($ticket);
     }
 }

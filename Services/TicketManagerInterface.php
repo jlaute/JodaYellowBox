@@ -1,7 +1,8 @@
 <?php declare(strict_types=1);
 
-namespace JodaYellowBox\Components\Ticket;
+namespace JodaYellowBox\Services;
 
+use JodaYellowBox\Exception\ChangeStateException;
 use JodaYellowBox\Models\Ticket;
 
 interface TicketManagerInterface
@@ -11,7 +12,7 @@ interface TicketManagerInterface
      *
      * @return Ticket
      */
-    public function getTicket($ident): Ticket;
+    public function getTicket($ident);
 
     /**
      * @param mixed $ident Id or name of ticket

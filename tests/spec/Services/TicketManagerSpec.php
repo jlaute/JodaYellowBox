@@ -1,12 +1,11 @@
 <?php
 
-namespace spec\JodaYellowBox\Components\Ticket;
+namespace spec\JodaYellowBox\Services;
 
-use Doctrine\ORM\EntityManagerInterface;
-use JodaYellowBox\Components\Ticket\ChangeStateException;
-use JodaYellowBox\Components\Ticket\TicketManager;
-use JodaYellowBox\Components\Ticket\TicketManagerInterface;
-use JodaYellowBox\Models\Repository;
+use JodaYellowBox\Exception\ChangeStateException;
+use JodaYellowBox\Models\TicketRepository;
+use JodaYellowBox\Services\TicketManager;
+use JodaYellowBox\Services\TicketManagerInterface;
 use JodaYellowBox\Models\Ticket;
 use SM\Factory\Factory as StateMachineFactory;
 use PhpSpec\ObjectBehavior;
@@ -20,15 +19,11 @@ use SM\StateMachine\StateMachineInterface;
 class TicketManagerSpec extends ObjectBehavior
 {
     public function let(
-        EntityManagerInterface $em,
-        StateMachineFactory $stateMachineFactory,
-        Repository $ticketRepository
+        TicketRepository $ticketRepository,
+        StateMachineFactory $stateMachineFactory
     ) {
-        $this->beConstructedWith($em, $stateMachineFactory);
-
-        $em->getRepository(Ticket::class)->shouldBeCalled()->willReturn(
-            $this->getTicketRepositoryMock($ticketRepository)
-        );
+        $this->beConstructedWith($ticketRepository, $stateMachineFactory);
+        $this->getTicketRepositoryMock($ticketRepository);
     }
 
     public function it_is_initializable()
@@ -83,7 +78,7 @@ class TicketManagerSpec extends ObjectBehavior
     }
 
     public function it_is_able_to_delete_a_ticket(
-        Repository $ticketRepository,
+        TicketRepository $ticketRepository,
         Ticket $ticket
     ) {
         $ticketRepository->remove($ticket)->shouldBeCalled();
@@ -92,10 +87,10 @@ class TicketManagerSpec extends ObjectBehavior
     }
 
     /**
-     * @param Repository $ticketRepository
-     * @return Repository
+     * @param TicketRepository $ticketRepository
+     * @return TicketRepository
      */
-    protected function getTicketRepositoryMock(Repository $ticketRepository)
+    protected function getTicketRepositoryMock(TicketRepository $ticketRepository)
     {
         $ticketRepository->findTicket(Argument::any())->willReturn(new Ticket(''));
         $ticketRepository->existsTicket('exists')->willReturn(true);

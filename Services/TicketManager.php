@@ -2,21 +2,18 @@
 
 declare(strict_types=1);
 
-namespace JodaYellowBox\Components\Ticket;
+namespace JodaYellowBox\Services;
 
-use Doctrine\ORM\EntityManagerInterface;
-use JodaYellowBox\Models\Repository;
+use JodaYellowBox\Exception\ChangeStateException;
 use JodaYellowBox\Models\Ticket;
+use JodaYellowBox\Models\TicketRepository;
 use SM\Factory\Factory as StateMachineFactory;
 use SM\SMException;
 
-/**
- * Class TicketManager
- */
 class TicketManager implements TicketManagerInterface
 {
     /**
-     * @var Repository
+     * @var TicketRepository
      */
     protected $ticketRepository;
 
@@ -26,19 +23,19 @@ class TicketManager implements TicketManagerInterface
     protected $stateMachineFactory;
 
     /**
-     * @param EntityManagerInterface $em
-     * @param StateMachineFactory    $stateMachineFactory
+     * @param TicketRepository    $ticketRepository
+     * @param StateMachineFactory $stateMachineFactory
      */
-    public function __construct(EntityManagerInterface $em, StateMachineFactory $stateMachineFactory)
+    public function __construct(TicketRepository $ticketRepository, StateMachineFactory $stateMachineFactory)
     {
-        $this->ticketRepository = $em->getRepository(Ticket::class);
+        $this->ticketRepository = $ticketRepository;
         $this->stateMachineFactory = $stateMachineFactory;
     }
 
     /**
      * {@inheritdoc}
      */
-    public function getTicket($ident): Ticket
+    public function getTicket($ident)
     {
         return $this->ticketRepository->findTicket($ident);
     }

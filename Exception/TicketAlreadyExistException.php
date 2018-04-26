@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace JodaYellowBox\Components\Ticket;
+namespace JodaYellowBox\Exception;
 
 /**
  * @author    Jörg Lautenschlager <joerg.lautenschlager@gmail.com>

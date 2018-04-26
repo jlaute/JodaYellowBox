@@ -4,13 +4,15 @@ declare(strict_types=1);
 
 namespace JodaYellowBox\Models;
 
+use Doctrine\Common\Collections\ArrayCollection;
+use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 use Shopware\Components\Model\ModelEntity;
 use SM\StateMachine\StateMachineInterface;
 
 /**
  * @ORM\Table(name="s_plugin_yellow_box_ticket")
- * @ORM\Entity(repositoryClass="Repository")
+ * @ORM\Entity
  * @ORM\HasLifecycleCallbacks
  */
 class Ticket extends ModelEntity
@@ -32,14 +34,14 @@ class Ticket extends ModelEntity
     /**
      * @var string
      *
-     * @ORM\Column(name="number", type="string", nullable=true)
+     * @ORM\Column(name="number", type="string", nullable=true, unique=true)
      */
     private $number;
 
     /**
      * @var string
      *
-     * @ORM\Column(name="name", type="string", nullable=false)
+     * @ORM\Column(name="name", type="string", nullable=false, unique=true)
      */
     private $name;
 
@@ -72,6 +74,13 @@ class Ticket extends ModelEntity
     private $changedAt;
 
     /**
+     * @var Collection[Release]
+     *
+     * @ORM\ManyToMany(targetEntity="JodaYellowBox\Models\Release", mappedBy="tickets")
+     */
+    private $releases;
+
+    /**
      * @var array
      */
     private $possibleTransitions = [];
@@ -89,8 +98,8 @@ class Ticket extends ModelEntity
      */
     public function __construct(
         string $name,
-        string $number = '',
-        string $description = '',
+        string $number = null,
+        string $description = null,
         StateMachineInterface $stateMachine = null
     ) {
         $this->createdAt = new \DateTime();
@@ -99,6 +108,7 @@ class Ticket extends ModelEntity
         $this->number = $number;
         $this->description = $description;
         $this->stateMachine = $stateMachine;
+        $this->releases = new ArrayCollection();
     }
 
     /**
@@ -227,6 +237,32 @@ class Ticket extends ModelEntity
     public function setPossibleTransitions(array $transitions)
     {
         $this->possibleTransitions = $transitions;
+    }
+
+    /**
+     * @param Release $release
+     */
+    public function addToRelease(Release $release)
+    {
+        if (!$this->releases->contains($release)) {
+            $this->releases->add($release);
+        }
+    }
+
+    /**
+     * @param Release $release
+     */
+    public function removeFromRelease(Release $release)
+    {
+        $this->releases->removeElement($release);
+    }
+
+    /**
+     * @return Collection[Release]
+     */
+    public function getReleases(): Collection
+    {
+        return $this->releases;
     }
 
     protected function updatePossibleTransitions()

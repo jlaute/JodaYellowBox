@@ -21,6 +21,11 @@
             <tag name="console.command" />
         </service>
 
+        <service id="joda_yellow_box.command.add_release" class="JodaYellowBox\Commands\AddRelease">
+            <argument type="string">joda:release:add</argument>
+            <tag name="console.command" />
+        </service>
+
         <!-- Statemachine -->
         <service id="joda_yellow_box.sm.factory" class="SM\Factory\Factory">
             <argument>%joda_yellow_box.sm.configs%</argument>
@@ -34,13 +39,18 @@
         </service>
 
         <!-- Services -->
-        <service id="joda_yellow_box.ticket_creator" class="JodaYellowBox\Components\Ticket\TicketCreator">
+        <service id="joda_yellow_box.ticket_creator" class="JodaYellowBox\Services\TicketCreator">
             <argument type="service" id="models" />
         </service>
 
-        <service id="joda_yellow_box.services.ticket_manager" class="JodaYellowBox\Components\Ticket\TicketManager">
-            <argument type="service" id="models" />
+        <service id="joda_yellow_box.services.ticket_manager" class="JodaYellowBox\Services\TicketManager">
+            <argument type="service" id="joda_yellow_box.repository.ticket" />
             <argument type="service" id="joda_yellow_box.sm.factory" />
+        </service>
+
+        <service id="joda_yellow_box.services.release_manager" class="JodaYellowBox\Services\ReleaseManager">
+            <argument type="service" id="joda_yellow_box.repository.release" />
+            <argument type="service" id="joda_yellow_box.services.plugin_config" />
         </service>
 
         <service id="joda_yellow_box.services.plugin_config" class="JodaYellowBox\Components\Config\PluginConfig">
@@ -73,6 +83,15 @@
 
         <service id="joda_yellow_box.subscriber.yellow_box" class="JodaYellowBox\Subscriber\YellowBox">
             <tag name="shopware.event_subscriber" />
+        </service>
+
+        <!-- Repositories -->
+        <service id="joda_yellow_box.repository.ticket" class="JodaYellowBox\Models\TicketRepository" public="false">
+            <argument type="service" id="models" />
+        </service>
+
+        <service id="joda_yellow_box.repository.release" class="JodaYellowBox\Models\ReleaseRepository" public="false">
+            <argument type="service" id="models" />
         </service>
     </services>
 </container>
