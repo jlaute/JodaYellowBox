@@ -25,7 +25,7 @@ class Release extends ModelEntity
     /**
      * @var string
      *
-     * @ORM\Column(name="name", type="string", nullable=false)
+     * @ORM\Column(name="name", type="string", nullable=false, unique=true)
      */
     private $name;
 

@@ -34,14 +34,14 @@ class Ticket extends ModelEntity
     /**
      * @var string
      *
-     * @ORM\Column(name="number", type="string", nullable=true)
+     * @ORM\Column(name="number", type="string", nullable=true, unique=true)
      */
     private $number;
 
     /**
      * @var string
      *
-     * @ORM\Column(name="name", type="string", nullable=false)
+     * @ORM\Column(name="name", type="string", nullable=false, unique=true)
      */
     private $name;
 
