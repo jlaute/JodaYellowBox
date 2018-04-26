@@ -8,7 +8,9 @@ use Symfony\Component\Console\Tester\CommandTester;
 class AddReleaseTest extends TestCase
 {
     protected static $ensureLoadedPlugins = [
-        'JodaYellowBox' => [],
+        'JodaYellowBox' => [
+            'JodaYellowBoxReleaseToDisplay' => 'latest',
+        ],
     ];
 
     /** @var CommandTester */

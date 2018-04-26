@@ -61,7 +61,7 @@ class ReleaseRepository
     {
         return $this->repository->createQueryBuilder('release')
             ->select('release', 'tickets')
-            ->join('release.tickets', 'tickets')
+            ->leftJoin('release.tickets', 'tickets')
             ->setMaxResults(1);
     }
 

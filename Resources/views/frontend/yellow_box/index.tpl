@@ -27,7 +27,7 @@
                                     - State: {$ticket->getState()}
                                 </li>
                             {foreachelse}
-                                <li>No tickets found</li>
+                                <li>No tickets in release "{$currentRelease->getName()}" found</li>
                             {/foreach}
                         {else}
                             <li>There is no release to display</li>
