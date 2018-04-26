@@ -39,8 +39,12 @@
         </service>
 
         <service id="joda_yellow_box.services.ticket_manager" class="JodaYellowBox\Services\TicketManager">
-            <argument type="service" id="models" />
+            <argument type="service" id="joda_yellow_box.repository.ticket" />
             <argument type="service" id="joda_yellow_box.sm.factory" />
+        </service>
+
+        <service id="joda_yellow_box.services.release_manager" class="JodaYellowBox\Services\ReleaseManager">
+            <argument type="service" id="joda_yellow_box.repository.release" />
         </service>
 
         <service id="joda_yellow_box.services.plugin_config" class="JodaYellowBox\Components\Config\PluginConfig">
@@ -73,6 +77,15 @@
 
         <service id="joda_yellow_box.subscriber.yellow_box" class="JodaYellowBox\Subscriber\YellowBox">
             <tag name="shopware.event_subscriber" />
+        </service>
+
+        <!-- Repositories -->
+        <service id="joda_yellow_box.repository.ticket" class="JodaYellowBox\Models\TicketRepository" public="false">
+            <argument type="service" id="models" />
+        </service>
+
+        <service id="joda_yellow_box.repository.release" class="JodaYellowBox\Models\ReleaseRepository" public="false">
+            <argument type="service" id="models" />
         </service>
     </services>
 </container>

@@ -12,7 +12,7 @@ use SM\StateMachine\StateMachineInterface;
 
 /**
  * @ORM\Table(name="s_plugin_yellow_box_ticket")
- * @ORM\Entity(repositoryClass="Repository")
+ * @ORM\Entity
  * @ORM\HasLifecycleCallbacks
  */
 class Ticket extends ModelEntity
