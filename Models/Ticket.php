@@ -72,17 +72,49 @@ class Ticket extends ModelEntity
     private $changedAt;
 
     /**
-     * @param string $name
-     * @param string $number
-     * @param string $description
+     * @var array
      */
-    public function __construct(string $name, string $number = '', string $description = '')
-    {
+    private $possibleTransitions = [];
+
+    /**
+     * @var StateMachineInterface
+     */
+    private $stateMachine;
+
+    /**
+     * @param string                $name
+     * @param string                $number
+     * @param string                $description
+     * @param StateMachineInterface $stateMachine
+     */
+    public function __construct(
+        string $name,
+        string $number = '',
+        string $description = '',
+        StateMachineInterface $stateMachine = null
+    ) {
         $this->createdAt = new \DateTime();
         $this->state = self::STATE_OPEN;
         $this->name = $name;
         $this->number = $number;
         $this->description = $description;
+        $this->stateMachine = $stateMachine;
+    }
+
+    /**
+     * @ORM\PostLoad
+     */
+    public function onPostLoad()
+    {
+        $this->updatePossibleTransitions();
+    }
+
+    /**
+     * @ORM\PostUpdate
+     */
+    public function onPostUpdate()
+    {
+        $this->updatePossibleTransitions();
     }
 
     /**
@@ -182,38 +214,30 @@ class Ticket extends ModelEntity
     }
 
     /**
-     * @param StateMachineInterface $stateMachine
+     * @return array
      */
-    public function approve(StateMachineInterface $stateMachine)
+    public function getPossibleTransitions(): array
     {
-        $this->changeState($stateMachine, 'approve');
+        return $this->possibleTransitions;
     }
 
     /**
-     * @param StateMachineInterface $stateMachine
+     * @param array $transitions
      */
-    public function reject(StateMachineInterface $stateMachine)
+    public function setPossibleTransitions(array $transitions)
     {
-        $this->changeState($stateMachine, 'reject');
+        $this->possibleTransitions = $transitions;
     }
 
-    /**
-     * @param StateMachineInterface $stateMachine
-     */
-    public function reopen(StateMachineInterface $stateMachine)
+    protected function updatePossibleTransitions()
     {
-        $this->changeState($stateMachine, 'reopen');
-    }
-
-    /**
-     * @param StateMachineInterface $stateMachine
-     * @param string                $state
-     */
-    protected function changeState(StateMachineInterface $stateMachine, string $state)
-    {
-        if ($stateMachine->can($state)) {
-            $stateMachine->apply($state);
-            $this->setState($state);
+        if (!$this->stateMachine) {
+            // @TODO: this would be better if does not depend on Shopware Container
+            $stateMachineFactory = Shopware()->Container()->get('joda_yellow_box.sm.factory');
+            /* @var StateMachineInterface $stateMachine */
+            $this->stateMachine = $stateMachineFactory->get($this);
         }
+
+        $this->possibleTransitions = $this->stateMachine->getPossibleTransitions();
     }
 }

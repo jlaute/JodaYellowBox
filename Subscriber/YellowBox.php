@@ -27,6 +27,7 @@ class YellowBox implements SubscriberInterface
         $ticketManager = $controller->get('joda_yellow_box.services.ticket_manager');
 
         $view = $controller->View();
-        $view->assign('currentTickets', $ticketManager->getCurrentTickets());
+        $currentTickets = $ticketManager->getCurrentTickets();
+        $view->assign('currentTickets', $currentTickets);
     }
 }

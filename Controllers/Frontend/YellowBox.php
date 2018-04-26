@@ -1,9 +1,8 @@
 <?php declare(strict_types=1);
 use JodaYellowBox\Components\Ticket\TicketManager;
 use SM\Factory\Factory;
-use SM\SMException;
 
-class Shopware_Controllers_Frontend_YellowBox extends Enlight_Controller_Action
+class Shopware_Controllers_Frontend_YellowBox extends \Enlight_Controller_Action
 {
     /**
      * @var Factory
@@ -15,14 +14,10 @@ class Shopware_Controllers_Frontend_YellowBox extends Enlight_Controller_Action
      */
     protected $ticketManager;
 
-    public function init()
+    public function preDispatch()
     {
         $this->stateManager = $this->get('joda_yellow_box.sm.factory');
         $this->ticketManager = $this->get('joda_yellow_box.services.ticket_manager');
-    }
-
-    public function indexAction()
-    {
     }
 
     /**
@@ -30,7 +25,7 @@ class Shopware_Controllers_Frontend_YellowBox extends Enlight_Controller_Action
      */
     public function transitionAction()
     {
-        $this->view->loadTemplate('frontend/joda_yellow_box/yellow_box.tpl');
+        $this->view->loadTemplate('frontend/yellow_box/index.tpl');
 
         $ticketId = (int) $this->request->get('ticketId');
         if ($this->ticketManager->existsTicket($ticketId) === false) {
@@ -44,9 +39,8 @@ class Shopware_Controllers_Frontend_YellowBox extends Enlight_Controller_Action
         $ticketTransition = $this->request->get('ticketTransition');
 
         try {
-            $stateMaschine = $this->stateManager->get($ticket);
-            $stateMaschine->apply($ticketTransition);
-        } catch (SMException $ex) {
+            $this->ticketManager->changeState($ticket, $ticketTransition);
+        } catch (\JodaYellowBox\Components\Ticket\ChangeStateException $ex) {
             // Invalid transition state
             return $this->view->assign([
                 'success' => false,

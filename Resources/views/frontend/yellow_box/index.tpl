@@ -12,18 +12,18 @@
                 <ul class="list">
                     {block name="frontend_yellow_box_content_list"}
                         {foreach $currentTickets as $ticket}
-                            <li class="list--entry">
+                            <li class="list--entry" data-ticket-id="{$ticket->getId()}">
                                 <div class="entry--actions">
-                                    {foreach $ticket.possibleTransitions as $transition}
-                                        <button class="btn" data-ticket-transition="{$transition}" data-ticket-id="{$ticket.id}">
+                                    {foreach $ticket->getPossibleTransitions() as $transition}
+                                        <button class="btn" data-ticket-transition="{$transition}" title="{$transition}">
                                             <i class="icon--transition-{$transition}"></i>
                                         </button>
                                     {/foreach}
                                 </div>
-                                Number: {$ticket.number}
-                                - Name: {$ticket.name}
-                                - Description: {$ticket.description}
-                                - State: {$ticket.state}
+                                Number: {$ticket->getNumber()}
+                                - Name: {$ticket->getName()}
+                                - Description: {$ticket->getDescription()}
+                                - State: {$ticket->getState()}
                             </li>
                         {foreachelse}
                             <li>No Tickets found</li>

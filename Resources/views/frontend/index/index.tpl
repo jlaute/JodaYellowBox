@@ -6,7 +6,8 @@
     {* Yellow box init *}
     <div class="yellow-box"
          data-yellow-box="true"
-         data-indexUrl="{url controller="YellowBox" fullPath}"
-         data-transitionUrl="{url controller="YellowBox" action="transition" fullPath}"
-    ></div>
+         data-transitionUrl="{url controller="YellowBox" action="transition"}"
+    >
+        {include file="frontend/yellow_box/index.tpl"}
+    </div>
 {/block}

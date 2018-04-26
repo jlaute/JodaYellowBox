@@ -5,8 +5,6 @@
         defaults: {
             minimizeClass: 'minimized',
 
-            indexUrl: null,
-
             transitionUrl: null,
 
             transitionButtonSelector: '.entry--actions .btn'
@@ -20,8 +18,6 @@
 
             me.applyDataAttributes();
             me.registerEvents();
-
-            me.loadYellowBox();
 
             $.publish('plugin/jodaYellowBox/init', [ me ]);
         },
@@ -56,7 +52,9 @@
         onTransitionButtonClick: function (event) {
             var me = this,
                 opts = me.opts,
-                $button = $(event.target);
+                $button = $(event.target).is('i') ? $(event.target).parent() : $(event.target), //sometimes the target is the underlying 'i' element. Makes no sense, but the console doesn`t lie
+                ticketId = $button.closest('li').data('ticket-id'),
+                transition = $button.data('ticket-transition');
 
             event.preventDefault();
             event.stopPropagation();
@@ -69,8 +67,8 @@
             $.ajax({
                 'url': opts.transitionUrl,
                 'data': {
-                    ticketId: $button.data('ticket-id'),
-                    ticketTransition: $button.data('ticket-transition')
+                    ticketId: ticketId,
+                    ticketTransition: transition
                 },
                 'success': function (content) {
                     $.loadingIndicator.close(function () {
@@ -84,32 +82,6 @@
             });
 
             $.publish('plugin/jodaYellowBox/onTransitionButtonClick', [ me, event ]);
-        },
-
-        /**
-         * Loads the yellow box
-         */
-        loadYellowBox: function () {
-            var me = this,
-                opts = me.opts;
-
-            $.loadingIndicator.open({
-                closeOnClick: false,
-                renderElement: me.$el
-            });
-
-            $.ajax({
-                'url': opts.indexUrl,
-                'success': function (content) {
-                    $.loadingIndicator.close(function () {
-                        me._setContent(content);
-                        me._removeEvents();
-                        me.registerEvents();
-                    });
-
-                    $.publish('plugin/jodaYellowBox/onLoadYellowBoxSuccess', [ me, content ]);
-                }
-            });
         },
 
         /**

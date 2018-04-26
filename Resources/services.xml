@@ -38,22 +38,14 @@
             <argument type="service" id="models" />
         </service>
 
-        <service id="joda_yellow_box.ticket_destroyer" class="JodaYellowBox\Components\Ticket\TicketDestroyer">
-            <argument type="service" id="models" />
-        </service>
-
         <service id="joda_yellow_box.services.ticket_manager" class="JodaYellowBox\Components\Ticket\TicketManager">
             <argument type="service" id="models" />
-            <argument type="service" id="joda_yellow_box.services.ticket_modifier" />
+            <argument type="service" id="joda_yellow_box.sm.factory" />
         </service>
 
         <service id="joda_yellow_box.services.plugin_config" class="JodaYellowBox\Components\Config\PluginConfig">
             <argument type="string">%joda_yellow_box.plugin_name%</argument>
             <argument type="service" id="shopware.plugin.cached_config_reader" />
-        </service>
-
-        <service id="joda_yellow_box.services.ticket_modifier" class="JodaYellowBox\Components\Ticket\TicketModifier">
-            <argument type="service" id="events" />
         </service>
 
         <!-- State logger -->
@@ -80,11 +72,6 @@
         </service>
 
         <service id="joda_yellow_box.subscriber.yellow_box" class="JodaYellowBox\Subscriber\YellowBox">
-            <tag name="shopware.event_subscriber" />
-        </service>
-
-        <service id="joda_yellow_box.subscriber.ticket_modifier" class="JodaYellowBox\Subscriber\TicketModifier">
-            <argument type="service" id="joda_yellow_box.sm.factory" />
             <tag name="shopware.event_subscriber" />
         </service>
     </services>
