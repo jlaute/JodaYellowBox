@@ -17,4 +17,11 @@ interface PluginConfigInterface
      * @return array
      */
     public function getLessConfiguration(): array;
+
+    /**
+     * Returns 'latest' or the name of the release
+     *
+     * @return string
+     */
+    public function getReleaseToDisplay(): string;
 }

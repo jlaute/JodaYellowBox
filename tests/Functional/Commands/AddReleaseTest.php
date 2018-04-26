@@ -57,7 +57,7 @@ class AddReleaseTest extends TestCase
         $this->assertContains('success', $output);
     }
 
-    public function testThatTicketsWillBeAccociatedWithANewRelease()
+    public function testThatTicketsWillBeAssociatedWithANewRelease()
     {
         $this->commandTester->execute([
             'name' => 'Second Testing Release!',

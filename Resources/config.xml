@@ -10,5 +10,14 @@
             <label lang="en">Box maximum width (Default: 500)</label>
             <value>500</value>
         </element>
+
+        <element type="text" required="true" scope="shop">
+            <name>JodaYellowBoxReleaseToDisplay</name>
+            <label lang="de">Angezeigtes Release</label>
+            <label lang="en">displayed release</label>
+            <value>latest</value>
+            <description lang="de">Tickets aus diesem Release werden im Frontend angezeigt. Namen des Releases angeben oder 'latest' für das neueste</description>
+            <description lang="en">Tickets in that release will be displayed in frontend. Type in the name of the release or 'latest' for the newest one</description>
+        </element>
     </elements>
 </config>
