@@ -21,6 +21,11 @@
             <tag name="console.command" />
         </service>
 
+        <service id="joda_yellow_box.command.add_release" class="JodaYellowBox\Commands\AddRelease">
+            <argument type="string">joda:release:add</argument>
+            <tag name="console.command" />
+        </service>
+
         <!-- Statemachine -->
         <service id="joda_yellow_box.sm.factory" class="SM\Factory\Factory">
             <argument>%joda_yellow_box.sm.configs%</argument>

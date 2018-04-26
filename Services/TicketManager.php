@@ -35,7 +35,7 @@ class TicketManager implements TicketManagerInterface
     /**
      * {@inheritdoc}
      */
-    public function getTicket($ident): Ticket
+    public function getTicket($ident)
     {
         return $this->ticketRepository->findTicket($ident);
     }

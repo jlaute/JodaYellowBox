@@ -35,7 +35,7 @@ class TicketRepository
      * @param null $lockMode
      * @param null $lockVersion
      *
-     * @return Ticket|null|object
+     * @return Ticket|null
      */
     public function find($id, $lockMode = null, $lockVersion = null)
     {
@@ -63,9 +63,9 @@ class TicketRepository
      *
      * @param mixed $ident
      *
-     * @return Ticket
+     * @return Ticket|null
      */
-    public function findTicket($ident): Ticket
+    public function findTicket($ident)
     {
         if (\is_int($ident)) {
             return $this->getTicketById($ident);
@@ -77,7 +77,7 @@ class TicketRepository
     /**
      * @param int $id
      *
-     * @return null|object
+     * @return Ticket|null
      */
     public function getTicketById(int $id)
     {
@@ -87,7 +87,7 @@ class TicketRepository
     /**
      * @param mixed $name
      *
-     * @return null|object
+     * @return Ticket|null
      */
     public function getTicketByName($name)
     {
