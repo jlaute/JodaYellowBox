@@ -22,7 +22,12 @@ class AddRelease extends ShopwareCommand
     {
         $this->addArgument('name', InputArgument::REQUIRED, 'Name of the Release')
             ->addOption('releasedate', 'r', InputOption::VALUE_REQUIRED, 'Release Date')
-            ->addOption('tickets', 't', InputOption::VALUE_REQUIRED | InputOption::VALUE_IS_ARRAY, 'Ticket names to add to release');
+            ->addOption(
+                'tickets',
+                't',
+                InputOption::VALUE_REQUIRED | InputOption::VALUE_IS_ARRAY,
+                'Ticket names to add to release'
+            );
     }
 
     protected function execute(InputInterface $input, OutputInterface $output)
@@ -39,11 +44,11 @@ class AddRelease extends ShopwareCommand
         $release = new Release($input->getArgument('name'), $releasedate);
         foreach ($input->getOption('tickets') as $ticketName) {
             $ticket = $ticketManager->getTicket($ticketName);
+
             if (!$ticket) {
                 if (!$io->confirm("Ticket '$ticketName' does not exist. Create it for this release?")) {
                     continue;
                 }
-
                 $ticket = new Ticket($ticketName);
             }
             $release->addTicket($ticket);
