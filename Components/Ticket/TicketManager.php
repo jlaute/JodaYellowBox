@@ -10,9 +10,6 @@ use JodaYellowBox\Models\Ticket;
 use SM\Factory\Factory as StateMachineFactory;
 use SM\SMException;
 
-/**
- * Class TicketManager
- */
 class TicketManager implements TicketManagerInterface
 {
     /**

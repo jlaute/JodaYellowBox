@@ -4,6 +4,8 @@ declare(strict_types=1);
 
 namespace JodaYellowBox\Models;
 
+use Doctrine\Common\Collections\ArrayCollection;
+use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 use Shopware\Components\Model\ModelEntity;
 use SM\StateMachine\StateMachineInterface;
@@ -72,6 +74,13 @@ class Ticket extends ModelEntity
     private $changedAt;
 
     /**
+     * @var Collection[Release]
+     *
+     * @ORM\ManyToMany(targetEntity="JodaYellowBox\Models\Release", mappedBy="tickets")
+     */
+    private $releases;
+
+    /**
      * @var array
      */
     private $possibleTransitions = [];
@@ -99,6 +108,7 @@ class Ticket extends ModelEntity
         $this->number = $number;
         $this->description = $description;
         $this->stateMachine = $stateMachine;
+        $this->releases = new ArrayCollection();
     }
 
     /**
@@ -227,6 +237,32 @@ class Ticket extends ModelEntity
     public function setPossibleTransitions(array $transitions)
     {
         $this->possibleTransitions = $transitions;
+    }
+
+    /**
+     * @param Release $release
+     */
+    public function addToRelease(Release $release)
+    {
+        if (!$this->releases->contains($release)) {
+            $this->releases->add($release);
+        }
+    }
+
+    /**
+     * @param Release $release
+     */
+    public function removeFromRelease(Release $release)
+    {
+        $this->releases->removeElement($release);
+    }
+
+    /**
+     * @return Collection[Release]
+     */
+    public function getReleases(): Collection
+    {
+        return $this->releases;
     }
 
     protected function updatePossibleTransitions()

@@ -3,6 +3,7 @@ declare(strict_types=1);
 
 namespace spec\JodaYellowBox\Models;
 
+use JodaYellowBox\Models\Release;
 use PhpSpec\ObjectBehavior;
 use Prophecy\Argument;
 use JodaYellowBox\Models\Ticket;
@@ -54,5 +55,23 @@ class TicketSpec extends ObjectBehavior
     public function it_has_open_state_by_default()
     {
         $this->getState()->shouldReturn(Ticket::STATE_OPEN);
+    }
+
+    public function it_can_have_releases(Release $release, Release $release2)
+    {
+        $this->addToRelease($release);
+        $this->getReleases()->contains($release)->shouldReturn(true);
+
+        $this->addToRelease($release2);
+        $this->getReleases()->contains($release2)->shouldReturn(true);
+    }
+
+    public function it_can_be_removed_from_release(Release $release)
+    {
+        $this->addToRelease($release);
+        $this->getReleases()->contains($release)->shouldReturn(true);
+
+        $this->removeFromRelease($release);
+        $this->getReleases()->contains($release)->shouldReturn(false);
     }
 }
