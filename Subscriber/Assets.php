@@ -1,5 +1,7 @@
 <?php declare(strict_types=1);
 
+declare(strict_types=1);
+
 namespace JodaYellowBox\Subscriber;
 
 use Doctrine\Common\Collections\ArrayCollection;
@@ -47,6 +49,9 @@ class Assets implements SubscriberInterface
         ];
     }
 
+    /**
+     * @return LessDefinition
+     */
     public function onCollectLess()
     {
         return new LessDefinition($this->lessConfig, [
@@ -54,6 +59,9 @@ class Assets implements SubscriberInterface
         ]);
     }
 
+    /**
+     * @return ArrayCollection
+     */
     public function onCollectJavascript()
     {
         return new ArrayCollection([

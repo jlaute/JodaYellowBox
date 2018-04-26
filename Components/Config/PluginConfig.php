@@ -2,45 +2,32 @@
 
 namespace JodaYellowBox\Components\Config;
 
+use Doctrine\Common\Collections\ArrayCollection;
 use Shopware\Components\Plugin\ConfigReader;
 
-class PluginConfig implements PluginConfigInterface
+class PluginConfig extends ArrayCollection implements PluginConfigInterface
 {
-    /**
-     * @var array
-     */
-    protected $config;
-
     /**
      * @param string       $pluginName
      * @param ConfigReader $configReader
      */
     public function __construct(string $pluginName, ConfigReader $configReader)
     {
-        $this->config = $configReader->getByPluginName($pluginName);
+        $elements = $configReader->getByPluginName($pluginName);
+        parent::__construct($elements);
     }
 
     /**
      * {@inheritdoc}
      */
-    public function set(string $key, $value)
-    {
-        $this->config[$key] = $value;
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    public function get($key)
-    {
-        return $this->config[$key];
-    }
-
     public function getConfig(): array
     {
-        return $this->config;
+        return $this->toArray();
     }
 
+    /**
+     * {@inheritdoc}
+     */
     public function getLessConfiguration(): array
     {
         return [

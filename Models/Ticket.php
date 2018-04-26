@@ -71,13 +71,50 @@ class Ticket extends ModelEntity
      */
     private $changedAt;
 
-    public function __construct(string $name, string $number = null, string $description = null)
-    {
+    /**
+     * @var array
+     */
+    private $possibleTransitions = [];
+
+    /**
+     * @var StateMachineInterface
+     */
+    private $stateMachine;
+
+    /**
+     * @param string                $name
+     * @param string                $number
+     * @param string                $description
+     * @param StateMachineInterface $stateMachine
+     */
+    public function __construct(
+        string $name,
+        string $number = '',
+        string $description = '',
+        StateMachineInterface $stateMachine = null
+    ) {
         $this->createdAt = new \DateTime();
         $this->state = self::STATE_OPEN;
         $this->name = $name;
         $this->number = $number;
         $this->description = $description;
+        $this->stateMachine = $stateMachine;
+    }
+
+    /**
+     * @ORM\PostLoad
+     */
+    public function onPostLoad()
+    {
+        $this->updatePossibleTransitions();
+    }
+
+    /**
+     * @ORM\PostUpdate
+     */
+    public function onPostUpdate()
+    {
+        $this->updatePossibleTransitions();
     }
 
     /**
@@ -88,80 +125,119 @@ class Ticket extends ModelEntity
         $this->changedAt = new \DateTime();
     }
 
+    /**
+     * @return int
+     */
     public function getId(): int
     {
         return $this->id ?: 0;
     }
 
+    /**
+     * @param string $number
+     */
     public function setNumber(string $number)
     {
         $this->number = $number;
     }
 
+    /**
+     * @return string
+     */
     public function getNumber(): string
     {
-        return $this->number;
+        return $this->number ?: '';
     }
 
+    /**
+     * @param string $name
+     */
     public function setName(string $name)
     {
         $this->name = $name;
     }
 
+    /**
+     * @return string
+     */
     public function getName(): string
     {
         return $this->name;
     }
 
+    /**
+     * @return string
+     */
     public function getDescription(): string
     {
-        return $this->description;
+        return $this->description ?: '';
     }
 
+    /**
+     * @param string $description
+     */
     public function setDescription(string $description)
     {
         $this->description = $description;
     }
 
+    /**
+     * @return string
+     */
     public function getState(): string
     {
         return $this->state;
     }
 
+    /**
+     * @param string $state
+     */
     public function setState(string $state)
     {
         $this->state = $state;
     }
 
+    /**
+     * @return \DateTime
+     */
     public function getCreatedAt(): \DateTime
     {
         return clone $this->createdAt;
     }
 
+    /**
+     * @return \DateTime
+     */
     public function getChangedAt(): \DateTime
     {
         return clone $this->changedAt;
     }
 
-    public function approve(StateMachineInterface $stateMachine)
+    /**
+     * @return array
+     */
+    public function getPossibleTransitions(): array
     {
-        $this->changeState($stateMachine, 'approve');
+        return $this->possibleTransitions;
     }
 
-    public function reject(StateMachineInterface $stateMachine)
+    /**
+     * @param array $transitions
+     */
+    public function setPossibleTransitions(array $transitions)
     {
-        $this->changeState($stateMachine, 'reject');
+        $this->possibleTransitions = $transitions;
     }
 
-    public function reopen(StateMachineInterface $stateMachine)
+    protected function updatePossibleTransitions()
     {
-        $this->changeState($stateMachine, 'reopen');
-    }
-
-    protected function changeState(StateMachineInterface $stateMachine, string $state)
-    {
-        if ($stateMachine->can($state)) {
-            $stateMachine->apply($state);
+        if (!$this->stateMachine) {
+            // @TODO: this would be better if does not depend on Shopware Container
+            $stateMachineFactory = Shopware()->Container()->get('joda_yellow_box.sm.factory');
+            /* @var StateMachineInterface $stateMachine */
+            $this->stateMachine = $stateMachineFactory->get($this);
         }
+
+        $this->possibleTransitions = $this->stateMachine->getPossibleTransitions();
     }
 }

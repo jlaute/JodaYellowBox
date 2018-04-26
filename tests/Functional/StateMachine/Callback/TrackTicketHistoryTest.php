@@ -42,10 +42,7 @@ class TrackTicketHistoryTest extends TestCase
         $ticketCreator = Shopware()->Container()->get('joda_yellow_box.ticket_creator');
         $this->ticket = $ticketCreator->createTicket('New Testing Ticket!');
 
-        $smFactory = Shopware()->Container()->get('joda_yellow_box.sm.factory');
-        $sm = $smFactory->get($this->ticket);
-
-        $this->ticket->approve($sm);
+        $this->ticket->setState('approved');
         Shopware()->Models()->persist($this->ticket);
         Shopware()->Models()->flush($this->ticket);
 

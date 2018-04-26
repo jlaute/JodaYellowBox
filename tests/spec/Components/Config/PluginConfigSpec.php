@@ -2,6 +2,7 @@
 
 namespace spec\JodaYellowBox\Components\Config;
 
+use Doctrine\Common\Collections\ArrayCollection;
 use PhpSpec\ObjectBehavior;
 use Shopware\Components\Plugin\ConfigReader;
 use JodaYellowBox\Components\Config\PluginConfig;
@@ -25,6 +26,7 @@ class PluginConfigSpec extends ObjectBehavior
     function it_is_initializable()
     {
         $this->shouldHaveType(PluginConfig::class);
+        $this->shouldHaveType(ArrayCollection::class);
     }
 
     function it_is_plugin_config()
@@ -35,7 +37,6 @@ class PluginConfigSpec extends ObjectBehavior
     function it_is_able_to_set_a_custom_single_config_value()
     {
         $this->set('test', 'test');
-        $this->get('test')->shouldReturn('test');
         $this->getConfig()->shouldHaveCount(3);
     }
 

@@ -17,6 +17,9 @@ class TicketCreator
      */
     protected $em;
 
+    /**
+     * @param ModelManager $em
+     */
     public function __construct(ModelManager $em)
     {
         $this->em = $em;
@@ -31,7 +34,7 @@ class TicketCreator
      *
      * @return Ticket
      */
-    public function createTicket(string $name, string $number = null, string $description = null): Ticket
+    public function createTicket(string $name, string $number = '', string $description = ''): Ticket
     {
         if ($this->ticketExist($name)) {
             throw new TicketAlreadyExistException("Ticket '$name' can`t be created, because it already exists");

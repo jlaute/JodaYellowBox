@@ -38,11 +38,12 @@
             <argument type="service" id="models" />
         </service>
 
-        <service id="joda_yellow_box.ticket_destroyer" class="JodaYellowBox\Components\Ticket\TicketDestroyer">
+        <service id="joda_yellow_box.services.ticket_manager" class="JodaYellowBox\Components\Ticket\TicketManager">
             <argument type="service" id="models" />
+            <argument type="service" id="joda_yellow_box.sm.factory" />
         </service>
 
-        <service id="joda_yellow_box.plugin_config" class="JodaYellowBox\Components\Config\PluginConfig">
+        <service id="joda_yellow_box.services.plugin_config" class="JodaYellowBox\Components\Config\PluginConfig">
             <argument type="string">%joda_yellow_box.plugin_name%</argument>
             <argument type="service" id="shopware.plugin.cached_config_reader" />
         </service>
@@ -61,7 +62,16 @@
         <service id="joda_yellow_box.subscriber.assets" class="JodaYellowBox\Subscriber\Assets">
             <argument type="string">%joda_yellow_box.public.less_dir%</argument>
             <argument type="string">%joda_yellow_box.public.js_dir%</argument>
-            <argument type="service" id="joda_yellow_box.plugin_config" />
+            <argument type="service" id="joda_yellow_box.services.plugin_config" />
+            <tag name="shopware.event_subscriber" />
+        </service>
+
+        <service id="joda_yellow_box.subscriber.controllers" class="JodaYellowBox\Subscriber\Controllers">
+            <argument type="string">%joda_yellow_box.plugin_dir%</argument>
+            <tag name="shopware.event_subscriber" />
+        </service>
+
+        <service id="joda_yellow_box.subscriber.yellow_box" class="JodaYellowBox\Subscriber\YellowBox">
             <tag name="shopware.event_subscriber" />
         </service>
     </services>

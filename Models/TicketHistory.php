@@ -1,4 +1,5 @@
 <?php
+
 declare(strict_types=1);
 
 namespace JodaYellowBox\Models;
@@ -62,26 +63,41 @@ class TicketHistory extends ModelEntity
         $this->date = new \DateTime();
     }
 
+    /**
+     * @return int
+     */
     public function getId(): int
     {
         return $this->id;
     }
 
+    /**
+     * @return int
+     */
     public function getTicketId(): int
     {
         return $this->ticketId;
     }
 
+    /**
+     * @return string
+     */
     public function getOldState(): string
     {
         return $this->oldState;
     }
 
+    /**
+     * @return string
+     */
     public function getNewState(): string
     {
         return $this->newState;
     }
 
+    /**
+     * @return \DateTime
+     */
     public function getDate(): \DateTime
     {
         return clone $this->date;

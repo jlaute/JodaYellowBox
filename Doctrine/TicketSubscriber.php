@@ -1,4 +1,5 @@
 <?php
+
 declare(strict_types=1);
 
 namespace JodaYellowBox\Doctrine;
@@ -22,6 +23,9 @@ class TicketSubscriber implements EventSubscriber
         ];
     }
 
+    /**
+     * @param PreUpdateEventArgs $args
+     */
     public function preUpdate(PreUpdateEventArgs $args)
     {
         $object = $args->getObject();

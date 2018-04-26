@@ -12,22 +12,79 @@ use Shopware\Components\Model\ModelRepository;
 class Repository extends ModelRepository
 {
     /**
-     * @param string $name
+     * @param mixed $ident
      *
      * @return bool
      */
-    public function existsTicket(string $name): bool
+    public function existsTicket($ident): bool
     {
-        return $this->getTicketByName($name) !== null;
+        if (\is_int($ident)) {
+            $ticket = $this->getTicketById($ident);
+        } else {
+            $ticket = $this->getTicketByName($ident);
+        }
+
+        return $ticket !== null;
     }
 
     /**
-     * @param string $name
+     * Finds a ticket by any ident
+     *
+     * @param mixed $ident
      *
      * @return null|object
      */
-    public function getTicketByName(string $name)
+    public function findTicket($ident)
+    {
+        if (\is_int($ident)) {
+            return $this->getTicketById($ident);
+        }
+
+        return $this->getTicketByName($ident);
+    }
+
+    /**
+     * @param int $id
+     *
+     * @return null|object
+     */
+    public function getTicketById(int $id)
+    {
+        return $this->findOneBy(['id' => $id]);
+    }
+
+    /**
+     * @param mixed $name
+     *
+     * @return null|object
+     */
+    public function getTicketByName($name)
     {
         return $this->findOneBy(['name' => $name]);
+    }
+
+    /**
+     * @return array
+     */
+    public function getCurrentTickets(): array
+    {
+        $qb = $this->createQueryBuilder('ticket');
+
+        $qb->where(
+            $qb->expr()->in('ticket.state', [Ticket::STATE_OPEN, Ticket::STATE_REOPENED])
+        );
+
+        return $qb->getQuery()->getResult();
+    }
+
+    /**
+     * @param Ticket $ticket
+     *
+     * @throws \Doctrine\ORM\OptimisticLockException
+     */
+    public function remove(Ticket $ticket)
+    {
+        $this->getEntityManager()->remove($ticket);
+        $this->getEntityManager()->flush($ticket);
     }
 }
