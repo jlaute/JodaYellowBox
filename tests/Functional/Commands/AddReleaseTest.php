@@ -26,12 +26,12 @@ class AddReleaseTest extends TestCase
     {
         $em = Shopware()->Container()->get('models');
         $releaseRepo = $em->getRepository(Release::class);
-        $ticketReop = $em->getRepository(Ticket::class);
+        $ticketRepo = $em->getRepository(Ticket::class);
 
         $release = $releaseRepo->findOneBy(['name' => 'New Testing Release!']);
         $release2 = $releaseRepo->findOneBy(['name' => 'Second Testing Release!']);
-        $ticket = $ticketReop->findOneBy(['name' => 'Ticket to Create']);
-        $ticket2 = $ticketReop->findOneBy(['name' => 'Second ticket to Create']);
+        $ticket = $ticketRepo->findOneBy(['name' => 'Ticket to Create']);
+        $ticket2 = $ticketRepo->findOneBy(['name' => 'Second ticket to Create']);
 
         if (!empty($release)) {
             $em->remove($release);
