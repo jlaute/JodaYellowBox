@@ -1,4 +1,5 @@
 {block name="frontend_yellow_box_inner"}
+    <div class="button btn close"><i class="icon--cross"></i></div>
     <div class="yellow-box--inner">
         <div class="box--info box--{if $success}success{else}error{/if}">
             {if $success}
@@ -18,7 +19,7 @@
                                     <div class="entry--actions">
                                         {foreach $ticket->getPossibleTransitions() as $transition}
                                             {assign var="snippetName" value="transition_{$transition}"}
-                                            <button class="btn {$transition}" data-ticket-transition="{$transition}" title="{$transition|snippet:$snippetName:"frontend/yellow_box/index"}">
+                                            <button class="btn {$transition}" data-ticket-transition="{$transition}" title="{$transition|snippet:$snippetName:"frontend/yellow_box/index"}" data-ticket-name="{$ticket->getName()}">
                                                 <i class="icon--transition-{$transition}"></i>
                                             </button>
                                         {foreachelse}
@@ -28,9 +29,9 @@
                                         {/foreach}
                                     </div>
 
-                                    {if $ticket->getNumber()}{$ticket->getNumber()}{else}{$ticket@iteration}{/if} - {$ticket->getName()}
+                                    {if $ticket->getNumber()}{$ticket->getNumber()}{else}{$ticket@iteration}{/if} - <b>{$ticket->getName()}</b>
                                     {if $ticket->getState() == 'approved'}
-                                        | Angenommen am: {$ticket->getChangedAt()|date_format}
+                                        {s name="ticket_approved_at"}{/s} {$ticket->getChangedAt()|date_format:"%d.%m.%Y %H:%M"}
                                     {/if}
                                 </li>
                             {foreachelse}
@@ -43,5 +44,14 @@
                 </ul>
             {/block}
         </div>
+        <form class="comment-form" action="{url controller="YellowBox" action="transition"}" hidden>
+            <div>Ablehnungsgrund für Ticket "<span class="ticketnr"></span>"</div><br />
+            <input type="text" name="ticketId" value="" hidden/>
+            <input type="text" name="ticketTransition" value="" hidden/>
+            <textarea name="comment" cols="30" rows="5"></textarea>
+            <p></p>
+            <button class="abort" type="button">Abbruch</button>
+            <button type="submit">Submit</button>
+        </form>
     </div>
 {/block}

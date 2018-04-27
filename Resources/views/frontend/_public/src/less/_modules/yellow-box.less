@@ -13,6 +13,15 @@
     .unitize-max-width(@JodaYellowBoxMaxWidth);
     .transition-multiple(width 0.6s ease-out, min-height 0.3s ease-out);
 
+    .close {
+        position: absolute;
+        background: none;
+        .unitize(right, 10);
+        .unitize(line-height, 15);
+        .unitize-width(25);
+        .unitize-padding(4, 7, 5);
+    }
+
     &.minimized {
         cursor: pointer;
         .unitize-width(35);
@@ -30,7 +39,8 @@
             .unitize(font-size, 18);
         }
 
-        .yellow-box--inner {
+        .yellow-box--inner,
+        .close {
             display: none;
         }
     }
@@ -68,6 +78,12 @@
 
         .icon--check {
             color: green
+        }
+    }
+
+    .comment-form {
+        textarea {
+            width: 90%;
         }
     }
 }
