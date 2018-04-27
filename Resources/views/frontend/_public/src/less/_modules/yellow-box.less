@@ -1,6 +1,6 @@
 .yellow-box {
     width: 100%;
-    opacity: 0.6;
+    opacity: 0.8;
     z-index: 3000;
     position: fixed;
     background: yellow;
@@ -43,6 +43,32 @@
     .box--content {
         .list {
             list-style: none;
+        }
+    }
+
+    .list--entry {
+        clear: both;
+        .unitize(margin-bottom, 10);
+
+        &.entry--header {
+            .unitize(font-size, 12);
+        }
+    }
+
+    .entry--actions {
+        float: left;
+        .unitize(margin-right, 10);
+
+        .btn {
+            .unitize-padding(0, 4);
+            .unitize(line-height, 18);
+
+            &.approve {
+                color: green;
+            }
+            &.reject {
+                color: red;
+            }
         }
     }
 }
