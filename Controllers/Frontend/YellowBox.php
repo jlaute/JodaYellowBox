@@ -38,6 +38,11 @@ class Shopware_Controllers_Frontend_YellowBox extends \Enlight_Controller_Action
         $ticket = $this->ticketManager->getTicket($ticketId);
         $ticketTransition = $this->request->get('ticketTransition');
 
+        $comment = $this->request->get('comment');
+        if ($comment) {
+            $ticket->setComment($comment);
+        }
+
         try {
             $this->ticketManager->changeState($ticket, $ticketTransition);
         } catch (\JodaYellowBox\Exception\ChangeStateException $ex) {

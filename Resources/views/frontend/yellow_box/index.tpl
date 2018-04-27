@@ -28,7 +28,7 @@
                                             {/if}
                                         {/foreach}
                                     </div>
-
+                                    <div class="existing-comment" hidden>{$ticket->getComment()}</div>
                                     {if $ticket->getNumber()}{$ticket->getNumber()}{else}{$ticket@iteration}{/if} - <b>{$ticket->getName()}</b>
                                     {if $ticket->getState() == 'approved'}
                                         {s name="ticket_approved_at"}{/s} {$ticket->getChangedAt()|date_format:"%d.%m.%Y %H:%M"}

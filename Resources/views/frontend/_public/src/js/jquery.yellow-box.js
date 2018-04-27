@@ -123,6 +123,8 @@
             me.$commentForm.find("input[name='ticketId']").val(ticketId);
             me.$commentForm.find("input[name='ticketTransition']").val(me.opts.rejectTransition);
             me.$commentForm.find(".ticketnr").html($button.data('ticket-name'));
+            // Fill the comment field with the existing comment
+            me.$commentForm.find('textarea').val($button.closest('.list--entry').find('.existing-comment').html());
 
             me.toggleCommentForm();
         },
