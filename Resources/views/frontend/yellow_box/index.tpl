@@ -45,13 +45,12 @@
             {/block}
         </div>
         <form class="comment-form" action="{url controller="YellowBox" action="transition"}" hidden>
-            <div>Ablehnungsgrund für Ticket "<span class="ticketnr"></span>"</div><br />
+            <div>{s name="comment_header"}{/s}</div><br />
             <input type="text" name="ticketId" value="" hidden/>
             <input type="text" name="ticketTransition" value="" hidden/>
             <textarea name="comment" cols="30" rows="5"></textarea>
-            <p></p>
-            <button class="abort" type="button">Abbruch</button>
-            <button type="submit">Submit</button>
+            <button class="btn abort" type="button">{s name="comment_cancel"}{/s}</button>
+            <button class="btn btn-primary" type="submit">{s name="comment_send"}{/s}</button>
         </form>
     </div>
 {/block}
