@@ -21,10 +21,17 @@
                                             <button class="btn {$transition}" data-ticket-transition="{$transition}" title="{$transition|snippet:$snippetName:"frontend/yellow_box/index"}">
                                                 <i class="icon--transition-{$transition}"></i>
                                             </button>
+                                        {foreachelse}
+                                            {if $ticket->getState() == 'approved'}
+                                                <i class="icon--check"></i>
+                                            {/if}
                                         {/foreach}
                                     </div>
 
                                     {if $ticket->getNumber()}{$ticket->getNumber()}{else}{$ticket@iteration}{/if} - {$ticket->getName()}
+                                    {if $ticket->getState() == 'approved'}
+                                        | Angenommen am: {$ticket->getChangedAt()|date_format}
+                                    {/if}
                                 </li>
                             {foreachelse}
                                 <li>{s name="ticket_list_no_release_tickets"}{/s}</li>
