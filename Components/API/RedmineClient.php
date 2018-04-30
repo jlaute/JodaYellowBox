@@ -5,7 +5,7 @@ namespace JodaYellowBox\Components\API;
 class RedmineClient extends AbstractClient
 {
     /**
-     * @return \GuzzleHttp\Message\ResponseInterface
+     * {@inheritdoc}
      */
     public function getProjects()
     {
@@ -13,11 +13,7 @@ class RedmineClient extends AbstractClient
     }
 
     /**
-     * get all issues or just project specific ones
-     *
-     * @param int $projectId
-     *
-     * @return \GuzzleHttp\Message\ResponseInterface
+     * {@inheritdoc}
      */
     public function getIssues(int $projectId = 0)
     {

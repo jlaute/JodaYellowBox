@@ -6,7 +6,17 @@ interface ClientInterface
 {
     const REQUEST_FORMAT = 'json';
 
-    public function getIssues(int $projectId);
+    /**
+     * get all issues or just project specific ones
+     *
+     * @param int $projectId
+     *
+     * @return \GuzzleHttp\Message\ResponseInterface
+     */
+    public function getIssues(int $projectId = 0);
 
+    /**
+     * @return \GuzzleHttp\Message\ResponseInterface
+     */
     public function getProjects();
 }
