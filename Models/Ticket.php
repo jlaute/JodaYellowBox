@@ -55,6 +55,13 @@ class Ticket extends ModelEntity
     /**
      * @var string
      *
+     * @ORM\Column(name="comment", type="text", nullable=true)
+     */
+    private $comment;
+
+    /**
+     * @var string
+     *
      * @ORM\Column(name="state", type="string", nullable=false)
      */
     private $state;
@@ -189,6 +196,22 @@ class Ticket extends ModelEntity
     public function setDescription(string $description)
     {
         $this->description = $description;
+    }
+
+    /**
+     * @return string
+     */
+    public function getComment(): string
+    {
+        return $this->comment ?: '';
+    }
+
+    /**
+     * @param string $comment
+     */
+    public function setComment(string $comment)
+    {
+        $this->comment = $comment;
     }
 
     /**
