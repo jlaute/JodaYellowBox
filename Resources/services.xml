@@ -58,6 +58,18 @@
             <argument type="service" id="shopware.plugin.cached_config_reader" />
         </service>
 
+        <service id="joda_yellow_box.guzzle_client" class="GuzzleHttp\Client" public="false">
+            <factory class="JodaYellowBox\Components\API\Factory\GuzzleClientFactory" method="createGuzzleClient" />
+            <argument type="expression">service('joda_yellow_box.services.plugin_config').getApiUrl()</argument>
+        </service>
+
+        <service id="joda_yellow_box.api_client" class="JodaYellowBox\Components\API\AbstractClient">
+            <factory class="JodaYellowBox\Components\API\Factory\ApiClientFactory" method="createApiClient" />
+            <argument type="service" id="joda_yellow_box.guzzle_client" />
+            <argument type="expression">service('joda_yellow_box.services.plugin_config').getManagementToolName()</argument>
+            <argument type="expression">service('joda_yellow_box.services.plugin_config').getApiKey()</argument>
+        </service>
+
         <!-- State logger -->
         <service id="joda_yellow_box.doctrine.ticket_subscriber" class="JodaYellowBox\Doctrine\TicketSubscriber">
             <tag name="doctrine.event_subscriber" />

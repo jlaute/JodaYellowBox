@@ -24,4 +24,19 @@ interface PluginConfigInterface
      * @return string
      */
     public function getReleaseToDisplay(): string;
+
+    /**
+     * @return string
+     */
+    public function getApiUrl(): string;
+
+    /**
+     * @return string
+     */
+    public function getApiKey(): string;
+
+    /**
+     * @return string
+     */
+    public function getManagementToolName(): string;
 }

@@ -42,4 +42,28 @@ class PluginConfig extends ArrayCollection implements PluginConfigInterface
     {
         return (string) $this->get('JodaYellowBoxReleaseToDisplay');
     }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function getApiUrl(): string
+    {
+        return (string) $this->get('JodaYellowBoxApiUrl');
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function getApiKey(): string
+    {
+        return (string) $this->get('JodaYellowBoxApiKey');
+    }
+
+    /**
+     * @return string
+     */
+    public function getManagementToolName(): string
+    {
+        return (string) $this->get('JodaYellowBoxManagementToolName');
+    }
 }

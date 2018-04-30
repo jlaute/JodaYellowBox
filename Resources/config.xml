@@ -19,5 +19,28 @@
             <description lang="de">Tickets aus diesem Release werden im Frontend angezeigt. Namen des Releases angeben oder 'latest' für das neueste</description>
             <description lang="en">Tickets in that release will be displayed in frontend. Type in the name of the release or 'latest' for the newest one</description>
         </element>
+
+        <element scope="shop">
+            <name>JodaYellowBoxApiUrl</name>
+            <label lang="de">URL zur Projektmanagement API</label>
+            <label>URL to Projectmanagement API</label>
+        </element>
+
+        <element scope="shop">
+            <name>JodaYellowBoxApiKey</name>
+            <label>API Key</label>
+        </element>
+
+        <element type="select">
+            <name>JodaYellowBoxManagementToolName</name>
+            <label lang="de">Name des Projektmanagement-Tools</label>
+            <label>Name of Projectmanagement-Tool</label>
+            <store>
+                <option>
+                    <value>Redmine</value>
+                    <label>Redmine</label>
+                </option>
+            </store>
+        </element>
     </elements>
 </config>
