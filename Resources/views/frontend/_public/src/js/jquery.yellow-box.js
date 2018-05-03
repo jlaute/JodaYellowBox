@@ -79,6 +79,7 @@
             event.stopPropagation();
 
             me.$el.toggleClass(me.opts.minimizeClass);
+            me.setMinimizeCookie();
 
             $.publish('plugin/jodaYellowBox/onCloseClick', [ me ]);
         },
@@ -99,6 +100,7 @@
             event.stopPropagation();
 
             me.$el.toggleClass(me.opts.minimizeClass);
+            me.unsetMinimizeCookie();
 
             $.publish('plugin/jodaYellowBox/onElementClick', [ me ]);
         },
@@ -196,6 +198,20 @@
                     $.publish('plugin/jodaYellowBox/onTransitionSuccess', [ me, content ]);
                 }
             });
+        },
+
+        /**
+         * Sets the minimize cookie
+         */
+        setMinimizeCookie: function () {
+            this._setCookie(MINIMIZE_COOKIE, 1);
+        },
+
+        /**
+         * Unsets the minimize cookie
+         */
+        unsetMinimizeCookie: function () {
+            $.removeCookie(MINIMIZE_COOKIE);
         },
 
         /**
