@@ -13,13 +13,13 @@
 
             boxContentSelector: '.box--content',
 
-            commentFormSelector: '.comment-form',
-
-            abortButtonSelector: '.abort',
-
             closeButtonSelector: '.close',
 
-            rejectTransition: 'reject'
+            rejectTransition: 'reject',
+
+            commentFormSelector: '.comment-form',
+            commentAbortButtonSelector: '.abort',
+            commentSubmitButtonSelector: '.submit',
         },
 
         /**
@@ -41,16 +41,11 @@
             var me = this;
 
             me.$transitionButtons = $(me.opts.transitionButtonSelector);
-            me.$commentForm = me.$el.find(me.opts.commentFormSelector);
-            me.$abortButton = me.$commentForm.find(me.opts.abortButtonSelector);
-            me.$commentSubmitButton = me.$commentForm.find("button[type='submit']");
             me.$closeButton = me.$el.find(me.opts.closeButtonSelector);
 
-            me._on(me.$closeButton, 'click', $.proxy(me.onCloseClick, me));
             me._on(me.$el, 'click', $.proxy(me.onElementClick, me));
+            me._on(me.$closeButton, 'click', $.proxy(me.onCloseClick, me));
             me._on(me.$transitionButtons, 'click', $.proxy(me.onTransitionButtonClick, me));
-            me._on(me.$abortButton, 'click', $.proxy(me.toggleCommentForm, me));
-            me._on(me.$commentSubmitButton, 'click', $.proxy(me.onSubmitCommentForm, me))
 
             me.registerCommentEvents();
         },
