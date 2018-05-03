@@ -30,6 +30,7 @@ class Installer
     public function install(InstallContext $installContext)
     {
         $this->createDatabase();
+        $this->clearCache($installContext);
     }
 
     public function uninstall(UninstallContext $uninstallContext)
@@ -37,6 +38,8 @@ class Installer
         if (!$uninstallContext->keepUserData()) {
             $this->removeDatabase();
         }
+
+        $this->clearCache($uninstallContext);
     }
 
     protected function createDatabase()
@@ -56,5 +59,10 @@ class Installer
             $this->em->getClassMetadata(TicketHistory::class),
             $this->em->getClassMetadata(Release::class),
         ];
+    }
+
+    protected function clearCache(InstallContext $installContext)
+    {
+        $installContext->scheduleClearCache(InstallContext::CACHE_LIST_FRONTEND);
     }
 }
