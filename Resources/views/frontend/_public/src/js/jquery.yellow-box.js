@@ -1,6 +1,8 @@
 ;(function($, window) {
     'use strict';
 
+    const MINIMIZE_COOKIE = 'ybmin';
+
     $.plugin('jodaYellowBox', {
         defaults: {
             minimizeClass: 'minimized',
@@ -113,7 +115,6 @@
         },
 
         /**
-         *
          * @param ticketId
          * @param $button
          */
@@ -123,12 +124,15 @@
             // Fill the form contents with the existing data
             me.$commentForm.find("input[name='ticketId']").val(ticketId);
             me.$commentForm.find("input[name='ticketTransition']").val(me.opts.rejectTransition);
-            me.$commentForm.find(".ticketnr").html($button.data('ticket-name'));
+            me.$commentForm.find('.ticketnr').html($button.data('ticket-name'));
             me.$commentForm.find('textarea').val($button.closest('.list--entry').find('.existing-comment').html());
 
             me.toggleCommentForm();
         },
 
+        /**
+         * Show or hides the comment box
+         */
         toggleCommentForm: function() {
             var me = this,
                 $boxContent = me.$el.find(me.opts.boxContentSelector);
@@ -202,6 +206,18 @@
             me._off(me.$transitionButtons, 'click');
 
             $.publish('plugin/jodaYellowBox/onRemoveEvents', [ me ]);
+        },
+
+        /**
+         * Helper method for setting up a cookie
+         * @param name
+         * @param value
+         * @private
+         */
+        _setCookie: function (name, value) {
+            var d = new Date();
+            d.setTime(d.getTime() + (30 * 24 * 60 * 60 * 1000)); // 30 days
+            document.cookie = name + "=" + value + ";expires=" + d.toUTCString();
         }
     });
 
