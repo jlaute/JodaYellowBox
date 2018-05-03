@@ -44,9 +44,9 @@ abstract class AbstractClient implements ClientInterface
      */
     protected function get(string $url, $options = [])
     {
-        $options = array_merge($options, [
+        $options += [
             'header' => $this->header,
-        ]);
+        ];
 
         return $this->guzzleClient->get($url, $options);
     }
