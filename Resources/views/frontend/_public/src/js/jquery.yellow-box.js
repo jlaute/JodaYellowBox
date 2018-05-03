@@ -51,6 +51,22 @@
             me._on(me.$transitionButtons, 'click', $.proxy(me.onTransitionButtonClick, me));
             me._on(me.$abortButton, 'click', $.proxy(me.toggleCommentForm, me));
             me._on(me.$commentSubmitButton, 'click', $.proxy(me.onSubmitCommentForm, me))
+
+            me.registerCommentEvents();
+        },
+
+        /**
+         * Registers the comment events
+         */
+        registerCommentEvents: function () {
+            var me = this;
+
+            me.$commentForm = me.$el.find(me.opts.commentFormSelector);
+            me.$commentAbortButton = me.$commentForm.find(me.opts.commentAbortButtonSelector);
+            me.$commentSubmitButton = me.$commentForm.find(me.opts.commentSubmitButtonSelector);
+
+            me._on(me.$commentAbortButton, 'click', $.proxy(me.toggleCommentForm, me));
+            me._on(me.$commentSubmitButton, 'click', $.proxy(me.onSubmitCommentForm, me));
         },
 
         /**
