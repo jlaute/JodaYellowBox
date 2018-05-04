@@ -1,4 +1,4 @@
-<?php declare(strict_types=1);
+<?php
 
 declare(strict_types=1);
 
@@ -66,6 +66,7 @@ class Assets implements SubscriberInterface
     {
         return new ArrayCollection([
             $this->jsDir . '/jquery.yellow-box.js',
+            $this->jsDir . '/jquery-ui.js',
         ]);
     }
 }
