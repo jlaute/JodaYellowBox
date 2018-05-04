@@ -3,6 +3,7 @@
 namespace JodaYellowBox\Components\API;
 
 use GuzzleHttp\ClientInterface as GuzzleClientInterface;
+use GuzzleHttp\Message\ResponseInterface as GuzzleResponseInterface;
 
 abstract class AbstractClient implements ClientInterface
 {
@@ -40,9 +41,9 @@ abstract class AbstractClient implements ClientInterface
      * @param string $url
      * @param array  $options
      *
-     * @return \GuzzleHttp\Message\ResponseInterface
+     * @return GuzzleResponseInterface
      */
-    protected function get(string $url, $options = [])
+    protected function get(string $url, $options = []): GuzzleResponseInterface
     {
         $options += [
             'header' => $this->header,
