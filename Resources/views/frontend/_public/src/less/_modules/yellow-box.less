@@ -13,6 +13,34 @@
     .unitize-max-width(@JodaYellowBoxMaxWidth);
     .transition-multiple(width 0.6s ease-out, min-height 0.3s ease-out);
 
+    &.snap--top-left {
+        top: 15px;
+        left: 15px;
+        right: auto;
+        bottom: auto;
+    }
+
+    &.snap--top-right {
+        top: 15px;
+        left: auto;
+        right: 15px;
+        bottom: auto;
+    }
+
+    &.snap--bottom-left {
+        top: auto;
+        left: 15px;
+        right: auto;
+        bottom: 15px;
+    }
+
+    &.snap--bottom-right {
+        top: auto;
+        left: auto;
+        right: 15px;
+        bottom: 15px;
+    }
+
     .close {
         position: absolute;
         background: none;
