@@ -9,6 +9,7 @@ use Enlight\Event\SubscriberInterface;
 class YellowBox implements SubscriberInterface
 {
     const SNAP_COOKIE = 'ybsnap';
+    const MINIMIZE_COOKIE = 'ybmin';
 
     /**
      * @return array
@@ -32,8 +33,10 @@ class YellowBox implements SubscriberInterface
         $releaseManager = $controller->get('joda_yellow_box.services.release_manager');
         $currentRelease = $releaseManager->getCurrentRelease();
         $snapCookie = $request->getCookie(self::SNAP_COOKIE);
+        $minimizeCookie = $request->getCookie(self::MINIMIZE_COOKIE);
 
         $view->assign('currentRelease', $currentRelease);
         $view->assign('snapPosition', $snapCookie);
+        $view->assign('isMinimized', $minimizeCookie);
     }
 }

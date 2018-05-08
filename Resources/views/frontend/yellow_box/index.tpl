@@ -44,13 +44,23 @@
                 </ul>
             {/block}
         </div>
+
+        {* Reject comment form *}
         <form class="comment-form" action="{url controller="YellowBox" action="transition"}" hidden>
-            <div>{s name="comment_header"}{/s}</div><br />
-            <input type="text" name="ticketId" value="" hidden/>
-            <input type="text" name="ticketTransition" value="" hidden/>
-            <textarea name="comment" cols="30" rows="5"></textarea>
-            <button class="btn abort" type="button">{s name="comment_cancel"}{/s}</button>
-            <button class="btn btn-primary" type="submit">{s name="comment_send"}{/s}</button>
+            {block name="frontend_yellow_box_comment_form"}
+                {block name="frontend_yellow_box_comment_form_hidden_inputs"}
+                    <input type="hidden" name="ticketId" />
+                    <input type="hidden" name="ticketTransition" />
+                {/block}
+                {block name="frontend_yellow_box_comment_form_head"}
+                    <div class="comment--head">{s name="comment_header"}{/s}</div>
+                {/block}
+                {block name="frontend_yellow_box_comment_form_content"}
+                    <textarea title="{s name="comment_description"}{/s}" name="comment" cols="30" rows="5">{s name="comment_placeholder"}{/s}</textarea>
+                    <button class="btn abort" type="button">{s name="comment_cancel"}{/s}</button>
+                    <button class="btn btn-primary submit" type="submit">{s name="comment_send"}{/s}</button>
+                {/block}
+            {/block}
         </form>
     </div>
 {/block}

@@ -2,6 +2,7 @@
     'use strict';
 
     const SNAP_COOKIE = 'ybsnap';
+    const MINIMIZE_COOKIE = 'ybmin';
     const CSS_CLASS_DELIMITER = '-';
 
     $.plugin('jodaYellowBox', {
@@ -15,11 +16,13 @@
 
             boxContentSelector: '.box--content',
 
+            closeButtonSelector: '.close',
+
             commentFormSelector: '.comment-form',
 
-            abortButtonSelector: '.abort',
+            commentAbortButtonSelector: '.abort',
 
-            closeButtonSelector: '.close',
+            commentSubmitButtonSelector: '.submit',
 
             rejectTransition: 'reject',
 
@@ -46,16 +49,13 @@
             var me = this;
 
             me.$transitionButtons = $(me.opts.transitionButtonSelector);
-            me.$commentForm = me.$el.find(me.opts.commentFormSelector);
-            me.$abortButton = me.$commentForm.find(me.opts.abortButtonSelector);
-            me.$commentSubmitButton = me.$commentForm.find("button[type='submit']");
             me.$closeButton = me.$el.find(me.opts.closeButtonSelector);
 
-            me._on(me.$closeButton, 'click', $.proxy(me.onCloseClick, me));
             me._on(me.$el, 'click', $.proxy(me.onElementClick, me));
+            me._on(me.$closeButton, 'click', $.proxy(me.onCloseClick, me));
             me._on(me.$transitionButtons, 'click', $.proxy(me.onTransitionButtonClick, me));
-            me._on(me.$abortButton, 'click', $.proxy(me.toggleCommentForm, me));
-            me._on(me.$commentSubmitButton, 'click', $.proxy(me.onSubmitCommentForm, me))
+
+            me.registerCommentEvents();
         },
 
         /**
@@ -121,6 +121,20 @@
         },
 
         /**
+         * Registers the comment events
+         */
+        registerCommentEvents: function () {
+            var me = this;
+
+            me.$commentForm = me.$el.find(me.opts.commentFormSelector);
+            me.$commentAbortButton = me.$commentForm.find(me.opts.commentAbortButtonSelector);
+            me.$commentSubmitButton = me.$commentForm.find(me.opts.commentSubmitButtonSelector);
+
+            me._on(me.$commentAbortButton, 'click', $.proxy(me.toggleCommentForm, me));
+            me._on(me.$commentSubmitButton, 'click', $.proxy(me.onSubmitCommentForm, me));
+        },
+
+        /**
          * Calls when user clicks on close button in yellow box
          */
         onCloseClick: function (event) {
@@ -130,6 +144,7 @@
             event.stopPropagation();
 
             me.$el.toggleClass(me.opts.minimizeClass);
+            me.setMinimizeCookie();
 
             $.publish('plugin/jodaYellowBox/onCloseClick', [ me ]);
         },
@@ -150,6 +165,7 @@
             event.stopPropagation();
 
             me.$el.toggleClass(me.opts.minimizeClass);
+            me.unsetMinimizeCookie();
 
             $.publish('plugin/jodaYellowBox/onElementClick', [ me ]);
         },
@@ -182,7 +198,6 @@
         },
 
         /**
-         *
          * @param ticketId
          * @param $button
          */
@@ -192,12 +207,15 @@
             // Fill the form contents with the existing data
             me.$commentForm.find("input[name='ticketId']").val(ticketId);
             me.$commentForm.find("input[name='ticketTransition']").val(me.opts.rejectTransition);
-            me.$commentForm.find(".ticketnr").html($button.data('ticket-name'));
+            me.$commentForm.find('.ticketnr').html($button.data('ticket-name'));
             me.$commentForm.find('textarea').val($button.closest('.list--entry').find('.existing-comment').html());
 
             me.toggleCommentForm();
         },
 
+        /**
+         * Show or hides the comment box
+         */
         toggleCommentForm: function() {
             var me = this,
                 $boxContent = me.$el.find(me.opts.boxContentSelector);
@@ -247,7 +265,7 @@
             });
         },
 
-        /**
+		/**
          * Gets the vertical snap point
          * @returns {number}
          */
@@ -283,6 +301,20 @@
          */
         setSnapCookie: function (snapPosition) {
             this._setCookie(SNAP_COOKIE, snapPosition);
+        },
+
+        /**
+         * Sets the minimize cookie
+         */
+        setMinimizeCookie: function () {
+            this._setCookie(MINIMIZE_COOKIE, 1);
+        },
+
+        /**
+         * Unsets the minimize cookie
+         */
+        unsetMinimizeCookie: function () {
+            $.removeCookie(MINIMIZE_COOKIE);
         },
 
         /**
