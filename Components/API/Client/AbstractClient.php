@@ -1,6 +1,6 @@
 <?php declare(strict_types=1);
 
-namespace JodaYellowBox\Components\API;
+namespace JodaYellowBox\Components\API\Client;
 
 use GuzzleHttp\ClientInterface as GuzzleClientInterface;
 use GuzzleHttp\Message\ResponseInterface as GuzzleResponseInterface;
