@@ -4,7 +4,7 @@
     {$smarty.block.parent}
 
     {* Yellow box init *}
-    <div class="yellow-box"
+    <div class="yellow-box {if $snapPosition}snap--{$snapPosition}{/if}"
          data-yellow-box="true"
          data-transitionUrl="{url controller="YellowBox" action="transition"}"
     >

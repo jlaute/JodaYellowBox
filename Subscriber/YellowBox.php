@@ -8,6 +8,8 @@ use Enlight\Event\SubscriberInterface;
 
 class YellowBox implements SubscriberInterface
 {
+    const SNAP_COOKIE = 'ybsnap';
+
     /**
      * @return array
      */
@@ -24,10 +26,14 @@ class YellowBox implements SubscriberInterface
     public function onFrontendPostDispatch(\Enlight_Controller_ActionEventArgs $args)
     {
         $controller = $args->getSubject();
-        $releaseManager = $controller->get('joda_yellow_box.services.release_manager');
-
+        $request = $args->getRequest();
         $view = $controller->View();
+
+        $releaseManager = $controller->get('joda_yellow_box.services.release_manager');
         $currentRelease = $releaseManager->getCurrentRelease();
+        $snapCookie = $request->getCookie(self::SNAP_COOKIE);
+
         $view->assign('currentRelease', $currentRelease);
+        $view->assign('snapPosition', $snapCookie);
     }
 }
