@@ -26,6 +26,11 @@
             <tag name="console.command" />
         </service>
 
+        <service id="joda_yellow_box.command.load_fixtures" class="JodaYellowBox\Commands\LoadFixtures">
+            <argument type="string">joda:fixtures:load</argument>
+            <tag name="console.command" />
+        </service>
+
         <!-- Statemachine -->
         <service id="joda_yellow_box.sm.factory" class="SM\Factory\Factory">
             <argument>%joda_yellow_box.sm.configs%</argument>
@@ -39,6 +44,10 @@
         </service>
 
         <!-- Services -->
+        <service id="joda_yellow_box.data_fixtures.fixtures_loader" class="JodaYellowBox\DataFixtures\FixturesLoader">
+            <argument type="service" id="models" />
+        </service>
+
         <service id="joda_yellow_box.ticket_creator" class="JodaYellowBox\Services\TicketCreator">
             <argument type="service" id="models" />
         </service>
