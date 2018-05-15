@@ -84,7 +84,7 @@ class NotificationCenter implements NotificationCenterInterface
      *
      * @param array $notificationsFromConfig
      */
-    public function registerNotificationFromConfig(array $notificationsFromConfig)
+    private function registerNotificationFromConfig(array $notificationsFromConfig)
     {
         foreach ($notificationsFromConfig as $ident) {
             $notification = Shopware()->Container()->get($ident);
