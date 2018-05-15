@@ -97,6 +97,12 @@
             <tag name="shopware.event_subscriber" />
         </service>
 
+        <service id="joda_yellow_box.subscriber.notifications" class="JodaYellowBox\Subscriber\Notifications">
+            <argument type="service" id="joda_yellow_box.components.notification_center.notification_center" />
+            <argument type="service" id="snippets" />
+            <tag name="shopware.event_subscriber" />
+        </service>
+
         <!-- Repositories -->
         <service id="joda_yellow_box.repository.ticket" class="JodaYellowBox\Models\TicketRepository" public="false">
             <argument type="service" id="models" />
