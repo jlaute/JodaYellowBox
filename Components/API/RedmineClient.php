@@ -90,6 +90,17 @@ class RedmineClient extends AbstractClient
     protected function mapProjects(ResponseInterface $response): Projects
     {
         $projects = new Projects();
+        $jsonContent = $response->json();
+
+        foreach ($jsonContent['projects'] as $jsonProject) {
+            $project = new Project();
+            $project->id = $jsonProject['id'];
+            $project->name = $jsonProject['name'];
+            $project->description = $jsonProject['description'];
+            $project->created = $jsonProject['created_on'];
+
+            $projects->add($project);
+        }
 
         return $projects;
     }

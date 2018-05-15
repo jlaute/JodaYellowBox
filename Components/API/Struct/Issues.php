@@ -23,7 +23,7 @@ class Issues implements \Iterator
 
     public function current()
     {
-        $this->issues[$this->position];
+        return $this->issues[$this->position];
     }
 
     public function next()
@@ -33,7 +33,7 @@ class Issues implements \Iterator
 
     public function key()
     {
-        $this->position;
+        return $this->position;
     }
 
     public function valid()
