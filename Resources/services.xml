@@ -46,6 +46,7 @@
         <service id="joda_yellow_box.services.ticket_manager" class="JodaYellowBox\Services\TicketManager">
             <argument type="service" id="joda_yellow_box.repository.ticket" />
             <argument type="service" id="joda_yellow_box.sm.factory" />
+            <argument type="service" id="events" />
         </service>
 
         <service id="joda_yellow_box.services.release_manager" class="JodaYellowBox\Services\ReleaseManager">
