@@ -58,6 +58,11 @@
             <argument type="service" id="shopware.plugin.cached_config_reader" />
         </service>
 
+        <!-- Notification center -->
+        <service id="joda_yellow_box.components.notification_center.notification_center" class="JodaYellowBox\Components\NotificationCenter\NotificationCenter">
+            <argument type="expression">service('joda_yellow_box.services.plugin_config').getNotifications()</argument>
+        </service>
+
         <service id="joda_yellow_box.notification.email" class="JodaYellowBox\Components\NotificationCenter\Notifications\EmailNotification">
             <argument type="service" id="mail" />
             <argument type="expression">service('joda_yellow_box.services.plugin_config').getNotificationEmails()</argument>
