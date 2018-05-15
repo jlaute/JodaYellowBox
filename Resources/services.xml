@@ -58,6 +58,13 @@
             <argument type="service" id="shopware.plugin.cached_config_reader" />
         </service>
 
+        <service id="joda_yellow_box.notification.email" class="JodaYellowBox\Components\NotificationCenter\Notifications\EmailNotification">
+            <argument type="service" id="mail" />
+            <argument type="expression">service('joda_yellow_box.services.plugin_config').getNotificationEmails()</argument>
+        </service>
+        <service id="joda_yellow_box.notification.sms" class="JodaYellowBox\Components\NotificationCenter\Notifications\SmsNotification" />
+        <service id="joda_yellow_box.notification.telegram" class="JodaYellowBox\Components\NotificationCenter\Notifications\TelegramNotification" />
+
         <!-- State logger -->
         <service id="joda_yellow_box.doctrine.ticket_subscriber" class="JodaYellowBox\Doctrine\TicketSubscriber">
             <tag name="doctrine.event_subscriber" />
