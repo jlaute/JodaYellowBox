@@ -11,5 +11,5 @@ interface NotificationInterface
      *
      * @return bool
      */
-    public function send(string $message);
+    public function send(string $message): bool;
 }

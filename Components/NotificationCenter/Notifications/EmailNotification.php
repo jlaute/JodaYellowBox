@@ -43,7 +43,7 @@ class EmailNotification implements NotificationInterface
      *
      * @return bool
      */
-    public function send(string $message)
+    public function send(string $message): bool
     {
         $this->mail->addTo($this->to);
         $this->mail->setFrom('developer@isento-ecommerce.de', 'Yellow Box');

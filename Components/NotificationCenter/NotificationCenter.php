@@ -30,7 +30,7 @@ class NotificationCenter implements NotificationCenterInterface
         /** @var NotificationInterface $notification */
         foreach ($this->notifications as $notification) {
             try {
-                $sent = $notification->send($message);
+                $notification->send($message);
             } catch (NotificationException $ex) {
                 // log error and try next notification
                 continue;
@@ -43,7 +43,7 @@ class NotificationCenter implements NotificationCenterInterface
      *
      * @return bool
      */
-    public function existsNotification(string $name)
+    public function existsNotification(string $name): bool
     {
         return isset($this->notifications[$name]);
     }
