@@ -17,7 +17,7 @@ class PluginConfigSpec extends ObjectBehavior
     {
         $configReader->getByPluginName('JodaYellowBox')->willReturn([
             'testConfig' => 'test',
-            'JodaYellowBoxMaxWidth' => 100
+            'JodaYellowBoxMaxWidth' => 100,
         ]);
 
         $this->beConstructedWith('JodaYellowBox', $configReader);
@@ -57,6 +57,44 @@ class PluginConfigSpec extends ObjectBehavior
     {
         $this->getLessConfiguration()->shouldReturn([
             'JodaYellowBoxMaxWidth' => 100
+        ]);
+    }
+
+    function it_is_able_to_get_release_to_display()
+    {
+        $this->set('JodaYellowBoxReleaseToDisplay', 'Release 1');
+        $this->getReleaseToDisplay()->shouldReturn('Release 1');
+    }
+
+    function it_is_able_to_check_notifications_enabled()
+    {
+        $this->isNotificationEnabled()->shouldReturn(false);
+        $this->set('JodaYellowBoxNotificationsEnabled', 1);
+        $this->isNotificationEnabled()->shouldReturn(true);
+    }
+
+    function it_is_able_to_get_various_notifications()
+    {
+        $this->getNotifications()->shouldReturn([]);
+
+        $this->set('JodaYellowBoxNotifications', ['n1', 'n2']);
+        $this->getNotifications()->shouldReturn(['n1', 'n2']);
+    }
+
+    function it_is_able_to_get_notification_emails()
+    {
+        // empty
+        $this->set('JodaYellowBoxNotificationEmails', '');
+        $this->getNotificationEmails()->shouldReturn([]);
+        // semicolon only
+        $this->set('JodaYellowBoxNotificationEmails', ';');
+        $this->getNotificationEmails()->shouldReturn([]);
+        // whitespace tests
+        $this->set('JodaYellowBoxNotificationEmails', 'test@joda.de; test1@joda.de  ;  test2@joda.de');
+        $this->getNotificationEmails()->shouldReturn([
+            'test@joda.de',
+            'test1@joda.de',
+            'test2@joda.de',
         ]);
     }
 }

@@ -26,4 +26,25 @@ interface PluginConfigInterface
      * @return string
      */
     public function getReleaseToDisplay(): string;
+
+    /**
+     * Checks if Notification is enabled
+     *
+     * @return bool
+     */
+    public function isNotificationEnabled(): bool;
+
+    /**
+     * Gets the selected notifications from config
+     *
+     * @return array
+     */
+    public function getNotifications(): array;
+
+    /**
+     * Gets the configured notification email addresses
+     *
+     * @return array
+     */
+    public function getNotificationEmails(): array;
 }
