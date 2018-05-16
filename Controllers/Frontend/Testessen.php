@@ -21,7 +21,5 @@ class Shopware_Controllers_Frontend_Testessen extends \Enlight_Controller_Action
         } catch (DBALException $ex) {
             die('Fixtures could not be loaded');
         }
-
-        $this->view->loadTemplate('frontend/yellow_box/testessen.tpl');
     }
 }
