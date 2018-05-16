@@ -38,7 +38,7 @@
                                 <li class="list--entry">{s name="ticket_list_no_release_tickets"}{/s}</li>
                             {/foreach}
                         {else}
-                            <li>{s name="ticket_list_no_release"}{/s}</li>
+                            <li class="list--entry">{s name="ticket_list_no_release"}{/s}</li>
                         {/if}
                     {/block}
                 </ul>
