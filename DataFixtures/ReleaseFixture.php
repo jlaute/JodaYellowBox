@@ -10,6 +10,6 @@ class ReleaseFixture extends Fixture
 {
     public function create()
     {
-        $this->fixtureData[] = new Release('JODA-Release v1.0.0');
+        $this->fixtureData[] = new Release('Testessen');
     }
 }

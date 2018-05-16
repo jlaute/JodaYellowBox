@@ -14,6 +14,7 @@ class FixturesLoader
      * @var bool
      */
     protected $deleteAll = false;
+
     /**
      * @var EntityManagerInterface
      */

@@ -30,9 +30,10 @@ class TicketFixture extends Fixture
 
     public function create()
     {
-        $this->fixtureData[] = new Ticket('Ticket 1', 'JODA-001', 'Ich bin eine Test Beschreibung');
-        $this->fixtureData[] = new Ticket('Ticket 2', 'JODA-002', 'Ich bin eine Test Beschreibung');
-        $this->fixtureData[] = new Ticket('Ticket 3', 'JODA-003', 'Ich bin eine Test Beschreibung');
+        $this->fixtureData[] = new Ticket('Der Footer des Shops soll 3 Spaltig sein', 'YB-001');
+        $this->fixtureData[] = new Ticket('Auf der Startseite soll ein Banner mit einem Haus eingefügt werden', 'YB-002');
+        $this->fixtureData[] = new Ticket('In der Shop-Navigation soll der Blog eingebunden werden', 'YB-003');
+        $this->fixtureData[] = new Ticket('In der Suche soll der Platzhalter `Suchbegriff...` stehen', 'YB-004');
     }
 
     public function load()
