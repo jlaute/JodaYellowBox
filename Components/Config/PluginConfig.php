@@ -30,9 +30,7 @@ class PluginConfig extends ArrayCollection implements PluginConfigInterface
      */
     public function getLessConfiguration(): array
     {
-        return [
-            'JodaYellowBoxMaxWidth' => $this->get('JodaYellowBoxMaxWidth'),
-        ];
+        return [];
     }
 
     /**
