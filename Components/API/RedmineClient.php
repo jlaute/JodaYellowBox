@@ -41,8 +41,28 @@ class RedmineClient extends AbstractClient
     {
         $params = [];
         if ($project) {
-            $params = ['project_id' => $project->id];
+            $params = [
+                'query' => [
+                    'project_id' => $project->id,
+                ],
+            ];
         }
+
+        $response = $this->get('/issues.' . ClientInterface::REQUEST_FORMAT, $params);
+
+        return $this->mapIssues($response);
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function getIssuesByVersion(Version $version): Issues
+    {
+        $params = [
+            'query' => [
+                'fixed_version_id' => $version->id,
+            ],
+        ];
 
         $response = $this->get('/issues.' . ClientInterface::REQUEST_FORMAT, $params);
 
@@ -115,8 +135,13 @@ class RedmineClient extends AbstractClient
             $version = new Version();
             $version->id = $jsonVersion['id'];
             $version->name = $jsonVersion['name'];
-            $version->date = $jsonVersion['created_on'];
             $version->description = $jsonVersion['description'];
+
+            $datetime = new \DateTime();
+            $datetime->setTimestamp(strtotime($jsonVersion['created_on']));
+            $version->date = $datetime;
+
+            $versions->add($version);
         }
 
         return $versions;

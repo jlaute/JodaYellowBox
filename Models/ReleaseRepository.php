@@ -2,6 +2,7 @@
 
 namespace JodaYellowBox\Models;
 
+use Doctrine\ORM\EntityRepository;
 use Doctrine\ORM\Query;
 use Doctrine\ORM\Tools\Pagination\Paginator;
 use Shopware\Components\Model\ModelManager;
@@ -16,11 +17,25 @@ class ReleaseRepository
     /**
      * @var ModelManager
      */
+    private $modelManager;
+
+    /**
+     * @var EntityRepository
+     */
     private $repository;
 
     public function __construct(ModelManager $em)
     {
+        $this->modelManager = $em;
         $this->repository = $em->getRepository(Release::class);
+    }
+
+    /**
+     * @return array|Release[]
+     */
+    public function findAll(): array
+    {
+        return $this->repository->findAll();
     }
 
     /**
@@ -52,6 +67,19 @@ class ReleaseRepository
         $paginator = $this->createPaginator($query);
 
         return $paginator->getIterator()->current();
+    }
+
+    /**
+     * @param Release $release
+     */
+    public function add(Release $release)
+    {
+        $this->modelManager->persist($release);
+    }
+
+    public function save()
+    {
+        $this->modelManager->flush();
     }
 
     /**

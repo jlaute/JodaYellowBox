@@ -2,7 +2,9 @@
 
 namespace JodaYellowBox\Services;
 
-use JodaYellowBox\Components\Config\PluginConfigInterface;
+use JodaYellowBox\Components\API\Client\ClientInterface;
+use JodaYellowBox\Components\API\Struct\Project;
+use JodaYellowBox\Components\API\Struct\Version;
 use JodaYellowBox\Models\Release;
 use JodaYellowBox\Models\ReleaseRepository;
 
@@ -14,32 +16,37 @@ class ReleaseManager implements ReleaseManagerInterface
     protected $releaseRepository;
 
     /**
-     * @var PluginConfigInterface
+     * @var ClientInterface
      */
-    protected $config;
+    protected $client;
 
     /**
-     * @param ReleaseRepository     $releaseRepository
-     * @param PluginConfigInterface $config
+     * @var string
      */
-    public function __construct(ReleaseRepository $releaseRepository, PluginConfigInterface $config)
-    {
+    protected $releaseToDisplay;
+
+    /**
+     * @param ReleaseRepository $releaseRepository
+     * @param ClientInterface   $client
+     * @param string            $releaseToDisplay
+     */
+    public function __construct(
+        ReleaseRepository $releaseRepository,
+        ClientInterface $client,
+        string $releaseToDisplay
+    ) {
         $this->releaseRepository = $releaseRepository;
-        $this->config = $config;
+        $this->client = $client;
+        $this->releaseToDisplay = $releaseToDisplay;
     }
 
     /**
-     * Returns 'latest' when 'latest' is configured in plugin config and no corresponding release could be found
-     * Returns the ticket name when it is not 'latest'
-     *
-     * @return string
+     * {@inheritdoc}
      */
     public function getCurrentReleaseName(): string
     {
-        $releaseToDisplay = $this->config->getReleaseToDisplay();
-
-        if ($releaseToDisplay !== 'latest') {
-            return $releaseToDisplay;
+        if ($this->releaseToDisplay !== 'latest') {
+            return $this->releaseToDisplay;
         }
 
         $latestRelease = $this->releaseRepository->findLatestRelease();
@@ -51,16 +58,55 @@ class ReleaseManager implements ReleaseManagerInterface
     }
 
     /**
-     * @return Release|null
+     * {@inheritdoc}
      */
-    public function getCurrentRelease()
+    public function getCurrentRelease(): Release
     {
-        $releaseToDisplay = $this->config->getReleaseToDisplay();
-
-        if ($releaseToDisplay === 'latest') {
+        if ($this->releaseToDisplay === 'latest') {
             return $this->releaseRepository->findLatestRelease();
         }
 
-        return $this->releaseRepository->findReleaseByName($releaseToDisplay);
+        return $this->releaseRepository->findReleaseByName($this->releaseToDisplay);
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function syncReleasesFromRemote()
+    {
+        $project = new Project();
+        $project->id = 102;
+
+        $versions = $this->client->getVersionsInProject($project);
+        $newReleases = [];
+
+        $releases = $this->releaseRepository->findAll();
+        foreach ($versions as $version) {
+            if (!$this->isVersionInReleases($version, $releases)) {
+                $newReleases[] = new Release($version->name, $version->date, (string) $version->id);
+            }
+        }
+
+        foreach ($newReleases as $newRelease) {
+            $this->releaseRepository->add($newRelease);
+        }
+        $this->releaseRepository->save();
+    }
+
+    /**
+     * @param Version         $version
+     * @param array|Release[] $releases
+     *
+     * @return bool
+     */
+    protected function isVersionInReleases(Version $version, array $releases): bool
+    {
+        foreach ($releases as $release) {
+            if ($release->getExternalId() === $version->id) {
+                return true;
+            }
+        }
+
+        return false;
     }
 }

@@ -16,6 +16,11 @@ class Versions implements \Iterator
         $this->versions = new ArrayCollection();
     }
 
+    public function add(Version $version)
+    {
+        $this->versions->add($version);
+    }
+
     public function current(): Version
     {
         return $this->versions[$this->position];
