@@ -46,7 +46,7 @@
         </div>
 
         {* Reject comment form *}
-        <form class="comment-form" action="{url controller="YellowBox" action="transition"}" hidden>
+        <form class="comment-form" action="{url module="widgets" controller="YellowBox" action="transition"}" hidden>
             {block name="frontend_yellow_box_comment_form"}
                 {block name="frontend_yellow_box_comment_form_hidden_inputs"}
                     <input type="hidden" name="ticketId" />

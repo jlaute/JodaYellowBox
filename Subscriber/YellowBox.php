@@ -17,14 +17,14 @@ class YellowBox implements SubscriberInterface
     public static function getSubscribedEvents()
     {
         return [
-            'Enlight_Controller_Action_PostDispatchSecure_Frontend' => 'onFrontendPostDispatch',
+            'Enlight_Controller_Action_PostDispatchSecure_Widgets_YellowBox' => 'onWidgetPostDispatch',
         ];
     }
 
     /**
      * @param \Enlight_Controller_ActionEventArgs $args
      */
-    public function onFrontendPostDispatch(\Enlight_Controller_ActionEventArgs $args)
+    public function onWidgetPostDispatch(\Enlight_Controller_ActionEventArgs $args)
     {
         $controller = $args->getSubject();
         $request = $args->getRequest();
