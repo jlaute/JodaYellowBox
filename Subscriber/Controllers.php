@@ -28,6 +28,7 @@ class Controllers implements SubscriberInterface
     {
         return [
             'Enlight_Controller_Dispatcher_ControllerPath_Frontend_YellowBox' => 'onFrontendYellowBox',
+            'Enlight_Controller_Dispatcher_ControllerPath_Frontend_Testessen' => 'onFrontendTestessen',
         ];
     }
 
@@ -37,5 +38,13 @@ class Controllers implements SubscriberInterface
     public function onFrontendYellowBox()
     {
         return $this->pluginDir . '/Controllers/Frontend/YellowBox.php';
+    }
+
+    /**
+     * @return string
+     */
+    public function onFrontendTestessen()
+    {
+        return $this->pluginDir . '/Controllers/Frontend/Testessen.php';
     }
 }
