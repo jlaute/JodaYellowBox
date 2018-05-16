@@ -40,6 +40,7 @@
             me.applyDataAttributes();
             me.registerEvents();
             me.registerDragAndDrop();
+            me.registerMinimizedState();
 
             $.publish('plugin/jodaYellowBox/init', [ me ]);
         },
@@ -137,6 +138,21 @@
         },
 
         /**
+         * Registers the minimized state
+         */
+        registerMinimizedState: function () {
+            var me = this;
+
+            if (!me.$el.hasClass(me.opts.minimizeClass)) {
+                return;
+            }
+
+            me.$el.find(me.opts.listEntrySelector).css({
+                'white-space': 'nowrap'
+            });
+        },
+
+        /**
          * Calls when user clicks on close button in yellow box
          */
         onCloseClick: function (event) {
@@ -146,6 +162,10 @@
             event.stopPropagation();
 
             me.$el.toggleClass(me.opts.minimizeClass);
+            me.$el.find(me.opts.listEntrySelector).css({
+                'white-space': 'nowrap'
+            });
+
             me.setMinimizeCookie();
 
             $.publish('plugin/jodaYellowBox/onCloseClick', [ me ]);
@@ -167,6 +187,12 @@
             event.stopPropagation();
 
             me.$el.toggleClass(me.opts.minimizeClass);
+
+            me.$el.find(me.opts.listEntrySelector).delay(175).queue(function() {
+                $(this).css('white-space', 'normal');
+                $(this).dequeue();
+            });
+
             me.unsetMinimizeCookie();
 
             $.publish('plugin/jodaYellowBox/onElementClick', [ me ]);
