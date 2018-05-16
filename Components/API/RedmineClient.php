@@ -9,6 +9,7 @@ use JodaYellowBox\Components\API\Struct\Issue;
 use JodaYellowBox\Components\API\Struct\Issues;
 use JodaYellowBox\Components\API\Struct\Project;
 use JodaYellowBox\Components\API\Struct\Projects;
+use JodaYellowBox\Components\API\Struct\Version;
 use JodaYellowBox\Components\API\Struct\Versions;
 
 class RedmineClient extends AbstractClient
@@ -108,6 +109,15 @@ class RedmineClient extends AbstractClient
     protected function mapVersions(ResponseInterface $response): Versions
     {
         $versions = new Versions();
+        $jsonContent = $response->json();
+
+        foreach ($jsonContent['versions'] as $jsonVersion) {
+            $version = new Version();
+            $version->id = $jsonVersion['id'];
+            $version->name = $jsonVersion['name'];
+            $version->date = $jsonVersion['created_on'];
+            $version->description = $jsonVersion['description'];
+        }
 
         return $versions;
     }

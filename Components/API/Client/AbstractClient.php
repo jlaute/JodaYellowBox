@@ -43,10 +43,10 @@ abstract class AbstractClient implements ClientInterface
      *
      * @return GuzzleResponseInterface
      */
-    protected function get(string $url, $options = []): GuzzleResponseInterface
+    protected function get(string $url, array $options = []): GuzzleResponseInterface
     {
         $options += [
-            'header' => $this->header,
+            'headers' => $this->header,
         ];
 
         return $this->guzzleClient->get($url, $options);

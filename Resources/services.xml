@@ -63,7 +63,7 @@
             <argument type="expression">service('joda_yellow_box.services.plugin_config').getApiUrl()</argument>
         </service>
 
-        <service id="joda_yellow_box.api_client" class="JodaYellowBox\Components\API\AbstractClient">
+        <service id="joda_yellow_box.api_client" class="JodaYellowBox\Components\API\Client\AbstractClient">
             <factory class="JodaYellowBox\Components\API\Factory\ApiClientFactory" method="createApiClient" />
             <argument type="service" id="joda_yellow_box.guzzle_client" />
             <argument type="expression">service('joda_yellow_box.services.plugin_config').getManagementToolName()</argument>

@@ -21,7 +21,7 @@ class Issues implements \Iterator
         $this->issues->add($issue);
     }
 
-    public function current()
+    public function current(): Issue
     {
         return $this->issues[$this->position];
     }
@@ -31,12 +31,12 @@ class Issues implements \Iterator
         ++$this->position;
     }
 
-    public function key()
+    public function key(): int
     {
         return $this->position;
     }
 
-    public function valid()
+    public function valid(): bool
     {
         return isset($this->issues[$this->position]);
     }

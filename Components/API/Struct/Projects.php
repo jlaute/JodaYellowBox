@@ -21,7 +21,7 @@ class Projects implements \Iterator
         $this->projects->add($project);
     }
 
-    public function current()
+    public function current(): Project
     {
         return $this->projects[$this->position];
     }
@@ -31,12 +31,12 @@ class Projects implements \Iterator
         ++$this->position;
     }
 
-    public function key()
+    public function key(): int
     {
         return $this->position;
     }
 
-    public function valid()
+    public function valid(): bool
     {
         return isset($this->projects[$this->position]);
     }

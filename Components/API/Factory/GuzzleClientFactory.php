@@ -11,10 +11,10 @@ class GuzzleClientFactory
      *
      * @return Client
      */
-    public static function createGuzzleClient(string $url = '')
+    public static function createGuzzleClient(string $url = ''): Client
     {
         return new Client([
-            'base_uri' => $url,
+            'base_url' => $url,
         ]);
     }
 }

@@ -2,21 +2,22 @@
 
 namespace JodaYellowBox\Components\API\Factory;
 
-use GuzzleHttp\ClientInterface;
+use GuzzleHttp\ClientInterface as GuzzleClientInterface;
+use JodaYellowBox\Components\API\Client\ClientInterface;
 use JodaYellowBox\Components\API\RedmineClient;
 
 class ApiClientFactory
 {
     /**
-     * @param ClientInterface $client
-     * @param string          $projectManagementToolName
-     * @param string          $apiKey
+     * @param GuzzleClientInterface $client
+     * @param string                $projectManagementToolName
+     * @param string                $apiKey
      *
      * @throws ClientNotExistException
      *
-     * @return \JodaYellowBox\Components\API\ClientInterface
+     * @return ClientInterface
      */
-    public static function createApiClient(ClientInterface $client, string $projectManagementToolName, string $apiKey)
+    public static function createApiClient(GuzzleClientInterface $client, string $projectManagementToolName, string $apiKey)
     {
         if ($projectManagementToolName === 'Redmine') {
             return new RedmineClient($client, $apiKey);
