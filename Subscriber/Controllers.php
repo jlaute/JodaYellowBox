@@ -27,15 +27,15 @@ class Controllers implements SubscriberInterface
     public static function getSubscribedEvents()
     {
         return [
-            'Enlight_Controller_Dispatcher_ControllerPath_Frontend_YellowBox' => 'onFrontendYellowBox',
+            'Enlight_Controller_Dispatcher_ControllerPath_Widgets_YellowBox' => 'onWidgetYellowBox',
         ];
     }
 
     /**
      * @return string
      */
-    public function onFrontendYellowBox()
+    public function onWidgetYellowBox()
     {
-        return $this->pluginDir . '/Controllers/Frontend/YellowBox.php';
+        return $this->pluginDir . '/Controllers/Widgets/YellowBox.php';
     }
 }
