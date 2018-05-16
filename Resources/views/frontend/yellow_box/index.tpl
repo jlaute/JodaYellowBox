@@ -1,5 +1,5 @@
 {block name="frontend_yellow_box_inner"}
-    <div class="button btn close"><i class="icon--cross"></i></div>
+    <div class="button btn close"><i class="icon--minus3"></i></div>
     <div class="yellow-box--inner">
         <div class="box--info box--{if $success}success{else}error{/if}">
             {if $success}
