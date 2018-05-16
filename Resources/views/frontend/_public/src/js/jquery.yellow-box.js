@@ -26,7 +26,9 @@
 
             rejectTransition: 'reject',
 
-            cookieLeaseDays: 30
+            cookieLeaseDays: 30,
+
+            listEntrySelector: '.list--entry'
         },
 
         /**
@@ -208,7 +210,7 @@
             me.$commentForm.find("input[name='ticketId']").val(ticketId);
             me.$commentForm.find("input[name='ticketTransition']").val(me.opts.rejectTransition);
             me.$commentForm.find('.ticketnr').html($button.data('ticket-name'));
-            me.$commentForm.find('textarea').val($button.closest('.list--entry').find('.existing-comment').html());
+            me.$commentForm.find('textarea').val($button.closest(me.opts.listEntrySelector).find('.existing-comment').html());
 
             me.toggleCommentForm();
         },
