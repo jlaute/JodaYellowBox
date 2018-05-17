@@ -66,7 +66,7 @@ class PluginConfig extends ArrayCollection implements PluginConfigInterface
      */
     public function getNotificationEmails(): array
     {
-        $email = $this->get('JodaYellowBoxNotificationEmails');
+        $email = (string) $this->get('JodaYellowBoxNotificationEmails');
 
         return $this->stringToArray($email);
     }
@@ -74,14 +74,14 @@ class PluginConfig extends ArrayCollection implements PluginConfigInterface
     /**
      * Converts a string to an array by given delimiter
      *
-     * @param $string
+     * @param string $string
      * @param string $delimiter
      *
      * @return array
      */
-    private function stringToArray($string, $delimiter = self::EXPLODE_DELIMITER)
+    private function stringToArray(string $string, $delimiter = self::EXPLODE_DELIMITER)
     {
-        $emails = array_filter(explode(self::EXPLODE_DELIMITER, $string));
+        $emails = array_filter(explode($delimiter, $string));
 
         return array_map('trim', $emails);
     }
