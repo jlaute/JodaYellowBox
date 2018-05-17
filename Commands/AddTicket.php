@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace JodaYellowBox\Commands;
 
-use JodaYellowBox\Components\Ticket\TicketAlreadyExistException;
+use JodaYellowBox\Exception\TicketAlreadyExistException;
 use Shopware\Commands\ShopwareCommand;
 use Symfony\Component\Console\Input\InputArgument;
 use Symfony\Component\Console\Input\InputInterface;
