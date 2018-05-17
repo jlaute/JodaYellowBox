@@ -11,5 +11,49 @@
             <description lang="de">Tickets aus diesem Release werden im Frontend angezeigt. Namen des Releases angeben oder 'latest' für das neueste</description>
             <description lang="en">Tickets in that release will be displayed in frontend. Type in the name of the release or 'latest' for the newest one</description>
         </element>
+
+        <element type="boolean">
+            <name>JodaYellowBoxNotificationsEnabled</name>
+            <label lang="de">Benachrichtigungen einschalten?</label>
+            <label lang="en">Notifications enabled?</label>
+            <value>false</value>
+        </element>
+
+        <element type="combo">
+            <name>JodaYellowBoxNotifications</name>
+            <label lang="de">Benachrichtigungen</label>
+            <label lang="en">Notifications</label>
+            <store>
+                <option>
+                    <!-- value: of service which should be loaded -->
+                    <value>joda_yellow_box.notification.email</value>
+                    <label lang="de">Email Benachrichtigung</label>
+                    <label lang="en">Email notification</label>
+                </option>
+                <option>
+                    <!-- value: of service which should be loaded -->
+                    <value>joda_yellow_box.notification.sms</value>
+                    <label lang="de">SMS Benachrichtigung</label>
+                    <label lang="en">SMS notification</label>
+                </option>
+                <option>
+                    <!-- value: name of service which should be loaded -->
+                    <value>joda_yellow_box.notification.telegram</value>
+                    <label lang="de">Telegram Benachrichtigung</label>
+                    <label lang="en">Telegram notification</label>
+                </option>
+            </store>
+            <options>
+                <multiSelect>true</multiSelect>
+            </options>
+        </element>
+
+        <element type="text">
+            <name>JodaYellowBoxNotificationEmails</name>
+            <label lang="de">Benachrichtigungs E-Mail-Adresse</label>
+            <label lang="en">Notification email-address</label>
+            <description lang="de">Mehrere Adressen müssen mit `;` seperiert werden.</description>
+            <description lang="en">More addresses have to separated by `;`.</description>
+        </element>
     </elements>
 </config>

@@ -1,4 +1,8 @@
-<?php declare(strict_types=1);
+<?php
+
+declare(strict_types=1);
+
+use JodaYellowBox\Exception\ChangeStateException;
 use JodaYellowBox\Services\TicketManager;
 use SM\Factory\Factory;
 
@@ -45,7 +49,7 @@ class Shopware_Controllers_Frontend_YellowBox extends \Enlight_Controller_Action
 
         try {
             $this->ticketManager->changeState($ticket, $ticketTransition);
-        } catch (\JodaYellowBox\Exception\ChangeStateException $ex) {
+        } catch (ChangeStateException $ex) {
             // Invalid transition state
             return $this->view->assign([
                 'success' => false,

@@ -23,13 +23,23 @@ class TicketManager implements TicketManagerInterface
     protected $stateMachineFactory;
 
     /**
-     * @param TicketRepository    $ticketRepository
-     * @param StateMachineFactory $stateMachineFactory
+     * @var \Enlight_Event_EventManager
      */
-    public function __construct(TicketRepository $ticketRepository, StateMachineFactory $stateMachineFactory)
-    {
+    private $eventManager;
+
+    /**
+     * @param TicketRepository            $ticketRepository
+     * @param StateMachineFactory         $stateMachineFactory
+     * @param \Enlight_Event_EventManager $eventManager
+     */
+    public function __construct(
+        TicketRepository $ticketRepository,
+        StateMachineFactory $stateMachineFactory,
+        \Enlight_Event_EventManager $eventManager
+    ) {
         $this->ticketRepository = $ticketRepository;
         $this->stateMachineFactory = $stateMachineFactory;
+        $this->eventManager = $eventManager;
     }
 
     /**
@@ -74,6 +84,12 @@ class TicketManager implements TicketManagerInterface
         try {
             $stateMachine = $this->stateMachineFactory->get($ticket);
             $stateMachine->apply($state);
+
+            $this->eventManager->notify('YellowBox_onChangeTicketState', [
+                'subject' => $this,
+                'state' => $state,
+                'ticket' => $ticket,
+            ]);
         } catch (SMException $e) {
             throw new ChangeStateException(
                 sprintf('State "%s" for Ticket %s could not be applied!', $state, $ticket->getName())
