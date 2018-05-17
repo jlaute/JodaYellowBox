@@ -60,7 +60,7 @@ class ReleaseManager implements ReleaseManagerInterface
     /**
      * {@inheritdoc}
      */
-    public function getCurrentRelease(): Release
+    public function getCurrentRelease()
     {
         if ($this->releaseToDisplay === 'latest') {
             return $this->releaseRepository->findLatestRelease();

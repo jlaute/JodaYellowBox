@@ -17,7 +17,7 @@ interface ReleaseManagerInterface
     /**
      * @return Release|null
      */
-    public function getCurrentRelease(): Release;
+    public function getCurrentRelease();
 
     /**
      * Updates releases when remote API is set
