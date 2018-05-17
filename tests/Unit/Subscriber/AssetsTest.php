@@ -37,6 +37,7 @@ class AssetsTest extends TestCase
                 ],
                 'js' => [
                     'jquery.yellow-box.js',
+                    'jquery.yellow-ui.js',
                     'jquery.unused.js',
                 ],
             ],
