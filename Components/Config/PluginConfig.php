@@ -46,6 +46,14 @@ class PluginConfig extends ArrayCollection implements PluginConfigInterface
     /**
      * {@inheritdoc}
      */
+    public function getExternalProjectId(): string
+    {
+        return (string) $this->get('JodaYellowBoxExternalProjectId');
+    }
+
+    /**
+     * {@inheritdoc}
+     */
     public function getApiUrl(): string
     {
         return (string) $this->get('JodaYellowBoxApiUrl');

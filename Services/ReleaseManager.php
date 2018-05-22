@@ -2,6 +2,7 @@
 
 namespace JodaYellowBox\Services;
 
+use JodaYellowBox\Components\API\ApiException;
 use JodaYellowBox\Components\API\Client\ClientInterface;
 use JodaYellowBox\Components\API\Struct\Project;
 use JodaYellowBox\Components\API\Struct\Version;
@@ -26,18 +27,26 @@ class ReleaseManager implements ReleaseManagerInterface
     protected $releaseToDisplay;
 
     /**
+     * @var string
+     */
+    protected $externalProjectId;
+
+    /**
      * @param ReleaseRepository $releaseRepository
      * @param ClientInterface   $client
      * @param string            $releaseToDisplay
+     * @param string            $externalProjectId
      */
     public function __construct(
         ReleaseRepository $releaseRepository,
         ClientInterface $client,
-        string $releaseToDisplay
+        string $releaseToDisplay,
+        string $externalProjectId = ''
     ) {
         $this->releaseRepository = $releaseRepository;
         $this->client = $client;
         $this->releaseToDisplay = $releaseToDisplay;
+        $this->externalProjectId = $externalProjectId;
     }
 
     /**
@@ -72,8 +81,15 @@ class ReleaseManager implements ReleaseManagerInterface
     /**
      * {@inheritdoc}
      */
-    public function syncReleasesFromRemote(Project $project)
+    public function syncReleasesFromRemote()
     {
+        if (!$this->externalProjectId) {
+            throw new ApiException('No external Project-ID is defined. Define it in the plugin config');
+        }
+
+        $project = new Project();
+        $project->id = $this->externalProjectId;
+
         $versions = $this->client->getVersionsInProject($project);
         $versionIds = [];
         foreach ($versions as $version) {

@@ -28,6 +28,11 @@ interface PluginConfigInterface
     /**
      * @return string
      */
+    public function getExternalProjectId(): string;
+
+    /**
+     * @return string
+     */
     public function getApiUrl(): string;
 
     /**

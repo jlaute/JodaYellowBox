@@ -20,6 +20,14 @@
             <description lang="en">Tickets in that release will be displayed in frontend. Type in the name of the release or 'latest' for the newest one</description>
         </element>
 
+        <element required="false" scope="shop">
+            <name>JodaYellowBoxExternalProjectId</name>
+            <label lang="de">Externe Projekt-ID</label>
+            <label lang="en">External project ID</label>
+            <description lang="de">Projekt-ID aus der externen Projektmanagement-Software</description>
+            <description lang="en">Project-ID from the external Projectmanagement-Tool</description>
+        </element>
+
         <element scope="shop">
             <name>JodaYellowBoxApiUrl</name>
             <label lang="de">URL zur Projektmanagement API</label>

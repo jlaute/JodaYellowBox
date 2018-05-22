@@ -53,6 +53,7 @@
             <argument type="service" id="joda_yellow_box.repository.release" />
             <argument type="service" id="joda_yellow_box.api_client" />
             <argument type="expression">service('joda_yellow_box.services.plugin_config').getReleaseToDisplay()</argument>
+            <argument type="expression">service('joda_yellow_box.services.plugin_config').getExternalProjectId()</argument>
         </service>
 
         <service id="joda_yellow_box.services.plugin_config" class="JodaYellowBox\Components\Config\PluginConfig">
