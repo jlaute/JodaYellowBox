@@ -75,12 +75,16 @@ class ReleaseManager implements ReleaseManagerInterface
     public function syncReleasesFromRemote(Project $project)
     {
         $versions = $this->client->getVersionsInProject($project);
-
-        $releases = $this->releaseRepository->findAll();
+        $versionIds = [];
         foreach ($versions as $version) {
-            if (!$this->isVersionInReleases($version, $releases)) {
+            $versionIds[] = $version->id;
+        }
+
+        $existingReleases = $this->releaseRepository->findByExternalIds($versionIds);
+        foreach ($versions as $key => $version) {
+            if (!$this->isVersionInReleases($version, $existingReleases)) {
                 $this->releaseRepository->add(
-                    new Release($version->name, $version->date, (string) $version->id)
+                    new Release($version->name, $version->date, $version->id)
                 );
             }
         }

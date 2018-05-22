@@ -39,11 +39,26 @@ class ReleaseRepository
     }
 
     /**
+     * @param array $externalIds
+     *
+     * @return array|Release[]
+     */
+    public function findByExternalIds(array $externalIds): array
+    {
+        $qb = $this->repository->createQueryBuilder('release')
+            ->select('release');
+        $query = $qb->where($qb->expr()->in('release.externalId', $externalIds))
+            ->getQuery();
+
+        return $query->getResult();
+    }
+
+    /**
      * @return Release|null
      */
     public function findLatestRelease()
     {
-        $qb = $this->createBasicQueryBuilder();
+        $qb = $this->createBasicSingleResultQueryBuilder();
         $query = $qb->orderBy('release.releaseDate', 'DESC')
             ->getQuery();
 
@@ -59,7 +74,7 @@ class ReleaseRepository
      */
     public function findReleaseByName(string $name)
     {
-        $qb = $this->createBasicQueryBuilder();
+        $qb = $this->createBasicSingleResultQueryBuilder();
         $query = $qb->where($qb->expr()->eq('release.name', ':name'))
             ->setParameter('name', $name)
             ->getQuery();
@@ -85,7 +100,7 @@ class ReleaseRepository
     /**
      * @return \Doctrine\ORM\QueryBuilder
      */
-    protected function createBasicQueryBuilder(): \Doctrine\ORM\QueryBuilder
+    protected function createBasicSingleResultQueryBuilder(): \Doctrine\ORM\QueryBuilder
     {
         return $this->repository->createQueryBuilder('release')
             ->select('release', 'tickets')

@@ -95,6 +95,9 @@ class TicketManager implements TicketManagerInterface
         }
     }
 
+    /**
+     * {@inheritdoc}
+     */
     public function syncTicketsFromRemote(Release $release)
     {
         $externalReleaseId = $release->getExternalId();
@@ -126,8 +129,10 @@ class TicketManager implements TicketManagerInterface
     /**
      * @param Issue          $issue
      * @param array|Ticket[] $tickets
+     *
+     * @return bool
      */
-    protected function isIssueInTickets(Issue $issue, array $tickets)
+    protected function isIssueInTickets(Issue $issue, array $tickets): bool
     {
         foreach ($tickets as $ticket) {
             if ($issue->id === $ticket->getExternalId()) {

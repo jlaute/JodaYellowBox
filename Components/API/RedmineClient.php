@@ -97,7 +97,7 @@ class RedmineClient extends AbstractClient
      */
     public function getVersionsInProject(Project $project): Versions
     {
-        $response = $this->get('/projects/' . $project->id . '/versions.' . ClientInterface::REQUEST_FORMAT, $params);
+        $response = $this->get('/projects/' . $project->id . '/versions.' . ClientInterface::REQUEST_FORMAT);
 
         return $this->mapVersions($response);
     }
