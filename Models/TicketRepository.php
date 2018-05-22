@@ -43,6 +43,14 @@ class TicketRepository
     }
 
     /**
+     * @return array|Ticket[]
+     */
+    public function findAll()
+    {
+        return $this->repository->findAll();
+    }
+
+    /**
      * @param mixed $ident
      *
      * @return bool
@@ -106,6 +114,16 @@ class TicketRepository
         );
 
         return $qb->getQuery()->getResult();
+    }
+
+    public function add(Ticket $ticket)
+    {
+        $this->em->persist($ticket);
+    }
+
+    public function save()
+    {
+        $this->em->flush();
     }
 
     /**

@@ -34,6 +34,13 @@ class Ticket extends ModelEntity
     /**
      * @var string
      *
+     * @ORM\Column(name="external_id", type="string", nullable=true)
+     */
+    private $externalId;
+
+    /**
+     * @var string
+     *
      * @ORM\Column(name="number", type="string", nullable=true, unique=true)
      */
     private $number;
@@ -101,12 +108,14 @@ class Ticket extends ModelEntity
      * @param string                $name
      * @param string                $number
      * @param string                $description
+     * @param string                $externalId
      * @param StateMachineInterface $stateMachine
      */
     public function __construct(
         string $name,
         string $number = null,
         string $description = null,
+        string $externalId = null,
         StateMachineInterface $stateMachine = null
     ) {
         $this->createdAt = new \DateTime();
@@ -114,6 +123,7 @@ class Ticket extends ModelEntity
         $this->name = $name;
         $this->number = $number;
         $this->description = $description;
+        $this->externalId = $externalId;
         $this->stateMachine = $stateMachine;
         $this->releases = new ArrayCollection();
     }
@@ -148,6 +158,14 @@ class Ticket extends ModelEntity
     public function getId(): int
     {
         return $this->id ?: 0;
+    }
+
+    /**
+     * @return string
+     */
+    public function getExternalId(): string
+    {
+        return $this->externalId ?: '';
     }
 
     /**

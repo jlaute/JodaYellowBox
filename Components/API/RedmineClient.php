@@ -96,7 +96,7 @@ class RedmineClient extends AbstractClient
 
         foreach ($jsonContent['issues'] as $responseIssue) {
             $issue = new Issue();
-            $issue->id = $responseIssue['id'];
+            $issue->id = (string) $responseIssue['id'];
             $issue->name = $responseIssue['subject'];
             $issue->description = $responseIssue['description'];
             $issue->author = $responseIssue['author']['name'];
@@ -115,7 +115,7 @@ class RedmineClient extends AbstractClient
 
         foreach ($jsonContent['projects'] as $jsonProject) {
             $project = new Project();
-            $project->id = $jsonProject['id'];
+            $project->id = (string) $jsonProject['id'];
             $project->name = $jsonProject['name'];
             $project->description = $jsonProject['description'];
             $project->created = $jsonProject['created_on'];
@@ -133,7 +133,7 @@ class RedmineClient extends AbstractClient
 
         foreach ($jsonContent['versions'] as $jsonVersion) {
             $version = new Version();
-            $version->id = $jsonVersion['id'];
+            $version->id = (string) $jsonVersion['id'];
             $version->name = $jsonVersion['name'];
             $version->description = $jsonVersion['description'];
 

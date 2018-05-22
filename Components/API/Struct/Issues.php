@@ -45,4 +45,13 @@ class Issues implements \Iterator
     {
         $this->position = 0;
     }
+
+    public function mergeIssues(Issues $issues)
+    {
+        foreach ($issues as $issue) {
+            $this->issues->add($issue);
+        }
+
+        return $this;
+    }
 }
