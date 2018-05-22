@@ -220,16 +220,15 @@
 
             if ($button.hasClass(me.opts.rejectTransition)) {
                 me.onRejectButtonClick(ticketId, $button);
-                me.$currentSelectedStory = $button.closest('.list--entry');
+                me.$currentSelectedStory = $button.closest(me.opts.listEntrySelector);
 
                 return;
             }
 
-            var data = {
+            me.callTransition({
                 ticketId: ticketId,
                 ticketTransition: transition
-            };
-            me.callTransition(data);
+            });
 
             $.publish('plugin/jodaYellowBox/onTransitionButtonClick', [ me, event ]);
         },
@@ -283,11 +282,30 @@
         },
 
         /**
-         * Send the transition to the server!
+         * Calls the transition, tries to call middleware like confirmations before executing.
          *
          * @param data
          */
         callTransition: function (data) {
+            var me = this;
+
+            me.canTransition = true;
+            $.publish('plugin/jodaYellowBox/canTransition', [ me, data ]);
+
+            if (me.canTransition === false) {
+                // No transition allowed
+                return;
+            }
+
+            me.executeTransition(data);
+        },
+
+        /**
+         * Executes the data to server
+         *
+         * @param data
+         */
+        executeTransition: function (data) {
             var me = this;
 
             $.loadingIndicator.open({
