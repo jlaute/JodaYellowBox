@@ -92,6 +92,10 @@
         &.nowhitespace {
             white-space: normal !important;
         }
+
+        .temp-comment {
+            display: none;
+        }
     }
 
     .entry--actions {
@@ -115,14 +119,18 @@
         }
     }
 
-    .comment-form {
-        .comment--head {
-            .unitize-padding(0, 0, 10);
-        }
+    .comment-box {
+        display: none;
 
-        textarea {
-            width: 90%;
-            .unitize(margin-bottom, 10);
+        .comment--form {
+            .comment--head {
+                .unitize-padding(0, 0, 10);
+            }
+
+            textarea {
+                width: 90%;
+                .unitize(margin-bottom, 10);
+            }
         }
     }
 }
