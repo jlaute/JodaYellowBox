@@ -220,10 +220,8 @@
 
             if ($button.hasClass(me.opts.rejectTransition)) {
                 me.onRejectButtonClick(ticketId, $button);
-
-                console.log('set story');
                 me.$currentSelectedStory = $button.closest('.list--entry');
-                console.log(me.$currentSelectedStory);
+
                 return;
             }
 
@@ -250,7 +248,6 @@
 
             var existingComment = $button.closest(me.opts.listEntrySelector).find('.temp-comment').html();
             me.$commentForm.find('textarea').val(existingComment);
-            console.log('setted temp comment: ' + existingComment);
 
             me.toggleCommentForm();
         },
@@ -263,11 +260,8 @@
 
             if (me.$currentSelectedStory !== null) {
                 // set comment
-                var currentComment = me.$commentForm.find('textarea').val();
-                console.log('This comment will be setted: ' + currentComment);
                 var $tempContent = me.$currentSelectedStory.find('.temp-comment');
-                console.log($tempContent);
-                $tempContent.html(currentComment);
+                $tempContent.html(me.$commentForm.find('textarea').val());
                 me.$currentSelectedStory = null;
             }
 
