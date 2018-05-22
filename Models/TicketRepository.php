@@ -43,6 +43,21 @@ class TicketRepository
     }
 
     /**
+     * @param array $externalIds
+     *
+     * @return array|Ticket[]
+     */
+    public function findByExternalIds(array $externalIds): array
+    {
+        $qb = $this->repository->createQueryBuilder('ticket')
+            ->select('ticket');
+        $query = $qb->where($qb->expr()->in('ticket.externalId', $externalIds))
+            ->getQuery();
+
+        return $query->getResult();
+    }
+
+    /**
      * @return array|Ticket[]
      */
     public function findAll()

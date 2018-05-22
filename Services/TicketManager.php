@@ -100,15 +100,18 @@ class TicketManager implements TicketManagerInterface
      */
     public function syncTicketsFromRemote(Release $release)
     {
-        $externalReleaseId = $release->getExternalId();
         $version = new Version();
-        $version->id = $externalReleaseId;
+        $version->id = $release->getExternalId();
 
         $issues = $this->client->getIssuesByVersion($version);
-
-        $allTickets = $this->ticketRepository->findAll();
+        $issueIds = [];
         foreach ($issues as $issue) {
-            if (!$this->isIssueInTickets($issue, $allTickets)) {
+            $issueIds[] = $issue->id;
+        }
+
+        $existingTickets = $this->ticketRepository->findByExternalIds($issueIds);
+        foreach ($issues as $issue) {
+            if (!$this->isIssueInTickets($issue, $existingTickets)) {
                 $this->ticketRepository->add(
                     new Ticket($issue->name, null, $issue->description, $issue->id)
                 );
