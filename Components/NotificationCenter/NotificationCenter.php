@@ -33,6 +33,7 @@ class NotificationCenter implements NotificationCenterInterface
                 $notification->send($message);
             } catch (NotificationException $ex) {
                 // log error and try next notification
+                // @todo: log error
                 continue;
             }
         }
