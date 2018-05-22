@@ -18,17 +18,19 @@
 
             closeButtonSelector: '.close',
 
-            commentFormSelector: '.comment-form',
-
-            commentAbortButtonSelector: '.abort',
-
-            commentSubmitButtonSelector: '.submit',
-
             rejectTransition: 'reject',
 
             cookieLeaseDays: 30,
 
-            listEntrySelector: '.list--entry'
+            listEntrySelector: '.list--entry',
+
+            commentBoxSelector: '.comment-box',
+
+            commentFormSelector: '.comment--form',
+
+            commentAbortButtonSelector: '.abort',
+
+            commentSubmitButtonSelector: '.submit',
         },
 
         /**
@@ -129,7 +131,9 @@
         registerCommentEvents: function () {
             var me = this;
 
+            me.$commentBox = me.$el.find(me.opts.commentBoxSelector);
             me.$commentForm = me.$el.find(me.opts.commentFormSelector);
+
             me.$commentAbortButton = me.$commentForm.find(me.opts.commentAbortButtonSelector);
             me.$commentSubmitButton = me.$commentForm.find(me.opts.commentSubmitButtonSelector);
 
@@ -236,7 +240,11 @@
             me.$commentForm.find("input[name='ticketId']").val(ticketId);
             me.$commentForm.find("input[name='ticketTransition']").val(me.opts.rejectTransition);
             me.$commentForm.find('.ticketnr').html($button.data('ticket-name'));
-            me.$commentForm.find('textarea').val($button.closest(me.opts.listEntrySelector).find('.existing-comment').html());
+
+            var existingComment = $button.closest(me.opts.listEntrySelector).find('.temp-comment').html();
+            if (existingComment !== '') {
+                me.$commentForm.find('textarea').val(existingComment);
+            }
 
             me.toggleCommentForm();
         },
@@ -249,7 +257,7 @@
                 $boxContent = me.$el.find(me.opts.boxContentSelector);
 
             $boxContent.toggle();
-            me.$commentForm.toggle();
+            me.$commentBox.toggle();
         },
 
         /**
