@@ -67,6 +67,7 @@ class Assets implements SubscriberInterface
         return new ArrayCollection([
             $this->jsDir . '/jquery.yellow-box.js',
             $this->jsDir . '/jquery-ui.js',
+            $this->jsDir . '/jquery.confirmation.js',
         ]);
     }
 }

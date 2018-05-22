@@ -69,6 +69,7 @@ class AssetsTest extends TestCase
         $this->assertSame([
             $this->fileSystem->url() . '/js/jquery.yellow-box.js',
             $this->fileSystem->url() . '/js/jquery-ui.js',
+            $this->fileSystem->url() . '/js/jquery.confirmation.js',
         ], $this->assetSubscriber->onCollectJavascript()->toArray());
     }
 }

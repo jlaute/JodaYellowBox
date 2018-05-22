@@ -8,6 +8,17 @@
                 <div class="info--error">{$error}</div>
             {/if}
         </div>
+
+        <div id="confirmation">
+            <div class="title">
+                <p>{s name="confirmation_title"}{/s}</p>
+            </div>
+            <div class="actions">
+                <button class="btn confirm-yes">Yes</button>
+                <button class="btn confirm-no">No</button>
+            </div>
+        </div>
+
         <div class="box--content">
             {block name="frontend_yellow_box_content"}
                 <ul class="list">
