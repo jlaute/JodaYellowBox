@@ -7,6 +7,7 @@
 
     $.plugin('jodaYellowBox', {
         currentSnapPosition: '',
+        $currentSelectedStory: null,
         defaults: {
             minimizeClass: 'minimized',
 
@@ -38,6 +39,8 @@
          */
         init: function() {
             var me = this;
+
+            me.$boxContent = me.$el.find(me.opts.boxContentSelector);
 
             me.applyDataAttributes();
             me.registerEvents();
@@ -217,6 +220,10 @@
 
             if ($button.hasClass(me.opts.rejectTransition)) {
                 me.onRejectButtonClick(ticketId, $button);
+
+                console.log('set story');
+                me.$currentSelectedStory = $button.closest('.list--entry');
+                console.log(me.$currentSelectedStory);
                 return;
             }
 
@@ -242,9 +249,8 @@
             me.$commentForm.find('.ticketnr').html($button.data('ticket-name'));
 
             var existingComment = $button.closest(me.opts.listEntrySelector).find('.temp-comment').html();
-            if (existingComment !== '') {
-                me.$commentForm.find('textarea').val(existingComment);
-            }
+            me.$commentForm.find('textarea').val(existingComment);
+            console.log('setted temp comment: ' + existingComment);
 
             me.toggleCommentForm();
         },
@@ -253,10 +259,19 @@
          * Show or hides the comment box
          */
         toggleCommentForm: function() {
-            var me = this,
-                $boxContent = me.$el.find(me.opts.boxContentSelector);
+            var me = this;
 
-            $boxContent.toggle();
+            if (me.$currentSelectedStory !== null) {
+                // set comment
+                var currentComment = me.$commentForm.find('textarea').val();
+                console.log('This comment will be setted: ' + currentComment);
+                var $tempContent = me.$currentSelectedStory.find('.temp-comment');
+                console.log($tempContent);
+                $tempContent.html(currentComment);
+                me.$currentSelectedStory = null;
+            }
+
+            me.$boxContent.toggle();
             me.$commentBox.toggle();
         },
 
