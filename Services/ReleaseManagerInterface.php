@@ -2,6 +2,7 @@
 
 namespace JodaYellowBox\Services;
 
+use JodaYellowBox\Components\API\Struct\Project;
 use JodaYellowBox\Models\Release;
 
 interface ReleaseManagerInterface
@@ -21,6 +22,8 @@ interface ReleaseManagerInterface
 
     /**
      * Updates releases when remote API is set
+     *
+     * @param Project $project
      */
-    public function syncReleasesFromRemote();
+    public function syncReleasesFromRemote(Project $project);
 }

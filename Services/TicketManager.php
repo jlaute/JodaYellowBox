@@ -4,7 +4,11 @@ declare(strict_types=1);
 
 namespace JodaYellowBox\Services;
 
+use JodaYellowBox\Components\API\Client\ClientInterface;
+use JodaYellowBox\Components\API\Struct\Issue;
+use JodaYellowBox\Components\API\Struct\Version;
 use JodaYellowBox\Exception\ChangeStateException;
+use JodaYellowBox\Models\Release;
 use JodaYellowBox\Models\Ticket;
 use JodaYellowBox\Models\TicketRepository;
 use SM\Factory\Factory as StateMachineFactory;
@@ -23,13 +27,23 @@ class TicketManager implements TicketManagerInterface
     protected $stateMachineFactory;
 
     /**
+     * @var ClientInterface
+     */
+    protected $client;
+
+    /**
      * @param TicketRepository    $ticketRepository
      * @param StateMachineFactory $stateMachineFactory
+     * @param ClientInterface     $client
      */
-    public function __construct(TicketRepository $ticketRepository, StateMachineFactory $stateMachineFactory)
-    {
+    public function __construct(
+        TicketRepository $ticketRepository,
+        StateMachineFactory $stateMachineFactory,
+        ClientInterface $client
+    ) {
         $this->ticketRepository = $ticketRepository;
         $this->stateMachineFactory = $stateMachineFactory;
+        $this->client = $client;
     }
 
     /**
@@ -81,11 +95,46 @@ class TicketManager implements TicketManagerInterface
         }
     }
 
+    public function syncTicketsFromRemote(Release $release)
+    {
+        $externalReleaseId = $release->getExternalId();
+        $version = new Version();
+        $version->id = $externalReleaseId;
+
+        $issues = $this->client->getIssuesByVersion($version);
+
+        $allTickets = $this->ticketRepository->findAll();
+        foreach ($issues as $issue) {
+            if (!$this->isIssueInTickets($issue, $allTickets)) {
+                $this->ticketRepository->add(
+                    new Ticket($issue->name, null, $issue->description, $issue->id)
+                );
+            }
+        }
+
+        $this->ticketRepository->save();
+    }
+
     /**
      * {@inheritdoc}
      */
     public function delete(Ticket $ticket)
     {
         $this->ticketRepository->remove($ticket);
+    }
+
+    /**
+     * @param Issue          $issue
+     * @param array|Ticket[] $tickets
+     */
+    protected function isIssueInTickets(Issue $issue, array $tickets)
+    {
+        foreach ($tickets as $ticket) {
+            if ($issue->id === $ticket->getExternalId()) {
+                return true;
+            }
+        }
+
+        return false;
     }
 }

@@ -3,6 +3,7 @@
 namespace JodaYellowBox\Services;
 
 use JodaYellowBox\Exception\ChangeStateException;
+use JodaYellowBox\Models\Release;
 use JodaYellowBox\Models\Ticket;
 
 interface TicketManagerInterface
@@ -42,6 +43,11 @@ interface TicketManagerInterface
      * @throws ChangeStateException
      */
     public function changeState(Ticket $ticket, string $state);
+
+    /**
+     * @param Release $release
+     */
+    public function syncTicketsFromRemote(Release $release);
 
     /**
      * @param Ticket $ticket

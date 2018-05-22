@@ -2,6 +2,7 @@
 
 namespace JodaYellowBox\Components\API;
 
+use GuzzleHttp\ClientInterface as GuzzleClientInterface;
 use GuzzleHttp\Message\ResponseInterface;
 use JodaYellowBox\Components\API\Client\AbstractClient;
 use JodaYellowBox\Components\API\Client\ClientInterface;
@@ -14,6 +15,19 @@ use JodaYellowBox\Components\API\Struct\Versions;
 
 class RedmineClient extends AbstractClient
 {
+    /** @var array */
+    protected $versions = [];
+
+    /** @var array */
+    protected $issues;
+
+    public function __construct(GuzzleClientInterface $client, string $apiKey, string $url = '')
+    {
+        parent::__construct($client, $apiKey, $url);
+
+        $this->issues = new Issues();
+    }
+
     /**
      * {@inheritdoc}
      */
@@ -44,6 +58,7 @@ class RedmineClient extends AbstractClient
             $params = [
                 'query' => [
                     'project_id' => $project->id,
+                    'limit' => 100,
                 ],
             ];
         }
@@ -56,17 +71,25 @@ class RedmineClient extends AbstractClient
     /**
      * {@inheritdoc}
      */
-    public function getIssuesByVersion(Version $version): Issues
+    public function getIssuesByVersion(Version $version, $offset = 0, $limit = 100): Issues
     {
         $params = [
             'query' => [
                 'fixed_version_id' => $version->id,
+                'limit' => $limit,
+                'offset' => $offset,
             ],
         ];
 
         $response = $this->get('/issues.' . ClientInterface::REQUEST_FORMAT, $params);
+        $jsonContent = $response->json();
+        if ((int) $jsonContent['total_count'] > (int) $jsonContent['limit'] + (int) $jsonContent['offset']) {
+            $this->getIssuesByVersion($version, $offset + $limit, $limit);
+        }
 
-        return $this->mapIssues($response);
+        $this->issues = $this->issues->mergeIssues($this->mapIssues($response));
+
+        return $this->issues;
     }
 
     /**
@@ -74,7 +97,7 @@ class RedmineClient extends AbstractClient
      */
     public function getVersionsInProject(Project $project): Versions
     {
-        $response = $this->get('/projects/' . $project->id . '/versions.' . ClientInterface::REQUEST_FORMAT);
+        $response = $this->get('/projects/' . $project->id . '/versions.' . ClientInterface::REQUEST_FORMAT, $params);
 
         return $this->mapVersions($response);
     }

@@ -30,10 +30,12 @@ interface ClientInterface
 
     /**
      * @param Version $version
+     * @param int     $offset
+     * @param int     $limit
      *
      * @return Issues
      */
-    public function getIssuesByVersion(Version $version): Issues;
+    public function getIssuesByVersion(Version $version, $offset = 0, $limit = 100): Issues;
 
     /**
      * @return Projects

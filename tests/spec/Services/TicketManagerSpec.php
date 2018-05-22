@@ -2,6 +2,7 @@
 
 namespace spec\JodaYellowBox\Services;
 
+use JodaYellowBox\Components\API\Client\ClientInterface;
 use JodaYellowBox\Exception\ChangeStateException;
 use JodaYellowBox\Models\TicketRepository;
 use JodaYellowBox\Services\TicketManager;
@@ -20,9 +21,10 @@ class TicketManagerSpec extends ObjectBehavior
 {
     public function let(
         TicketRepository $ticketRepository,
-        StateMachineFactory $stateMachineFactory
+        StateMachineFactory $stateMachineFactory,
+        ClientInterface $client
     ) {
-        $this->beConstructedWith($ticketRepository, $stateMachineFactory);
+        $this->beConstructedWith($ticketRepository, $stateMachineFactory, $client);
         $this->getTicketRepositoryMock($ticketRepository);
     }
 
