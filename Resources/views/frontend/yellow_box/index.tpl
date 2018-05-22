@@ -30,10 +30,12 @@
                                             {/if}
                                         {/foreach}
                                     </div>
-                                    {if $ticket->getNumber()}{$ticket->getNumber()}{else}{$ticket@iteration}{/if} - <b>{$ticket->getName()}</b>
-                                    {if $ticket->getState() == 'approved'}
-                                        {s name="ticket_approved_at"}{/s} {$ticket->getChangedAt()|date_format:"%d.%m.%Y %H:%M"}
-                                    {/if}
+                                    <div class="entry--content">
+                                        {if $ticket->getNumber()}{$ticket->getNumber()}{else}{$ticket@iteration}{/if} - <b>{$ticket->getName()}</b>
+                                        {if $ticket->getState() == 'approved'}
+                                            {s name="ticket_approved_at"}{/s} {$ticket->getChangedAt()|date_format:"%d.%m.%Y %H:%M"}
+                                        {/if}
+                                    </div>
                                 </li>
                             {foreachelse}
                                 <li class="list--entry">{s name="ticket_list_no_release_tickets"}{/s}</li>
