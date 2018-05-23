@@ -46,7 +46,7 @@
             <argument type="service" id="joda_yellow_box.sm.callback_factory" />
         </service>
 
-        <service id="joda_yellow_box.sm.callback_factory" class="JodaYellowBox\Components\StateMachine\Callback\ContainerAwareCallbackFactory">
+        <service id="joda_yellow_box.sm.callback_factory" class="JodaYellowBox\Components\StateMachine\Callback\ContainerAwareCallbackFactory" public="false">
             <argument>JodaYellowBox\Components\StateMachine\Callback\ContainerAwareCallback</argument>
             <argument type="service" id="service_container" />
         </service>
@@ -79,7 +79,7 @@
             <argument type="expression">service('joda_yellow_box.services.plugin_config').getApiUrl()</argument>
         </service>
 
-        <service id="joda_yellow_box.api_client" class="JodaYellowBox\Components\API\Client\AbstractClient">
+        <service id="joda_yellow_box.api_client" class="JodaYellowBox\Components\API\Client\AbstractClient" public="false">
             <factory class="JodaYellowBox\Components\API\Factory\ApiClientFactory" method="createApiClient" />
             <argument type="service" id="joda_yellow_box.guzzle_client" />
             <argument type="expression">service('joda_yellow_box.services.plugin_config').getManagementToolName()</argument>
