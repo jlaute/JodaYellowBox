@@ -12,6 +12,7 @@ Ext.define('Shopware.apps.YellowBox.model.Release', {
     fields: [
         { name : 'id', type: 'int', useNull: true },
         { name : 'name', type: 'string' },
-        { name : 'createDate', type: 'date' },
+        { name : 'releaseDate', type: 'date', useNull: false },
+        { name : 'externalId', type: 'string' },
     ]
 });

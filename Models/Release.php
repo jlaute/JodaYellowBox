@@ -81,6 +81,14 @@ class Release extends ModelEntity
     }
 
     /**
+     * @param string $externalId
+     */
+    public function setExternalId(string $externalId)
+    {
+        $this->externalId = $externalId;
+    }
+
+    /**
      * @return string
      */
     public function getName(): string
@@ -102,6 +110,14 @@ class Release extends ModelEntity
     public function getReleaseDate(): \DateTime
     {
         return clone $this->releaseDate;
+    }
+
+    /**
+     * @param \DateTime $releaseDate
+     */
+    public function setReleaseDate(\DateTime $releaseDate)
+    {
+        $this->releaseDate = $releaseDate;
     }
 
     /**
