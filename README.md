@@ -6,7 +6,10 @@
 
 It adds a yellow box to the frontend. More informations will follow.
 
-The main intention behind this plugin is to simplify the communication between agency and customer. 
+The main intention behind this plugin is to simplify the communication between agency and customer. New requirements are usually created as a ticket/issue in the corresponding projectmanagement tool. Once the development for a ticket is finished it should be deployed to the staging server, so the customer can release the task.
+So previously the customer had to ask "is the ticket 123 already deployed to staging?" and the agency had to answer yes/no....
+
+JodaYellowBox makes this process a lot easier. Every task that is deployed to staging will be displayed in the YellowBox on the Shopware Frontend. The customer knows from first sight which ticket is deployed and can be accepted/declined.  
 
 ## Requirements
 
@@ -17,11 +20,11 @@ The main intention behind this plugin is to simplify the communication between a
 - Redmine
 
 ## Console Commands
-- [joda:release:add](###joda:release:add)
-- [joda:sync:releases](###joda:sync:releases)
-- [joda:sync:tickets](###joda:sync:tickets)
-- [joda:ticket:add](###joda:ticket:add)
-- [joda:ticket:remove](###joda:ticket:remove)
+- [joda:release:add](#jodareleaseadd)
+- [joda:sync:releases](#jodasyncreleases)
+- [joda:sync:tickets](#jodasynctickets)
+- [joda:ticket:add](#jodaticketadd)
+- [joda:ticket:remove](#jodaticketremove)
 
 ### joda:release:add
 Add a new release with optional unlimited tickets. This command should only be used when no external Projectmanagement Tool is used.
