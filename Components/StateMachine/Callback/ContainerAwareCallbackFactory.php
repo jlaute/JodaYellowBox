@@ -26,7 +26,8 @@ class ContainerAwareCallbackFactory extends CallbackFactory
     }
 
     /**
-     * {@inheritDoc}
+     * {@inheritdoc}
+     *
      * @throws SMException
      */
     public function get(array $specs)
@@ -38,6 +39,7 @@ class ContainerAwareCallbackFactory extends CallbackFactory
             ));
         }
         $class = $this->class;
+
         return new $class($specs, $specs['do'], $this->container);
     }
 }

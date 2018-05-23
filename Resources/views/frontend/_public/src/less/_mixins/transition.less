@@ -1,0 +1,10 @@
+/**
+ * Transition mixin
+ * This mixin provides a cross-browser compatible method to set multiple transitions.
+ *
+ * Example: .transition-multiple(width 0.6s ease-out, height 0.3s ease-out);
+ */
+.transition-multiple(@firstTransition, @secondTransition) {
+    transition: @firstTransition, @secondTransition;
+    -webkit-transition: @firstTransition, @secondTransition;
+}

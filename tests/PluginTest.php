@@ -1,4 +1,4 @@
-<?php
+<?php declare(strict_types=1);
 
 namespace JodaYellowBox\Tests;
 
@@ -8,7 +8,7 @@ use Shopware\Components\Test\Plugin\TestCase;
 class PluginTest extends TestCase
 {
     protected static $ensureLoadedPlugins = [
-        'JodaYellowBox' => []
+        'JodaYellowBox' => [],
     ];
 
     public function testCanCreateInstance()

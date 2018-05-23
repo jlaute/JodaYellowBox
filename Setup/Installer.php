@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace JodaYellowBox\Setup;
 
 use Doctrine\ORM\Tools\SchemaTool;
+use JodaYellowBox\Models\Release;
 use JodaYellowBox\Models\Ticket;
 use JodaYellowBox\Models\TicketHistory;
 use Shopware\Components\DependencyInjection\Container;
@@ -29,6 +30,7 @@ class Installer
     public function install(InstallContext $installContext)
     {
         $this->createDatabase();
+        $this->clearCache($installContext);
     }
 
     public function uninstall(UninstallContext $uninstallContext)
@@ -36,6 +38,8 @@ class Installer
         if (!$uninstallContext->keepUserData()) {
             $this->removeDatabase();
         }
+
+        $this->clearCache($uninstallContext);
     }
 
     protected function createDatabase()
@@ -53,6 +57,12 @@ class Installer
         return [
             $this->em->getClassMetadata(Ticket::class),
             $this->em->getClassMetadata(TicketHistory::class),
+            $this->em->getClassMetadata(Release::class),
         ];
+    }
+
+    protected function clearCache(InstallContext $installContext)
+    {
+        $installContext->scheduleClearCache(InstallContext::CACHE_LIST_FRONTEND);
     }
 }

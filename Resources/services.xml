@@ -3,6 +3,12 @@
            xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
            xsi:schemaLocation="http://symfony.com/schema/dic/services http://symfony.com/schema/dic/services/services-1.0.xsd">
 
+    <parameters>
+        <parameter key="joda_yellow_box.view_dir">%joda_yellow_box.plugin_dir%/Resources/views</parameter>
+        <parameter key="joda_yellow_box.public.less_dir">%joda_yellow_box.view_dir%/frontend/_public/src/less</parameter>
+        <parameter key="joda_yellow_box.public.js_dir">%joda_yellow_box.view_dir%/frontend/_public/src/js</parameter>
+    </parameters>
+
     <services>
         <!-- Commands -->
         <service id="joda_yellow_box.command.add_ticket" class="JodaYellowBox\Commands\AddTicket">
@@ -15,6 +21,24 @@
             <tag name="console.command" />
         </service>
 
+        <service id="joda_yellow_box.command.add_release" class="JodaYellowBox\Commands\AddRelease">
+            <argument type="string">joda:release:add</argument>
+            <tag name="console.command" />
+        </service>
+
+        <service id="joda_yellow_box.command.sync_release" class="JodaYellowBox\Commands\SyncReleases">
+            <argument type="string">joda:sync:releases</argument>
+            <argument type="service" id="joda_yellow_box.services.release_manager" />
+            <tag name="console.command" />
+        </service>
+
+        <service id="joda_yellow_box.command.sync_tickets" class="JodaYellowBox\Commands\SyncTickets">
+            <argument type="string">joda:sync:tickets</argument>
+            <argument type="service" id="joda_yellow_box.services.release_manager" />
+            <argument type="service" id="joda_yellow_box.services.ticket_manager" />
+            <tag name="console.command" />
+        </service>
+
         <!-- Statemachine -->
         <service id="joda_yellow_box.sm.factory" class="SM\Factory\Factory">
             <argument>%joda_yellow_box.sm.configs%</argument>
@@ -22,22 +46,103 @@
             <argument type="service" id="joda_yellow_box.sm.callback_factory" />
         </service>
 
-        <service id="joda_yellow_box.sm.callback_factory" class="JodaYellowBox\Components\StateMachine\Callback\ContainerAwareCallbackFactory">
+        <service id="joda_yellow_box.sm.callback_factory" class="JodaYellowBox\Components\StateMachine\Callback\ContainerAwareCallbackFactory" public="false">
             <argument>JodaYellowBox\Components\StateMachine\Callback\ContainerAwareCallback</argument>
             <argument type="service" id="service_container" />
         </service>
 
         <!-- Services -->
-        <service id="joda_yellow_box.ticket_creator" class="JodaYellowBox\Components\Ticket\TicketCreator">
+        <service id="joda_yellow_box.ticket_creator" class="JodaYellowBox\Services\TicketCreator">
             <argument type="service" id="models" />
         </service>
 
-        <service id="joda_yellow_box.ticket_destroyer" class="JodaYellowBox\Components\Ticket\TicketDestroyer">
-            <argument type="service" id="models" />
+        <service id="joda_yellow_box.services.ticket_manager" class="JodaYellowBox\Services\TicketManager">
+            <argument type="service" id="joda_yellow_box.repository.ticket" />
+            <argument type="service" id="joda_yellow_box.sm.factory" />
+            <argument type="service" id="joda_yellow_box.api_client" />
+            <argument type="service" id="events" />
+        </service>
+
+        <service id="joda_yellow_box.services.release_manager" class="JodaYellowBox\Services\ReleaseManager">
+            <argument type="service" id="joda_yellow_box.repository.release" />
+            <argument type="service" id="joda_yellow_box.api_client" />
+            <argument type="expression">service('joda_yellow_box.services.plugin_config').getReleaseToDisplay()</argument>
+            <argument type="expression">service('joda_yellow_box.services.plugin_config').getExternalProjectId()</argument>
+        </service>
+
+        <service id="joda_yellow_box.services.plugin_config" class="JodaYellowBox\Components\Config\PluginConfig">
+            <argument type="string">%joda_yellow_box.plugin_name%</argument>
+            <argument type="service" id="shopware.plugin.cached_config_reader" />
+        </service>
+
+        <!-- Notification center -->
+        <service id="joda_yellow_box.components.notification_center.notification_center" class="JodaYellowBox\Components\NotificationCenter\NotificationCenter">
+            <argument type="expression">service('joda_yellow_box.services.plugin_config').getNotifications()</argument>
+        </service>
+
+        <service id="joda_yellow_box.notification.email" class="JodaYellowBox\Components\NotificationCenter\Notifications\EmailNotification">
+            <argument type="service" id="mail" />
+            <argument type="expression">service('joda_yellow_box.services.plugin_config').getNotificationEmails()</argument>
+        </service>
+        <service id="joda_yellow_box.notification.sms" class="JodaYellowBox\Components\NotificationCenter\Notifications\SmsNotification" />
+        <service id="joda_yellow_box.notification.telegram" class="JodaYellowBox\Components\NotificationCenter\Notifications\TelegramNotification" />
+
+        <service id="joda_yellow_box.guzzle_client" class="GuzzleHttp\Client" public="false">
+            <factory class="JodaYellowBox\Components\API\Factory\GuzzleClientFactory" method="createGuzzleClient" />
+            <argument type="expression">service('joda_yellow_box.services.plugin_config').getApiUrl()</argument>
+        </service>
+
+        <service id="joda_yellow_box.api_client" class="JodaYellowBox\Components\API\Client\AbstractClient" public="false">
+            <factory class="JodaYellowBox\Components\API\Factory\ApiClientFactory" method="createApiClient" />
+            <argument type="service" id="joda_yellow_box.guzzle_client" />
+            <argument type="expression">service('joda_yellow_box.services.plugin_config').getManagementToolName()</argument>
+            <argument type="expression">service('joda_yellow_box.services.plugin_config').getApiKey()</argument>
         </service>
 
         <!-- State logger -->
-        <service id="joda_yellow_box.sql_state_logger" class="JodaYellowBox\Components\StateMachine\Logger\SqlLogger">
+        <service id="joda_yellow_box.doctrine.ticket_subscriber" class="JodaYellowBox\Doctrine\TicketSubscriber">
+            <tag name="doctrine.event_subscriber" />
+        </service>
+
+        <!-- Subscriber -->
+        <service id="joda_yellow_box.subscriber.template" class="JodaYellowBox\Subscriber\Template">
+            <argument type="string">%joda_yellow_box.view_dir%</argument>
+            <tag name="shopware.event_subscriber" />
+        </service>
+
+        <service id="joda_yellow_box.subscriber.assets" class="JodaYellowBox\Subscriber\Assets">
+            <argument type="string">%joda_yellow_box.public.less_dir%</argument>
+            <argument type="string">%joda_yellow_box.public.js_dir%</argument>
+            <argument type="service" id="joda_yellow_box.services.plugin_config" />
+            <tag name="shopware.event_subscriber" />
+        </service>
+
+        <service id="joda_yellow_box.subscriber.controllers" class="JodaYellowBox\Subscriber\Controllers">
+            <argument type="string">%joda_yellow_box.plugin_dir%</argument>
+            <tag name="shopware.event_subscriber" />
+        </service>
+
+        <service id="joda_yellow_box.subscriber.yellow_box" class="JodaYellowBox\Subscriber\YellowBox">
+            <tag name="shopware.event_subscriber" />
+        </service>
+
+        <service id="joda_yellow_box.subscriber.notifications" class="JodaYellowBox\Subscriber\Notifications">
+            <argument type="service" id="joda_yellow_box.components.notification_center.notification_center" />
+            <argument type="service" id="snippets" />
+        </service>
+
+        <service id="joda_yellow_box.subscriber.cron" class="JodaYellowBox\Subscriber\Cron">
+            <argument type="service" id="joda_yellow_box.services.release_manager" />
+            <argument type="service" id="joda_yellow_box.services.ticket_manager" />
+            <tag name="shopware.event_subscriber" />
+        </service>
+
+        <!-- Repositories -->
+        <service id="joda_yellow_box.repository.ticket" class="JodaYellowBox\Models\TicketRepository" public="false">
+            <argument type="service" id="models" />
+        </service>
+
+        <service id="joda_yellow_box.repository.release" class="JodaYellowBox\Models\ReleaseRepository" public="false">
             <argument type="service" id="models" />
         </service>
     </services>

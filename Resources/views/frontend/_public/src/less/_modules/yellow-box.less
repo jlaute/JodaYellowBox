@@ -1,0 +1,163 @@
+.yellow-box {
+    cursor: move;
+    opacity: 0.8;
+    z-index: 3000;
+    position: fixed;
+    background: yellow;
+    width: ~"calc(100% - 30px)";
+    .border-radius();
+    .unitize(right, 15);
+    .unitize(bottom, 15);
+    .unitize-max-width(550);
+    .unitize-min-height(100);
+    .unitize-padding(10, 15);
+    .box-shadow(0 2px 10px 0 #848484);
+    .transition-multiple(width 0.6s ease-out, min-height 0.3s ease-out);
+
+    &.snap--top-left {
+        right: auto;
+        bottom: auto;
+        .unitize(top, 15);
+        .unitize(left, 15);
+    }
+
+    &.snap--top-right {
+        left: auto;
+        bottom: auto;
+        .unitize(top, 15);
+        .unitize(right, 15);
+    }
+
+    &.snap--bottom-left {
+        top: auto;
+        right: auto;
+        .unitize(left, 15);
+        .unitize(bottom, 15);
+    }
+
+    &.snap--bottom-right {
+        top: auto;
+        left: auto;
+        .unitize(right, 15);
+        .unitize(bottom, 15);
+    }
+
+    .close {
+        position: absolute;
+        background: none;
+        .unitize-width(25);
+        .unitize(right, 10);
+        .unitize(line-height, 15);
+        .unitize-padding(4, 7, 5);
+    }
+
+    &.minimized {
+        cursor: pointer;
+        .unitize-width(35);
+        .unitize-height(35);
+        .unitize-min-height(0);
+        .transition-multiple(width 0.4s ease-out, min-height 0.5s ease-out);
+
+        &:after {
+            position: absolute;
+            pointer-events: none;
+            content: @sw-icon-popup;
+            font-family: @sw-icon-fontname;
+            .unitize(top, 10);
+            .unitize(left, 8);
+            .unitize(font-size, 18);
+        }
+
+        .yellow-box--inner,
+        .close {
+            display: none;
+        }
+    }
+
+    .box--content {
+        .list {
+            list-style: none;
+        }
+    }
+
+    .list--entry {
+        clear: both;
+        overflow: hidden;
+        text-overflow: ellipsis;
+        .unitize(margin-bottom, 10);
+
+        &.entry--header {
+            .unitize(font-size, 12);
+        }
+
+        &.nowhitespace {
+            white-space: normal !important;
+        }
+
+        .temp-comment {
+            display: none;
+        }
+    }
+
+    .entry--actions {
+        width: 10%;
+        float: left;
+
+        .btn {
+            .unitize-padding(0, 4);
+            .unitize(line-height, 18);
+
+            &.approve {
+                color: green;
+            }
+            &.reject {
+                color: red;
+            }
+            &.reopen {
+                color: orange;
+            }
+        }
+
+        .icon--check {
+            color: green
+        }
+    }
+
+    .entry--content {
+        float: left;
+        width: 90%;
+    }
+
+    .comment-box {
+        display: none;
+
+        .comment--form {
+            .comment--head {
+                .unitize-padding(0, 0, 10);
+            }
+
+            textarea {
+                width: 90%;
+                .unitize(margin-bottom, 10);
+            }
+        }
+    }
+    
+    #confirmation {
+        top: 0;
+        left: 0;
+        bottom: 0;
+        z-index: 2;
+        width: 100%;
+        display: none;
+        background: #FFF;
+        position: absolute;
+        .unitize-padding(10);
+    }
+}
+
+@media screen and (min-width: @tabletViewportWidth) {
+    .yellow-box {
+        width: 100%;
+    }
+}

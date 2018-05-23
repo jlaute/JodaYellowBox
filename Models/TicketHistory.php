@@ -1,10 +1,11 @@
 <?php
+
 declare(strict_types=1);
 
 namespace JodaYellowBox\Models;
 
-use Shopware\Components\Model\ModelEntity;
 use Doctrine\ORM\Mapping as ORM;
+use Shopware\Components\Model\ModelEntity;
 
 /**
  * @ORM\Table(name="s_plugin_yellow_box_ticket_history")
@@ -50,7 +51,7 @@ class TicketHistory extends ModelEntity
     private $date;
 
     /**
-     * @param int $ticketId
+     * @param int    $ticketId
      * @param string $oldState
      * @param string $newState
      */
@@ -62,26 +63,41 @@ class TicketHistory extends ModelEntity
         $this->date = new \DateTime();
     }
 
+    /**
+     * @return int
+     */
     public function getId(): int
     {
         return $this->id;
     }
 
+    /**
+     * @return int
+     */
     public function getTicketId(): int
     {
         return $this->ticketId;
     }
 
+    /**
+     * @return string
+     */
     public function getOldState(): string
     {
         return $this->oldState;
     }
 
+    /**
+     * @return string
+     */
     public function getNewState(): string
     {
         return $this->newState;
     }
 
+    /**
+     * @return \DateTime
+     */
     public function getDate(): \DateTime
     {
         return clone $this->date;

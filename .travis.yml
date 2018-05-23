@@ -1,0 +1,60 @@
+language: php
+
+php:
+  - 7.0
+  - 7.1
+  - 7.2
+
+sudo: false
+
+services:
+  - mysql
+
+env:
+  matrix:
+    - SHOPWARE_VERSION="5.2"
+    - SHOPWARE_VERSION="5.3"
+    - SHOPWARE_VERSION="5.4"
+    - SHOPWARE_VERSION="5.5"
+  global:
+    - PLUGIN_NAME=JodaYellowBox
+    - SHOPWARE_DIRECTORY="${HOME}/shopware"
+    - PLUGIN_DIRECTORY="${SHOPWARE_DIRECTORY}/custom/plugins"
+
+cache:
+  directories:
+    - ${HOME}/.composer/cache/files
+
+install:
+  - composer install
+
+before_script:
+  - if [[ "$(php --version | grep -cim1 xdebug)" -ge 1 ]]; then phpenv config-rm xdebug.ini; fi
+  - git clone https://github.com/shopware/shopware.git ${SHOPWARE_DIRECTORY} --branch ${SHOPWARE_VERSION}
+  - ant -f ${SHOPWARE_DIRECTORY}/build/build.xml -Dapp.host=localhost -Ddb.user=travis -Ddb.host=127.0.0.1 -Ddb.name=shopware build-unit
+  - mv ${TRAVIS_BUILD_DIR} ${PLUGIN_DIRECTORY}/${PLUGIN_NAME}
+  - php ${HOME}/shopware/bin/console sw:plugin:refresh
+  - php ${HOME}/shopware/bin/console sw:plugin:install ${PLUGIN_NAME}
+  - php ${HOME}/shopware/bin/console sw:plugin:activate ${PLUGIN_NAME}
+  - cd ${PLUGIN_DIRECTORY}/${PLUGIN_NAME}
+
+script:
+  - composer test
+  - composer test-spec
+
+after_success:
+  - ./build.sh $TRAVIS_TAG
+
+matrix:
+  allow_failures:
+  - env: SHOPWARE_VERSION="5.5"
+
+deploy:
+  skip_cleanup: true
+  provider: releases
+  api_key:
+    secure: SmUWJzUI/4dVjve/5xOU0xsaGg5NuU5LXDebv2OzHtHlx1g8wwZ8jcnsxnhWOiXBrEIBHyfJxiUJCnq4XiJa7QaSpzlvVZettyT217jqojNeOdfOSsLMq3jdatvgvmoaeeuiMGgSElMKy4CUyQ3847MncP4PnenDcv9a67QQ408Q99pYIl8feMpNsZSW4dZCRqHuug9RXF90PCws7zMe0a2n7jqtb7OAmXEUYvqA7rQIBQ3Crv8tL5NjWf1Ez4E6FMamkHoeabsQoGdkFONjvoKfukdre6WP7kzm6Tk9N3ufxqnXNwFk1wWd4q6OrOIxuvLVLVim6E+unTLCCFhsrFVd9W2QLFbnOpJqmiYZDqkYCG6yb2tfEICSIHwSjelUIuITK8Cey0HCzjk6OKvJhQ8O3cf+yil+XmATJfwhS95/drupjnX/qeDTLZIM2q3MRj+3Dc6QymL/TeW0OSmUzTVb43F0ao8EnpEOrzrI/1u6E/98w0dvYClN+BkWm4v0m4EeigDfEkJAxxU79Lltbou3++D5C8RMXP5wD/sArhpGu0AqIQHK4vyfogROYFK0Hv1GC3M8cBrhxGsjBVWdzc4u9/y/lvBqNAyaYiItUyFfRxkcljwF0XDTQi2aDbHzaWqRvNokcnmFARsfp5y/eyAPud5H2nXD0xHWtcim8vg=
+  file_glob: true
+  file: JodaYellowBox*.zip
+  on:
+    tags: true
