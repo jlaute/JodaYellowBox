@@ -49,7 +49,9 @@ class Issues implements \Iterator
     public function mergeIssues(Issues $issues)
     {
         foreach ($issues as $issue) {
-            $this->issues->add($issue);
+            if (!$this->issues->contains($issue)) {
+                $this->issues->add($issue);
+            }
         }
 
         return $this;

@@ -26,6 +26,19 @@
             <tag name="console.command" />
         </service>
 
+        <service id="joda_yellow_box.command.sync_release" class="JodaYellowBox\Commands\SyncReleases">
+            <argument type="string">joda:sync:releases</argument>
+            <argument type="service" id="joda_yellow_box.services.release_manager" />
+            <tag name="console.command" />
+        </service>
+
+        <service id="joda_yellow_box.command.sync_tickets" class="JodaYellowBox\Commands\SyncTickets">
+            <argument type="string">joda:sync:tickets</argument>
+            <argument type="service" id="joda_yellow_box.services.release_manager" />
+            <argument type="service" id="joda_yellow_box.services.ticket_manager" />
+            <tag name="console.command" />
+        </service>
+
         <!-- Statemachine -->
         <service id="joda_yellow_box.sm.factory" class="SM\Factory\Factory">
             <argument>%joda_yellow_box.sm.configs%</argument>
@@ -97,6 +110,12 @@
         </service>
 
         <service id="joda_yellow_box.subscriber.yellow_box" class="JodaYellowBox\Subscriber\YellowBox">
+            <tag name="shopware.event_subscriber" />
+        </service>
+
+        <service id="joda_yellow_box.subscriber.cron" class="JodaYellowBox\Subscriber\Cron">
+            <argument type="service" id="joda_yellow_box.services.release_manager" />
+            <argument type="service" id="joda_yellow_box.services.ticket_manager" />
             <tag name="shopware.event_subscriber" />
         </service>
 

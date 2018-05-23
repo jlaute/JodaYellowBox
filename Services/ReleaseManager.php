@@ -81,6 +81,14 @@ class ReleaseManager implements ReleaseManagerInterface
     /**
      * {@inheritdoc}
      */
+    public function getReleaseByName(string $name)
+    {
+        return $this->releaseRepository->findReleaseByName($name);
+    }
+
+    /**
+     * {@inheritdoc}
+     */
     public function syncReleasesFromRemote()
     {
         if (!$this->externalProjectId) {

@@ -2,6 +2,7 @@
 
 namespace JodaYellowBox\Services;
 
+use JodaYellowBox\Components\API\ApiException;
 use JodaYellowBox\Exception\ChangeStateException;
 use JodaYellowBox\Models\Release;
 use JodaYellowBox\Models\Ticket;
@@ -46,6 +47,8 @@ interface TicketManagerInterface
 
     /**
      * @param Release $release
+     *
+     * @throws ApiException
      */
     public function syncTicketsFromRemote(Release $release);
 

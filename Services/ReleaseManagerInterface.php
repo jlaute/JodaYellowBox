@@ -3,7 +3,6 @@
 namespace JodaYellowBox\Services;
 
 use JodaYellowBox\Components\API\ApiException;
-use JodaYellowBox\Components\API\Struct\Project;
 use JodaYellowBox\Models\Release;
 
 interface ReleaseManagerInterface
@@ -22,9 +21,14 @@ interface ReleaseManagerInterface
     public function getCurrentRelease();
 
     /**
-     * Updates releases when remote API is set
+     * @param string $name
      *
-     * @param Project $project
+     * @return Release|null
+     */
+    public function getReleaseByName(string $name);
+
+    /**
+     * Updates releases when remote API is set
      *
      * @throws ApiException
      */

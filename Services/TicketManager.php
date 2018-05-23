@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace JodaYellowBox\Services;
 
+use JodaYellowBox\Components\API\ApiException;
 use JodaYellowBox\Components\API\Client\ClientInterface;
 use JodaYellowBox\Components\API\Struct\Issue;
 use JodaYellowBox\Components\API\Struct\Version;
@@ -100,6 +101,10 @@ class TicketManager implements TicketManagerInterface
      */
     public function syncTicketsFromRemote(Release $release)
     {
+        if (!$release->getExternalId()) {
+            throw new ApiException('Release `' . $release->getName() . '` has no External-ID');
+        }
+
         $version = new Version();
         $version->id = $release->getExternalId();
 
