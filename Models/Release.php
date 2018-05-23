@@ -56,7 +56,7 @@ class Release extends ModelEntity
      * @param \DateTime $releaseDate
      * @param string    $externalId
      */
-    public function __construct(string $name, \DateTime $releaseDate = null, string $externalId = null)
+    public function __construct(string $name = '', \DateTime $releaseDate = null, string $externalId = null)
     {
         $this->name = $name;
         $this->externalId = $externalId;
@@ -86,6 +86,14 @@ class Release extends ModelEntity
     public function getName(): string
     {
         return $this->name;
+    }
+
+    /**
+     * @param string $name
+     */
+    public function setName(string $name)
+    {
+        $this->name = $name;
     }
 
     /**

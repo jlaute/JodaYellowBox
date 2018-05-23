@@ -26,6 +26,7 @@ class Template implements SubscriberInterface
     {
         return [
             'Theme_Inheritance_Template_Directories_Collected' => 'onCollectedTemplates',
+            'Enlight_Controller_Action_PreDispatch' => 'onPreDispatch',
         ];
     }
 
@@ -37,5 +38,10 @@ class Template implements SubscriberInterface
         $directories = $args->getReturn();
         $directories[] = $this->viewDir;
         $args->setReturn($directories);
+    }
+
+    public function onPreDispatch()
+    {
+        Shopware()->Template()->addTemplateDir($this->viewDir);
     }
 }
