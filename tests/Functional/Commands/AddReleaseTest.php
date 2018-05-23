@@ -10,6 +10,7 @@ class AddReleaseTest extends TestCase
     protected static $ensureLoadedPlugins = [
         'JodaYellowBox' => [
             'JodaYellowBoxReleaseToDisplay' => 'latest',
+            'JodaYellowBoxManagementToolName' => 'Redmine',
         ],
     ];
 

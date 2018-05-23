@@ -26,6 +26,19 @@
             <tag name="console.command" />
         </service>
 
+        <service id="joda_yellow_box.command.sync_release" class="JodaYellowBox\Commands\SyncReleases">
+            <argument type="string">joda:sync:releases</argument>
+            <argument type="service" id="joda_yellow_box.services.release_manager" />
+            <tag name="console.command" />
+        </service>
+
+        <service id="joda_yellow_box.command.sync_tickets" class="JodaYellowBox\Commands\SyncTickets">
+            <argument type="string">joda:sync:tickets</argument>
+            <argument type="service" id="joda_yellow_box.services.release_manager" />
+            <argument type="service" id="joda_yellow_box.services.ticket_manager" />
+            <tag name="console.command" />
+        </service>
+
         <!-- Statemachine -->
         <service id="joda_yellow_box.sm.factory" class="SM\Factory\Factory">
             <argument>%joda_yellow_box.sm.configs%</argument>
@@ -33,7 +46,7 @@
             <argument type="service" id="joda_yellow_box.sm.callback_factory" />
         </service>
 
-        <service id="joda_yellow_box.sm.callback_factory" class="JodaYellowBox\Components\StateMachine\Callback\ContainerAwareCallbackFactory">
+        <service id="joda_yellow_box.sm.callback_factory" class="JodaYellowBox\Components\StateMachine\Callback\ContainerAwareCallbackFactory" public="false">
             <argument>JodaYellowBox\Components\StateMachine\Callback\ContainerAwareCallback</argument>
             <argument type="service" id="service_container" />
         </service>
@@ -46,12 +59,15 @@
         <service id="joda_yellow_box.services.ticket_manager" class="JodaYellowBox\Services\TicketManager">
             <argument type="service" id="joda_yellow_box.repository.ticket" />
             <argument type="service" id="joda_yellow_box.sm.factory" />
+            <argument type="service" id="joda_yellow_box.api_client" />
             <argument type="service" id="events" />
         </service>
 
         <service id="joda_yellow_box.services.release_manager" class="JodaYellowBox\Services\ReleaseManager">
             <argument type="service" id="joda_yellow_box.repository.release" />
-            <argument type="service" id="joda_yellow_box.services.plugin_config" />
+            <argument type="service" id="joda_yellow_box.api_client" />
+            <argument type="expression">service('joda_yellow_box.services.plugin_config').getReleaseToDisplay()</argument>
+            <argument type="expression">service('joda_yellow_box.services.plugin_config').getExternalProjectId()</argument>
         </service>
 
         <service id="joda_yellow_box.services.plugin_config" class="JodaYellowBox\Components\Config\PluginConfig">
@@ -70,6 +86,18 @@
         </service>
         <service id="joda_yellow_box.notification.sms" class="JodaYellowBox\Components\NotificationCenter\Notifications\SmsNotification" />
         <service id="joda_yellow_box.notification.telegram" class="JodaYellowBox\Components\NotificationCenter\Notifications\TelegramNotification" />
+
+        <service id="joda_yellow_box.guzzle_client" class="GuzzleHttp\Client" public="false">
+            <factory class="JodaYellowBox\Components\API\Factory\GuzzleClientFactory" method="createGuzzleClient" />
+            <argument type="expression">service('joda_yellow_box.services.plugin_config').getApiUrl()</argument>
+        </service>
+
+        <service id="joda_yellow_box.api_client" class="JodaYellowBox\Components\API\Client\AbstractClient" public="false">
+            <factory class="JodaYellowBox\Components\API\Factory\ApiClientFactory" method="createApiClient" />
+            <argument type="service" id="joda_yellow_box.guzzle_client" />
+            <argument type="expression">service('joda_yellow_box.services.plugin_config').getManagementToolName()</argument>
+            <argument type="expression">service('joda_yellow_box.services.plugin_config').getApiKey()</argument>
+        </service>
 
         <!-- State logger -->
         <service id="joda_yellow_box.doctrine.ticket_subscriber" class="JodaYellowBox\Doctrine\TicketSubscriber">
@@ -101,6 +129,11 @@
         <service id="joda_yellow_box.subscriber.notifications" class="JodaYellowBox\Subscriber\Notifications">
             <argument type="service" id="joda_yellow_box.components.notification_center.notification_center" />
             <argument type="service" id="snippets" />
+        </service>
+
+        <service id="joda_yellow_box.subscriber.cron" class="JodaYellowBox\Subscriber\Cron">
+            <argument type="service" id="joda_yellow_box.services.release_manager" />
+            <argument type="service" id="joda_yellow_box.services.ticket_manager" />
             <tag name="shopware.event_subscriber" />
         </service>
 

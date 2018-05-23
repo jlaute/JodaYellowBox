@@ -55,5 +55,36 @@
             <description lang="de">Mehrere Adressen müssen mit `;` seperiert werden.</description>
             <description lang="en">More addresses have to separated by `;`.</description>
         </element>
+
+        <element required="false" scope="shop">
+            <name>JodaYellowBoxExternalProjectId</name>
+            <label lang="de">Externe Projekt-ID</label>
+            <label lang="en">External project ID</label>
+            <description lang="de">Projekt-ID aus der externen Projektmanagement-Software</description>
+            <description lang="en">Project-ID from the external Projectmanagement-Tool</description>
+        </element>
+
+        <element scope="shop">
+            <name>JodaYellowBoxApiUrl</name>
+            <label lang="de">URL zur Projektmanagement API</label>
+            <label>URL to Projectmanagement API</label>
+        </element>
+
+        <element scope="shop">
+            <name>JodaYellowBoxApiKey</name>
+            <label>API Key</label>
+        </element>
+
+        <element type="select">
+            <name>JodaYellowBoxManagementToolName</name>
+            <label lang="de">Name des Projektmanagement-Tools</label>
+            <label>Name of Projectmanagement-Tool</label>
+            <store>
+                <option>
+                    <value>Redmine</value>
+                    <label>Redmine</label>
+                </option>
+            </store>
+        </element>
     </elements>
 </config>

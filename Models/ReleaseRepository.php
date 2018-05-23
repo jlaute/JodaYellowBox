@@ -2,6 +2,7 @@
 
 namespace JodaYellowBox\Models;
 
+use Doctrine\ORM\EntityRepository;
 use Doctrine\ORM\Query;
 use Doctrine\ORM\Tools\Pagination\Paginator;
 use Shopware\Components\Model\ModelManager;
@@ -16,11 +17,40 @@ class ReleaseRepository
     /**
      * @var ModelManager
      */
+    private $modelManager;
+
+    /**
+     * @var EntityRepository
+     */
     private $repository;
 
     public function __construct(ModelManager $em)
     {
+        $this->modelManager = $em;
         $this->repository = $em->getRepository(Release::class);
+    }
+
+    /**
+     * @return array|Release[]
+     */
+    public function findAll(): array
+    {
+        return $this->repository->findAll();
+    }
+
+    /**
+     * @param array $externalIds
+     *
+     * @return array|Release[]
+     */
+    public function findByExternalIds(array $externalIds): array
+    {
+        $qb = $this->repository->createQueryBuilder('release')
+            ->select('release');
+        $query = $qb->where($qb->expr()->in('release.externalId', $externalIds))
+            ->getQuery();
+
+        return $query->getResult();
     }
 
     /**
@@ -28,7 +58,7 @@ class ReleaseRepository
      */
     public function findLatestRelease()
     {
-        $qb = $this->createBasicQueryBuilder();
+        $qb = $this->createBasicSingleResultQueryBuilder();
         $query = $qb->orderBy('release.releaseDate', 'DESC')
             ->getQuery();
 
@@ -44,7 +74,7 @@ class ReleaseRepository
      */
     public function findReleaseByName(string $name)
     {
-        $qb = $this->createBasicQueryBuilder();
+        $qb = $this->createBasicSingleResultQueryBuilder();
         $query = $qb->where($qb->expr()->eq('release.name', ':name'))
             ->setParameter('name', $name)
             ->getQuery();
@@ -55,9 +85,22 @@ class ReleaseRepository
     }
 
     /**
+     * @param Release $release
+     */
+    public function add(Release $release)
+    {
+        $this->modelManager->persist($release);
+    }
+
+    public function save()
+    {
+        $this->modelManager->flush();
+    }
+
+    /**
      * @return \Doctrine\ORM\QueryBuilder
      */
-    protected function createBasicQueryBuilder(): \Doctrine\ORM\QueryBuilder
+    protected function createBasicSingleResultQueryBuilder(): \Doctrine\ORM\QueryBuilder
     {
         return $this->repository->createQueryBuilder('release')
             ->select('release', 'tickets')

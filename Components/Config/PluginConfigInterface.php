@@ -47,4 +47,24 @@ interface PluginConfigInterface
      * @return array
      */
     public function getNotificationEmails(): array;
+
+    /**
+     * @return string
+     */
+    public function getExternalProjectId(): string;
+
+    /**
+     * @return string
+     */
+    public function getApiUrl(): string;
+
+    /**
+     * @return string
+     */
+    public function getApiKey(): string;
+
+    /**
+     * @return string
+     */
+    public function getManagementToolName(): string;
 }

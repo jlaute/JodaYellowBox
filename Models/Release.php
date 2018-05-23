@@ -25,6 +25,13 @@ class Release extends ModelEntity
     /**
      * @var string
      *
+     * @ORM\Column(name="external_id", type="string", nullable=true)
+     */
+    private $externalId;
+
+    /**
+     * @var string
+     *
      * @ORM\Column(name="name", type="string", nullable=false, unique=true)
      */
     private $name;
@@ -47,10 +54,12 @@ class Release extends ModelEntity
     /**
      * @param string    $name
      * @param \DateTime $releaseDate
+     * @param string    $externalId
      */
-    public function __construct(string $name, \DateTime $releaseDate = null)
+    public function __construct(string $name, \DateTime $releaseDate = null, string $externalId = null)
     {
         $this->name = $name;
+        $this->externalId = $externalId;
         $this->releaseDate = $releaseDate ?: new \DateTime();
         $this->tickets = new ArrayCollection();
     }
@@ -61,6 +70,14 @@ class Release extends ModelEntity
     public function getId(): int
     {
         return $this->id ?: 0;
+    }
+
+    /**
+     * @return string
+     */
+    public function getExternalId(): string
+    {
+        return $this->externalId ?: '';
     }
 
     /**

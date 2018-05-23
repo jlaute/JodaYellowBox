@@ -2,7 +2,10 @@
 
 namespace JodaYellowBox\Services;
 
-use JodaYellowBox\Components\Config\PluginConfigInterface;
+use JodaYellowBox\Components\API\ApiException;
+use JodaYellowBox\Components\API\Client\ClientInterface;
+use JodaYellowBox\Components\API\Struct\Project;
+use JodaYellowBox\Components\API\Struct\Version;
 use JodaYellowBox\Models\Release;
 use JodaYellowBox\Models\ReleaseRepository;
 
@@ -14,32 +17,45 @@ class ReleaseManager implements ReleaseManagerInterface
     protected $releaseRepository;
 
     /**
-     * @var PluginConfigInterface
+     * @var ClientInterface
      */
-    protected $config;
+    protected $client;
 
     /**
-     * @param ReleaseRepository     $releaseRepository
-     * @param PluginConfigInterface $config
+     * @var string
      */
-    public function __construct(ReleaseRepository $releaseRepository, PluginConfigInterface $config)
-    {
+    protected $releaseToDisplay;
+
+    /**
+     * @var string
+     */
+    protected $externalProjectId;
+
+    /**
+     * @param ReleaseRepository $releaseRepository
+     * @param ClientInterface   $client
+     * @param string            $releaseToDisplay
+     * @param string            $externalProjectId
+     */
+    public function __construct(
+        ReleaseRepository $releaseRepository,
+        ClientInterface $client,
+        string $releaseToDisplay,
+        string $externalProjectId = ''
+    ) {
         $this->releaseRepository = $releaseRepository;
-        $this->config = $config;
+        $this->client = $client;
+        $this->releaseToDisplay = $releaseToDisplay;
+        $this->externalProjectId = $externalProjectId;
     }
 
     /**
-     * Returns 'latest' when 'latest' is configured in plugin config and no corresponding release could be found
-     * Returns the ticket name when it is not 'latest'
-     *
-     * @return string
+     * {@inheritdoc}
      */
     public function getCurrentReleaseName(): string
     {
-        $releaseToDisplay = $this->config->getReleaseToDisplay();
-
-        if ($releaseToDisplay !== 'latest') {
-            return $releaseToDisplay;
+        if ($this->releaseToDisplay !== 'latest') {
+            return $this->releaseToDisplay;
         }
 
         $latestRelease = $this->releaseRepository->findLatestRelease();
@@ -51,16 +67,69 @@ class ReleaseManager implements ReleaseManagerInterface
     }
 
     /**
-     * @return Release|null
+     * {@inheritdoc}
      */
     public function getCurrentRelease()
     {
-        $releaseToDisplay = $this->config->getReleaseToDisplay();
-
-        if ($releaseToDisplay === 'latest') {
+        if ($this->releaseToDisplay === 'latest') {
             return $this->releaseRepository->findLatestRelease();
         }
 
-        return $this->releaseRepository->findReleaseByName($releaseToDisplay);
+        return $this->releaseRepository->findReleaseByName($this->releaseToDisplay);
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function getReleaseByName(string $name)
+    {
+        return $this->releaseRepository->findReleaseByName($name);
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function syncReleasesFromRemote()
+    {
+        if (!$this->externalProjectId) {
+            throw new ApiException('No external Project-ID is defined. Define it in the plugin config');
+        }
+
+        $project = new Project();
+        $project->id = $this->externalProjectId;
+
+        $versions = $this->client->getVersionsInProject($project);
+        $versionIds = [];
+        foreach ($versions as $version) {
+            $versionIds[] = $version->id;
+        }
+
+        $existingReleases = $this->releaseRepository->findByExternalIds($versionIds);
+        foreach ($versions as $key => $version) {
+            if (!$this->isVersionInReleases($version, $existingReleases)) {
+                $this->releaseRepository->add(
+                    new Release($version->name, $version->date, $version->id)
+                );
+            }
+        }
+
+        $this->releaseRepository->save();
+    }
+
+    /**
+     * @param Version         $version
+     * @param array|Release[] $releases
+     *
+     * @return bool
+     */
+    protected function isVersionInReleases(Version $version, array $releases): bool
+    {
+        foreach ($releases as $release) {
+            if ($release->getExternalId() === $version->id) {
+                return true;
+            }
+        }
+
+        return false;
     }
 }
