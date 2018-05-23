@@ -92,7 +92,7 @@ class ReleaseManagerSpec extends ObjectBehavior
         $releaseRepository->findByExternalIds(Argument::type('array'))->shouldBeCalled()->willReturn($releases);
         $releaseRepository->add(Argument::type(Release::class))->shouldBeCalledTimes(1);
         $releaseRepository->save()->shouldBeCalled();
-        
+
         $this->syncReleasesFromRemote();
     }
 
