@@ -31,6 +31,8 @@ class Cron implements SubscriberInterface
 
     /**
      * Sync releases and Tickets from remote
+     * Currently only the tickets from the active release get synced. Maybe we should make this more dynamic, to sync
+     * tickets from other releases too
      *
      * @param \Shopware_Components_Cron_CronJob $cronJob
      */
