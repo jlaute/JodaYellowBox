@@ -17,8 +17,11 @@ class ApiClientFactory
      *
      * @return ClientInterface
      */
-    public static function createApiClient(GuzzleClientInterface $client, string $projectManagementToolName, string $apiKey)
-    {
+    public static function createApiClient(
+        GuzzleClientInterface $client,
+        string $projectManagementToolName,
+        string $apiKey
+    ) {
         if ($projectManagementToolName === 'Redmine') {
             return new RedmineClient($client, $apiKey);
         }
