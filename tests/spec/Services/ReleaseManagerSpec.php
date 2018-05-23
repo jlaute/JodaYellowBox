@@ -71,6 +71,41 @@ class ReleaseManagerSpec extends ObjectBehavior
         ReleaseRepository $releaseRepository,
         ClientInterface $client
     ) {
+        $versions = $this->mockVersions();
+
+        $client->getVersionsInProject(Argument::type(Project::class))->shouldBeCalled()->willReturn($versions);
+        $releaseRepository->findByExternalIds(Argument::type('array'))->shouldBeCalled()->willReturn([]);
+        $releaseRepository->add(Argument::type(Release::class))->shouldBeCalled();
+        $releaseRepository->save()->shouldBeCalled();
+
+        $this->syncReleasesFromRemote();
+    }
+
+    public function it_does_not_add_releases_that_already_exists(
+        ReleaseRepository $releaseRepository,
+        ClientInterface $client
+    ) {
+        $versions = $this->mockVersions();
+        $client->getVersionsInProject(Argument::type(Project::class))->shouldBeCalled()->willReturn($versions);
+
+        $releases = $this->mockReleases();
+        $releaseRepository->findByExternalIds(Argument::type('array'))->shouldBeCalled()->willReturn($releases);
+        $releaseRepository->add(Argument::type(Release::class))->shouldBeCalledTimes(1);
+        $releaseRepository->save()->shouldBeCalled();
+        
+        $this->syncReleasesFromRemote();
+    }
+
+    public function it_throws_an_exception_when_no_external_project_config_id_is_set(
+        ReleaseRepository $releaseRepository,
+        ClientInterface $client
+    ) {
+        $this->beConstructedWith($releaseRepository, $client, '124');
+        $this->shouldThrow(ApiException::class)->during('syncReleasesFromRemote');
+    }
+
+    protected function mockVersions()
+    {
         $versions = new Versions();
         $version1 = new Version();
         $version1->id = '12';
@@ -84,19 +119,14 @@ class ReleaseManagerSpec extends ObjectBehavior
         $versions->add($version1);
         $versions->add($version2);
 
-        $client->getVersionsInProject(Argument::type(Project::class))->shouldBeCalled()->willReturn($versions);
-        $releaseRepository->findByExternalIds(Argument::type('array'))->shouldBeCalled()->willReturn([]);
-        $releaseRepository->add(Argument::type(Release::class))->shouldBeCalled();
-        $releaseRepository->save()->shouldBeCalled();
-
-        $this->syncReleasesFromRemote();
+        return $versions;
     }
 
-    public function it_throws_an_exception_when_no_external_project_config_id_is_set(
-        ReleaseRepository $releaseRepository,
-        ClientInterface $client
-    ) {
-        $this->beConstructedWith($releaseRepository, $client, '124');
-        $this->shouldThrow(ApiException::class)->during('syncReleasesFromRemote');
+    protected function mockReleases()
+    {
+        $releases[] = new Release('name1', null, '12');
+        $releases[] = new Release('name2', null, '11');
+
+        return $releases;
     }
 }
