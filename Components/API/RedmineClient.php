@@ -8,6 +8,8 @@ use JodaYellowBox\Components\API\Client\AbstractClient;
 use JodaYellowBox\Components\API\Client\ClientInterface;
 use JodaYellowBox\Components\API\Struct\Issue;
 use JodaYellowBox\Components\API\Struct\Issues;
+use JodaYellowBox\Components\API\Struct\IssueStatus;
+use JodaYellowBox\Components\API\Struct\IssueStatuses;
 use JodaYellowBox\Components\API\Struct\Project;
 use JodaYellowBox\Components\API\Struct\Projects;
 use JodaYellowBox\Components\API\Struct\Version;
@@ -36,6 +38,16 @@ class RedmineClient extends AbstractClient
         $response = $this->get('/projects.' . ClientInterface::REQUEST_FORMAT);
 
         return $this->mapProjects($response);
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function getAllIssueStatuses(): IssueStatuses
+    {
+        $response = $this->get('/issue_statuses.' . ClientInterface::REQUEST_FORMAT);
+
+        return $this->mapIssueStatuses($response);
     }
 
     /**
@@ -168,5 +180,21 @@ class RedmineClient extends AbstractClient
         }
 
         return $versions;
+    }
+
+    protected function mapIssueStatuses(ResponseInterface $response): IssueStatuses
+    {
+        $issueStatuses = new IssueStatuses();
+        $jsonContent = $response->json();
+
+        foreach ($jsonContent['issue_statuses'] as $jsonIssueStatus) {
+            $issueStatus = new IssueStatus();
+            $issueStatus->id = (string) $jsonIssueStatus['id'];
+            $issueStatus->name = $jsonIssueStatus['name'];
+
+            $issueStatuses->add($issueStatus);
+        }
+
+        return $issueStatuses;
     }
 }
