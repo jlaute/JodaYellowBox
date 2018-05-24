@@ -40,8 +40,6 @@
         init: function() {
             var me = this;
 
-            me.$boxContent = me.$el.find(me.opts.boxContentSelector);
-
             me.applyDataAttributes();
             me.registerEvents();
             me.registerDragAndDrop();
@@ -56,8 +54,9 @@
         registerEvents: function () {
             var me = this;
 
-            me.$transitionButtons = $(me.opts.transitionButtonSelector);
+            me.$boxContent = me.$el.find(me.opts.boxContentSelector);
             me.$closeButton = me.$el.find(me.opts.closeButtonSelector);
+            me.$transitionButtons = me.$el.find(me.opts.transitionButtonSelector);
 
             me._on(me.$el, 'click', $.proxy(me.onElementClick, me));
             me._on(me.$closeButton, 'click', $.proxy(me.onCloseClick, me));
