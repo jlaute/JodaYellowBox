@@ -1,9 +1,12 @@
+@yb-text-color: #4c4c4c;
+@yb-text-highlight-color: #000;
+
 .yellow-box {
     cursor: move;
-    opacity: 0.8;
+    opacity: 0.9;
     z-index: 3000;
     position: fixed;
-    background: yellow;
+    background: #fff420;
     width: ~"calc(100% - 30px)";
     .border-radius();
     .unitize(right, 15);
@@ -11,7 +14,7 @@
     .unitize-max-width(550);
     .unitize-min-height(100);
     .unitize-padding(10, 15);
-    .box-shadow(0 2px 10px 0 #848484);
+    .box-shadow(0 2px 10px 0 @yb-text-color);
     .transition-multiple(width 0.6s ease-out, min-height 0.3s ease-out);
 
     &.snap--top-left {
@@ -43,8 +46,10 @@
     }
 
     .close {
-        position: absolute;
         background: none;
+        position: absolute;
+        color: @yb-text-color;
+        border: 1px solid @yb-text-color;
         .unitize-width(25);
         .unitize(right, 10);
         .unitize(line-height, 15);
@@ -61,6 +66,7 @@
         &:after {
             position: absolute;
             pointer-events: none;
+            color: @yb-text-color;
             content: @sw-icon-popup;
             font-family: @sw-icon-fontname;
             .unitize(top, 10);
@@ -83,6 +89,7 @@
     .list--entry {
         clear: both;
         overflow: hidden;
+        color: @yb-text-color;
         text-overflow: ellipsis;
         .unitize(margin-bottom, 10);
 
@@ -131,6 +138,14 @@
     .comment-box {
         display: none;
 
+        .comment--head {
+            color: @yb-text-color;
+
+            .ticketnr {
+                color: @yb-text-highlight-color;
+            }
+        }
+
         .comment--form {
             .comment--head {
                 .unitize-padding(0, 0, 10);
@@ -152,6 +167,7 @@
         display: none;
         background: #FFF;
         position: absolute;
+        color: @yb-text-color;
         .unitize-padding(10);
     }
 }
