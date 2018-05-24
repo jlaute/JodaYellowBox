@@ -7,6 +7,7 @@ namespace JodaYellowBox\Services;
 use JodaYellowBox\Components\API\ApiException;
 use JodaYellowBox\Components\API\Client\ClientInterface;
 use JodaYellowBox\Components\API\Struct\Issue;
+use JodaYellowBox\Components\API\Struct\IssueStatus;
 use JodaYellowBox\Components\API\Struct\Version;
 use JodaYellowBox\Exception\ChangeStateException;
 use JodaYellowBox\Models\Release;
@@ -17,42 +18,40 @@ use SM\SMException;
 
 class TicketManager implements TicketManagerInterface
 {
-    /**
-     * @var TicketRepository
-     */
+    /** @var TicketRepository */
     protected $ticketRepository;
 
-    /**
-     * @var StateMachineFactory
-     */
+    /** @var StateMachineFactory */
     protected $stateMachineFactory;
 
-    /**
-     * @var ClientInterface
-     */
+    /** @var ClientInterface */
     protected $client;
 
-    /**
-     * @var \Enlight_Event_EventManager
-     */
-    private $eventManager;
+    /** @var \Enlight_Event_EventManager */
+    protected $eventManager;
+
+    /** @var string */
+    protected $externalStatusId;
 
     /**
      * @param TicketRepository            $ticketRepository
      * @param StateMachineFactory         $stateMachineFactory
      * @param ClientInterface             $client
      * @param \Enlight_Event_EventManager $eventManager
+     * @param string                      $externalStatusId
      */
     public function __construct(
         TicketRepository $ticketRepository,
         StateMachineFactory $stateMachineFactory,
         ClientInterface $client,
-        \Enlight_Event_EventManager $eventManager
+        \Enlight_Event_EventManager $eventManager,
+        string $externalStatusId = null
     ) {
         $this->ticketRepository = $ticketRepository;
         $this->stateMachineFactory = $stateMachineFactory;
         $this->eventManager = $eventManager;
         $this->client = $client;
+        $this->externalStatusId = $externalStatusId;
     }
 
     /**
@@ -121,8 +120,14 @@ class TicketManager implements TicketManagerInterface
 
         $version = new Version();
         $version->id = $release->getExternalId();
+        $issueStatus = new IssueStatus();
+        $issueStatus->id = $this->externalStatusId;
 
-        $issues = $this->client->getIssuesByVersion($version);
+        $issues = $this->client->getIssuesByVersion($version, $issueStatus);
+        if (!$issues->valid()) {
+            return;
+        }
+
         $issueIds = [];
         foreach ($issues as $issue) {
             $issueIds[] = $issue->id;

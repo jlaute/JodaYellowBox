@@ -61,6 +61,7 @@
             <argument type="service" id="joda_yellow_box.sm.factory" />
             <argument type="service" id="joda_yellow_box.api_client" />
             <argument type="service" id="events" />
+            <argument type="expression">service('joda_yellow_box.services.plugin_config').getExternalStatusId()</argument>
         </service>
 
         <service id="joda_yellow_box.services.release_manager" class="JodaYellowBox\Services\ReleaseManager">

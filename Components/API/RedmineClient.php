@@ -83,15 +83,24 @@ class RedmineClient extends AbstractClient
     /**
      * {@inheritdoc}
      */
-    public function getIssuesByVersion(Version $version, $offset = 0, $limit = 100): Issues
-    {
-        $params = [
-            'query' => [
-                'fixed_version_id' => $version->id,
-                'limit' => $limit,
-                'offset' => $offset,
-            ],
+    public function getIssuesByVersion(
+        Version $version,
+        IssueStatus $issueStatus = null,
+        $offset = 0,
+        $limit = 100
+    ): Issues {
+        $defaultQuery = [
+            'fixed_version_id' => $version->id,
+            'limit' => $limit,
+            'offset' => $offset,
         ];
+
+        $status = ['status_id' => '*'];
+        if ($issueStatus) {
+            $status = ['status_id' => $issueStatus->id];
+        }
+
+        $params = $this->buildParams($defaultQuery, $status);
 
         $response = $this->get('/issues.' . ClientInterface::REQUEST_FORMAT, $params);
         $jsonContent = $response->json();
@@ -121,6 +130,21 @@ class RedmineClient extends AbstractClient
     {
         $this->header = [
             'X-Redmine-API-Key' => $this->apiKey,
+        ];
+    }
+
+    /**
+     * @param array $defaultQuery
+     * @param array $query
+     *
+     * @return array
+     */
+    protected function buildParams(array $defaultQuery = [], array $query = []): array
+    {
+        $query = array_merge($defaultQuery, $query);
+
+        return [
+            'query' => $query,
         ];
     }
 

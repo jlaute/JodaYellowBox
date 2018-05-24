@@ -82,6 +82,14 @@ class PluginConfig extends ArrayCollection implements PluginConfigInterface
     /**
      * {@inheritdoc}
      */
+    public function getExternalStatusId(): string
+    {
+        return (string) $this->get('JodaYellowBoxExternalStatusId');
+    }
+
+    /**
+     * {@inheritdoc}
+     */
     public function getApiUrl(): string
     {
         return (string) $this->get('JodaYellowBoxApiUrl');

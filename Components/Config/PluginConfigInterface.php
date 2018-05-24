@@ -56,6 +56,11 @@ interface PluginConfigInterface
     /**
      * @return string
      */
+    public function getExternalStatusId(): string;
+
+    /**
+     * @return string
+     */
     public function getApiUrl(): string;
 
     /**

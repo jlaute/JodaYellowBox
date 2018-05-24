@@ -56,14 +56,6 @@
             <description lang="en">More addresses have to separated by `;`.</description>
         </element>
 
-        <element required="false" scope="shop">
-            <name>JodaYellowBoxExternalProjectId</name>
-            <label lang="de">Externe Projekt-ID</label>
-            <label lang="en">External project ID</label>
-            <description lang="de">Projekt-ID aus der externen Projektmanagement-Software</description>
-            <description lang="en">Project-ID from the external Projectmanagement-Tool</description>
-        </element>
-
         <element scope="shop">
             <name>JodaYellowBoxApiUrl</name>
             <label lang="de">URL zur Projektmanagement API</label>
@@ -85,6 +77,22 @@
                     <label>Redmine</label>
                 </option>
             </store>
+        </element>
+
+        <element required="false" scope="shop">
+            <name>JodaYellowBoxExternalProjectId</name>
+            <label lang="de">Externe Projekt-ID</label>
+            <label lang="en">External Project-ID</label>
+            <description lang="de">Projekt-ID aus der externen Projektmanagement-Software</description>
+            <description lang="en">Project-ID from the external Projectmanagement-Tool</description>
+        </element>
+
+        <element required="false" scope="shop">
+            <name>JodaYellowBoxExternalStatusId</name>
+            <label lang="de">Externe Status-ID</label>
+            <label lang="en">External Status-ID</label>
+            <description lang="de">Status-ID aus der externen Projektmanagement-Software</description>
+            <description lang="en">Status-ID from the external Projectmanagement-Tool</description>
         </element>
     </elements>
 </config>

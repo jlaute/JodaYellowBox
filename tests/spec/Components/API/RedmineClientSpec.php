@@ -83,7 +83,7 @@ class RedmineClientSpec extends ObjectBehavior
 
         $response->json()->shouldBeCalled()->willReturn($jsonContent);
 
-        $this->getIssuesByVersion($version, 0, 2);
+        $this->getIssuesByVersion($version, null, 0, 2);
     }
 
     public function it_can_get_versions_in_project(
