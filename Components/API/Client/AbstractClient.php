@@ -3,7 +3,9 @@
 namespace JodaYellowBox\Components\API\Client;
 
 use GuzzleHttp\ClientInterface as GuzzleClientInterface;
+use GuzzleHttp\Exception\ClientException;
 use GuzzleHttp\Message\ResponseInterface as GuzzleResponseInterface;
+use JodaYellowBox\Components\API\ApiException;
 
 abstract class AbstractClient implements ClientInterface
 {
@@ -41,6 +43,8 @@ abstract class AbstractClient implements ClientInterface
      * @param string $url
      * @param array  $options
      *
+     * @throws ApiException
+     *
      * @return GuzzleResponseInterface
      */
     protected function get(string $url, array $options = []): GuzzleResponseInterface
@@ -49,6 +53,20 @@ abstract class AbstractClient implements ClientInterface
             'headers' => $this->header,
         ];
 
-        return $this->guzzleClient->get($url, $options);
+        try {
+            return $this->guzzleClient->get($url, $options);
+        } catch (ClientException $e) {
+            $response = $e->getResponse();
+            $message = $e->getMessage();
+            if ($response) {
+                $statusCode = $response->getStatusCode();
+
+                if ($statusCode === 401) {
+                    $message = 'Unauthorized! Please provide a valid API Key';
+                }
+            }
+
+            throw new ApiException($message);
+        }
     }
 }
