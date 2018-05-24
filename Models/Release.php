@@ -108,6 +108,16 @@ class Release extends ModelEntity
     }
 
     /**
+     * @param array $tickets
+     */
+    public function addTickets(array $tickets)
+    {
+        foreach ($tickets as $ticket) {
+            $this->addTicket($ticket);
+        }
+    }
+
+    /**
      * @param Ticket $ticket
      */
     public function removeTicket(Ticket $ticket)

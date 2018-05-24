@@ -36,6 +36,10 @@
             <argument type="string">joda:sync:tickets</argument>
             <argument type="service" id="joda_yellow_box.services.release_manager" />
             <argument type="service" id="joda_yellow_box.services.ticket_manager" />
+        </service>
+
+		<service id="joda_yellow_box.command.load_fixtures" class="JodaYellowBox\Commands\LoadFixtures">
+            <argument type="string">joda:fixtures:load</argument>
             <tag name="console.command" />
         </service>
 
@@ -52,6 +56,10 @@
         </service>
 
         <!-- Services -->
+        <service id="joda_yellow_box.data_fixtures.fixtures_loader" class="JodaYellowBox\DataFixtures\FixturesLoader">
+            <argument type="service" id="models" />
+        </service>
+
         <service id="joda_yellow_box.ticket_creator" class="JodaYellowBox\Services\TicketCreator">
             <argument type="service" id="models" />
         </service>
