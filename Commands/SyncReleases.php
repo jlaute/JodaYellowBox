@@ -38,6 +38,8 @@ class SyncReleases extends ShopwareCommand
             $this->releaseManager->syncReleasesFromRemote();
         } catch (ApiException $e) {
             $io->error($e->getMessage());
+
+            return;
         }
 
         $io->success('Releases were successfully synced');
