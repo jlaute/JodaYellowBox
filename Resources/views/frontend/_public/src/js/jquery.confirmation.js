@@ -1,10 +1,10 @@
 ;(function($) {
     'use strict';
 
-    var ignoreTransitions = [
+    var $confirmation = null,
+        ignoreTransitions = [
             'reopen'
         ],
-        $confirmation = $('#confirmation'),
         getConfirmYesButton = function () {
             return $confirmation.find('.confirm-yes');
         },
@@ -25,6 +25,8 @@
         if ($.inArray(data.ticketTransition, ignoreTransitions) !== -1) {
             return me.canTransition = true;
         }
+
+        $confirmation = $('#confirmation');
 
         getConfirmYesButton().on('click', function (e) {
             $(this).off(e.type);
