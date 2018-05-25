@@ -60,7 +60,6 @@
             <argument type="service" id="joda_yellow_box.repository.ticket" />
             <argument type="service" id="joda_yellow_box.sm.factory" />
             <argument type="service" id="joda_yellow_box.api_client" />
-            <argument type="service" id="events" />
             <argument type="expression">service('joda_yellow_box.services.plugin_config').getExternalStatusId()</argument>
         </service>
 
@@ -127,7 +126,7 @@
             <tag name="shopware.event_subscriber" />
         </service>
 
-        <service id="joda_yellow_box.subscriber.notifications" class="JodaYellowBox\Subscriber\Notifications">
+        <service id="joda_yellow_box.subscriber.notifications" class="JodaYellowBox\Subscriber\StateMachine\Notifications">
             <argument type="service" id="joda_yellow_box.components.notification_center.notification_center" />
             <argument type="service" id="snippets" />
         </service>

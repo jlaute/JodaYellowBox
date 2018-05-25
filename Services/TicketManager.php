@@ -27,29 +27,23 @@ class TicketManager implements TicketManagerInterface
     /** @var ClientInterface */
     protected $client;
 
-    /** @var \Enlight_Event_EventManager */
-    protected $eventManager;
-
     /** @var string */
     protected $externalStatusId;
 
     /**
-     * @param TicketRepository            $ticketRepository
-     * @param StateMachineFactory         $stateMachineFactory
-     * @param ClientInterface             $client
-     * @param \Enlight_Event_EventManager $eventManager
-     * @param string                      $externalStatusId
+     * @param TicketRepository    $ticketRepository
+     * @param StateMachineFactory $stateMachineFactory
+     * @param ClientInterface     $client
+     * @param string              $externalStatusId
      */
     public function __construct(
         TicketRepository $ticketRepository,
         StateMachineFactory $stateMachineFactory,
         ClientInterface $client,
-        \Enlight_Event_EventManager $eventManager,
         string $externalStatusId = null
     ) {
         $this->ticketRepository = $ticketRepository;
         $this->stateMachineFactory = $stateMachineFactory;
-        $this->eventManager = $eventManager;
         $this->client = $client;
         $this->externalStatusId = $externalStatusId;
     }
@@ -96,12 +90,6 @@ class TicketManager implements TicketManagerInterface
         try {
             $stateMachine = $this->stateMachineFactory->get($ticket);
             $stateMachine->apply($state);
-
-            $this->eventManager->notify('YellowBox_onChangeTicketState', [
-                'subject' => $this,
-                'state' => $state,
-                'ticket' => $ticket,
-            ]);
         } catch (SMException $e) {
             throw new ChangeStateException(
                 sprintf('State "%s" for Ticket %s could not be applied!', $state, $ticket->getName())

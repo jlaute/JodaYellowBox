@@ -27,10 +27,9 @@ class TicketManagerSpec extends ObjectBehavior
     public function let(
         TicketRepository $ticketRepository,
         StateMachineFactory $stateMachineFactory,
-        ClientInterface $client,
-        \Enlight_Event_EventManager $eventManager
+        ClientInterface $client
     ) {
-        $this->beConstructedWith($ticketRepository, $stateMachineFactory, $client, $eventManager);
+        $this->beConstructedWith($ticketRepository, $stateMachineFactory, $client);
         $this->getTicketRepositoryMock($ticketRepository);
     }
 

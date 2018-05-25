@@ -2,13 +2,13 @@
 
 declare(strict_types=1);
 
-namespace JodaYellowBox\Subscriber;
+namespace JodaYellowBox\Subscriber\StateMachine;
 
-use Enlight\Event\SubscriberInterface;
 use JodaYellowBox\Components\NotificationCenter\NotificationCenterInterface;
 use JodaYellowBox\Models\Ticket;
+use SM\Event\TransitionEvent;
 
-class Notifications implements SubscriberInterface
+class Notifications
 {
     /**
      * @var NotificationCenterInterface
@@ -33,22 +33,11 @@ class Notifications implements SubscriberInterface
     }
 
     /**
-     * @return array
+     * @param Ticket          $ticket
+     * @param TransitionEvent $event
      */
-    public static function getSubscribedEvents()
+    public function onChangeTicketState(Ticket $ticket, TransitionEvent $event)
     {
-        return [
-            'YellowBox_onChangeTicketState' => 'onChangeTicketState',
-        ];
-    }
-
-    /**
-     * @param \Enlight_Event_EventArgs $args
-     */
-    public function onChangeTicketState(\Enlight_Event_EventArgs $args)
-    {
-        /** @var Ticket $ticket */
-        $ticket = $args->get('ticket');
         $newState = $ticket->getState();
         $snippets = $this->getNotificationSnippets();
         $message = '';
