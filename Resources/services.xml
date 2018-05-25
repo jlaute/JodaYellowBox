@@ -122,10 +122,6 @@
             <tag name="shopware.event_subscriber" />
         </service>
 
-        <service id="joda_yellow_box.subscriber.yellow_box" class="JodaYellowBox\Subscriber\YellowBox">
-            <tag name="shopware.event_subscriber" />
-        </service>
-
         <service id="joda_yellow_box.subscriber.notifications" class="JodaYellowBox\Subscriber\StateMachine\Notifications">
             <argument type="service" id="joda_yellow_box.components.notification_center.notification_center" />
             <argument type="service" id="snippets" />

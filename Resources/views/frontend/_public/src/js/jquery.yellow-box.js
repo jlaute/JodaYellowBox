@@ -410,7 +410,6 @@
          * @param name
          * @param value
          * @private
-         * @todo Add config for days in sw-plugin
          */
         _setCookie: function (name, value) {
             $.publish('plugin/jodaYellowBox/onSetCookieBefore', [ this, name, value ]);

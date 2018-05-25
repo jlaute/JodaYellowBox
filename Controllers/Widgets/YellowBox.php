@@ -3,29 +3,48 @@
 declare(strict_types=1);
 
 use JodaYellowBox\Exception\ChangeStateException;
-use JodaYellowBox\Services\TicketManager;
+use JodaYellowBox\Services\ReleaseManagerInterface;
+use JodaYellowBox\Services\TicketManagerInterface;
 use SM\Factory\Factory;
 
 class Shopware_Controllers_Widgets_YellowBox extends Enlight_Controller_Action
 {
+    const SNAP_COOKIE = 'ybsnap';
+    const MINIMIZE_COOKIE = 'ybmin';
+
     /**
      * @var Factory
      */
     protected $stateManager;
 
     /**
-     * @var TicketManager
+     * @var TicketManagerInterface
      */
     protected $ticketManager;
+
+    /**
+     * @var ReleaseManagerInterface
+     */
+    protected $releaseManager;
 
     public function preDispatch()
     {
         $this->stateManager = $this->get('joda_yellow_box.sm.factory');
         $this->ticketManager = $this->get('joda_yellow_box.services.ticket_manager');
+        $this->releaseManager = $this->get('joda_yellow_box.services.release_manager');
     }
 
     public function indexAction()
     {
+        $view = $this->View();
+
+        $currentRelease = $this->releaseManager->getCurrentRelease();
+        $snapCookie = $this->request->getCookie(self::SNAP_COOKIE);
+        $minimizeCookie = $this->request->getCookie(self::MINIMIZE_COOKIE);
+
+        $view->assign('currentRelease', $currentRelease);
+        $view->assign('snapPosition', $snapCookie);
+        $view->assign('isMinimized', $minimizeCookie);
     }
 
     public function transitionAction()
@@ -60,6 +79,9 @@ class Shopware_Controllers_Widgets_YellowBox extends Enlight_Controller_Action
 
         // Success
         $this->getModelManager()->flush($ticket);
+
+        $currentRelease = $this->releaseManager->getCurrentRelease();
+        $this->view->assign('currentRelease', $currentRelease);
 
         return $this->view->assign('success', true);
     }
