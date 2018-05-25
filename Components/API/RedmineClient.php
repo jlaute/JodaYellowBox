@@ -105,7 +105,7 @@ class RedmineClient extends AbstractClient
         $response = $this->get('/issues.' . ClientInterface::REQUEST_FORMAT, $params);
         $jsonContent = $response->json();
         if ((int) $jsonContent['total_count'] > (int) $jsonContent['limit'] + (int) $jsonContent['offset']) {
-            $this->getIssuesByVersion($version, $offset + $limit, $limit);
+            $this->getIssuesByVersion($version, $issueStatus, $offset + $limit, $limit);
         }
 
         $this->issues = $this->issues->mergeIssues($this->mapIssues($response));
