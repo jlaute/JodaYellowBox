@@ -24,5 +24,13 @@ return $config = [
             'to' => 'reopened',
         ],
     ],
-    'callbacks' => [],
+    'callbacks' => [
+        'after' => [
+            'on-change' => [
+                'on' => ['approve', 'reject', 'reopen'],
+                'do' => ['@joda_yellow_box.subscriber.notifications', 'onChangeTicketState'],
+                'args' => ['object', 'event'],
+            ],
+        ],
+    ],
 ];
