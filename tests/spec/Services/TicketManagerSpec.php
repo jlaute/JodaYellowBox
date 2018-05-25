@@ -5,6 +5,7 @@ namespace spec\JodaYellowBox\Services;
 use JodaYellowBox\Components\API\Client\ClientInterface;
 use JodaYellowBox\Components\API\Struct\Issue;
 use JodaYellowBox\Components\API\Struct\Issues;
+use JodaYellowBox\Components\API\Struct\IssueStatus;
 use JodaYellowBox\Components\API\Struct\Version;
 use JodaYellowBox\Exception\ChangeStateException;
 use JodaYellowBox\Models\Release;
@@ -100,7 +101,7 @@ class TicketManagerSpec extends ObjectBehavior
         $release->getExternalId()->shouldBeCalled()->willReturn('12');
 
         $issues = $this->mockIssues();
-        $client->getIssuesByVersion(Argument::type(Version::class))->shouldBeCalled()->willReturn($issues);
+        $client->getIssuesByVersion(Argument::type(Version::class), Argument::type(IssueStatus::class))->shouldBeCalled()->willReturn($issues);
 
         $ticketRepository->findByExternalIds(Argument::type('array'))->shouldBeCalled()->willReturn([]);
         $ticketRepository->add(Argument::type(Ticket::class))->shouldBeCalled();
@@ -116,7 +117,7 @@ class TicketManagerSpec extends ObjectBehavior
         $release->getExternalId()->shouldBeCalled()->willReturn('12');
 
         $issues = $this->mockIssues();
-        $client->getIssuesByVersion(Argument::type(Version::class))->shouldBeCalled()->willReturn($issues);
+        $client->getIssuesByVersion(Argument::type(Version::class), Argument::type(IssueStatus::class))->shouldBeCalled()->willReturn($issues);
 
         $tickets = $this->mockTickets();
         $ticketRepository->findByExternalIds(Argument::type('array'))->shouldBeCalled()->willReturn($tickets);
