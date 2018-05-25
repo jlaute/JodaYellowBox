@@ -82,7 +82,6 @@ class Shopware_Controllers_Widgets_YellowBox extends Enlight_Controller_Action
 
         $currentRelease = $this->releaseManager->getCurrentRelease();
         $this->view->assign('currentRelease', $currentRelease);
-
-        return $this->view->assign('success', true);
+        $this->view->assign('success', true);
     }
 }
