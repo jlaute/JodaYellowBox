@@ -45,4 +45,14 @@ class Versions implements \Iterator
     {
         $this->position = 0;
     }
+
+    public function getAllVersionIds()
+    {
+        $ids = [];
+        foreach ($this->versions as $version) {
+            $ids[] = $version->id;
+        }
+
+        return $ids;
+    }
 }

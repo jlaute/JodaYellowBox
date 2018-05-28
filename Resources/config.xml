@@ -71,6 +71,7 @@
             <name>JodaYellowBoxManagementToolName</name>
             <label lang="de">Name des Projektmanagement-Tools</label>
             <label>Name of Projectmanagement-Tool</label>
+            <value>Redmine</value>
             <store>
                 <option>
                     <value>Redmine</value>
@@ -93,6 +94,15 @@
             <label lang="en">External Status-ID</label>
             <description lang="de">Status-ID aus der externen Projektmanagement-Software</description>
             <description lang="en">Status-ID from the external Projectmanagement-Tool</description>
+        </element>
+
+        <element type="boolean">
+            <name>JodaYellowBoxTicketsDependOnRelease</name>
+            <label lang="de">Tickets in Releases zusammenfassen</label>
+            <label>Display Tickets in Releases</label>
+            <value>true</value>
+            <description lang="de">Zeigt immer nur Tickets eines Releases im Frontend an. Andernfalls werden die Tickets anhand der "Externe Status-ID" dargestellt.</description>
+            <description>Shows only tickets for one release. If not, the state on the "External Status-ID" defines whether the ticket is displayed or not.</description>
         </element>
     </elements>
 </config>

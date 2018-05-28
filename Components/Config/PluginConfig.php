@@ -90,6 +90,14 @@ class PluginConfig extends ArrayCollection implements PluginConfigInterface
     /**
      * {@inheritdoc}
      */
+    public function doTicketsDependOnRelease(): bool
+    {
+        return (bool) $this->get('JodaYellowBoxTicketsDependOnRelease');
+    }
+
+    /**
+     * {@inheritdoc}
+     */
     public function getApiUrl(): string
     {
         return (string) $this->get('JodaYellowBoxApiUrl');

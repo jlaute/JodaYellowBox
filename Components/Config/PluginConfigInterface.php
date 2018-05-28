@@ -59,6 +59,11 @@ interface PluginConfigInterface
     public function getExternalStatusId(): string;
 
     /**
+     * @return bool
+     */
+    public function doTicketsDependOnRelease(): bool;
+
+    /**
      * @return string
      */
     public function getApiUrl(): string;

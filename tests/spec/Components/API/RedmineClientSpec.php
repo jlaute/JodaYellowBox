@@ -54,7 +54,12 @@ class RedmineClientSpec extends ObjectBehavior
             ->shouldBeCalled()
             ->willReturn($response);
 
-        $response->json()->shouldBeCalled()->willReturn(['issues' => []]);
+        $response->json()->shouldBeCalled()->willReturn([
+            'issues' => [],
+            'total_count' => 1,
+            'limit' => 100,
+            'offset' => 0
+        ]);
 
         $this->getAllIssues();
     }
@@ -68,7 +73,12 @@ class RedmineClientSpec extends ObjectBehavior
             ->shouldBeCalled()
             ->willReturn($response);
 
-        $response->json()->shouldBeCalled()->willReturn(['issues' => []]);
+        $response->json()->shouldBeCalled()->willReturn([
+            'issues' => [],
+            'total_count' => 1,
+            'limit' => 100,
+            'offset' => 0
+        ]);
 
         $this->getIssuesByProject($project);
     }

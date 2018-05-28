@@ -55,29 +55,23 @@ class RedmineClient extends AbstractClient
      */
     public function getAllIssues(): Issues
     {
-        $response = $this->get('/issues.' . ClientInterface::REQUEST_FORMAT);
-
-        return $this->mapIssues($response);
+        return $this->getIssues([]);
     }
 
     /**
      * {@inheritdoc}
      */
-    public function getIssuesByProject(Project $project): Issues
-    {
-        $params = [];
-        if ($project) {
-            $params = [
-                'query' => [
-                    'project_id' => $project->id,
-                    'limit' => 100,
-                ],
-            ];
-        }
+    public function getIssuesByProject(
+        Project $project,
+        IssueStatus $issueStatus = null,
+        $offset = 0,
+        $limit = 100
+    ): Issues {
+        $defaultQuery = [
+            'project_id' => $project->id,
+        ];
 
-        $response = $this->get('/issues.' . ClientInterface::REQUEST_FORMAT, $params);
-
-        return $this->mapIssues($response);
+        return $this->getIssues($defaultQuery, $issueStatus, $offset, $limit);
     }
 
     /**
@@ -91,26 +85,9 @@ class RedmineClient extends AbstractClient
     ): Issues {
         $defaultQuery = [
             'fixed_version_id' => $version->id,
-            'limit' => $limit,
-            'offset' => $offset,
         ];
 
-        $status = ['status_id' => '*'];
-        if ($issueStatus) {
-            $status = ['status_id' => $issueStatus->id];
-        }
-
-        $params = $this->buildParams($defaultQuery, $status);
-
-        $response = $this->get('/issues.' . ClientInterface::REQUEST_FORMAT, $params);
-        $jsonContent = $response->json();
-        if ((int) $jsonContent['total_count'] > (int) $jsonContent['limit'] + (int) $jsonContent['offset']) {
-            $this->getIssuesByVersion($version, $issueStatus, $offset + $limit, $limit);
-        }
-
-        $this->issues = $this->issues->mergeIssues($this->mapIssues($response));
-
-        return $this->issues;
+        return $this->getIssues($defaultQuery, $issueStatus, $offset, $limit);
     }
 
     /**
@@ -131,6 +108,46 @@ class RedmineClient extends AbstractClient
         $this->header = [
             'X-Redmine-API-Key' => $this->apiKey,
         ];
+    }
+
+    /**
+     * @param array            $query
+     * @param IssueStatus|null $issueStatus
+     * @param int              $offset
+     * @param int              $limit
+     *
+     * @throws ApiException
+     *
+     * @return Issues
+     */
+    protected function getIssues(
+        array $query,
+        IssueStatus $issueStatus = null,
+        $offset = 0,
+        $limit = 100
+    ): Issues {
+        $defaultQuery = [
+            'limit' => $limit,
+            'offset' => $offset,
+        ];
+        $query = array_merge($defaultQuery, $query);
+
+        $status = ['status_id' => '*'];
+        if ($issueStatus) {
+            $status = ['status_id' => $issueStatus->id];
+        }
+
+        $params = $this->buildParams($defaultQuery, $status);
+
+        $response = $this->get('/issues.' . ClientInterface::REQUEST_FORMAT, $params);
+        $jsonContent = $response->json();
+        if ((int) $jsonContent['total_count'] > (int) $jsonContent['limit'] + (int) $jsonContent['offset']) {
+            $this->getIssues($query, $issueStatus, $offset + $limit, $limit);
+        }
+
+        $this->issues = $this->issues->mergeIssues($this->mapIssues($response));
+
+        return $this->issues;
     }
 
     /**
@@ -159,7 +176,7 @@ class RedmineClient extends AbstractClient
             $issue->name = $responseIssue['subject'];
             $issue->description = $responseIssue['description'];
             $issue->author = $responseIssue['author']['name'];
-            $issue->status = $responseIssue['status']['name'];
+            $issue->status = (string) $responseIssue['status']['id'];
 
             $issues->add($issue);
         }
