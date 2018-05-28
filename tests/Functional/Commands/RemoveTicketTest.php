@@ -1,4 +1,5 @@
 <?php declare(strict_types=1);
+
 use JodaYellowBox\Commands\RemoveTicket;
 use Shopware\Components\Test\Plugin\TestCase;
 use Symfony\Component\Console\Tester\CommandTester;

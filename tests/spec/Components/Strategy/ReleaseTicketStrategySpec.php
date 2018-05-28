@@ -1,6 +1,6 @@
 <?php
 
-namespace spec\JodaYellowBox\Components\RemoteAPIFetcher\Strategy;
+namespace spec\JodaYellowBox\Components\Strategy;
 
 use JodaYellowBox\Components\API\Client\ClientInterface;
 use JodaYellowBox\Components\API\Struct\Issue;
@@ -8,8 +8,8 @@ use JodaYellowBox\Components\API\Struct\Issues;
 use JodaYellowBox\Components\API\Struct\Project;
 use JodaYellowBox\Components\API\Struct\Version;
 use JodaYellowBox\Components\API\Struct\Versions;
-use JodaYellowBox\Components\RemoteAPIFetcher\Strategy\ReleaseStrategy;
-use JodaYellowBox\Components\RemoteAPIFetcher\Strategy\StrategyInterface;
+use JodaYellowBox\Components\Strategy\ReleaseTicketStrategy;
+use JodaYellowBox\Components\Strategy\TicketStrategyInterface;
 use JodaYellowBox\Models\Release;
 use JodaYellowBox\Models\ReleaseRepository;
 use JodaYellowBox\Models\Ticket;
@@ -18,7 +18,7 @@ use JodaYellowBox\Services\ReleaseManagerInterface;
 use PhpSpec\ObjectBehavior;
 use Prophecy\Argument;
 
-class ReleaseStrategySpec extends ObjectBehavior
+class ReleaseTicketStrategySpec extends ObjectBehavior
 {
     public function let(
         ReleaseManagerInterface $releaseManager,
@@ -31,8 +31,8 @@ class ReleaseStrategySpec extends ObjectBehavior
 
     function it_is_initializable()
     {
-        $this->shouldHaveType(ReleaseStrategy::class);
-        $this->shouldImplement(StrategyInterface::class);
+        $this->shouldHaveType(ReleaseTicketStrategy::class);
+        $this->shouldImplement(TicketStrategyInterface::class);
     }
 
     public function it_should_be_able_to_fetch_data(

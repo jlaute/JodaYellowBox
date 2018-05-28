@@ -1,6 +1,6 @@
 <?php declare(strict_types=1);
 
-namespace JodaYellowBox\Components\RemoteAPIFetcher\Strategy;
+namespace JodaYellowBox\Components\Strategy;
 
 use JodaYellowBox\Components\API\Client\ClientInterface;
 use JodaYellowBox\Components\API\Struct\Issue;
@@ -12,7 +12,7 @@ use JodaYellowBox\Models\Ticket;
 use JodaYellowBox\Models\TicketRepository;
 use JodaYellowBox\Services\ReleaseManagerInterface;
 
-class ReleaseStrategy implements StrategyInterface
+class ReleaseTicketStrategy implements TicketStrategyInterface
 {
     /** @var ReleaseManagerInterface */
     protected $releaseManager;
@@ -26,30 +26,59 @@ class ReleaseStrategy implements StrategyInterface
     /** @var TicketRepository */
     protected $ticketRepository;
 
+    /** @var string */
+    protected $releaseToDisplay;
+
     /**
      * @param ReleaseManagerInterface $releaseManager
      * @param ReleaseRepository       $releaseRepository
      * @param TicketRepository        $ticketRepository
      * @param ClientInterface         $client
+     * @param string                  $releaseToDisplay
      */
     public function __construct(
         ReleaseManagerInterface $releaseManager,
         ReleaseRepository $releaseRepository,
         TicketRepository $ticketRepository,
-        ClientInterface $client
+        ClientInterface $client,
+        string $releaseToDisplay = 'latest'
     ) {
         $this->releaseManager = $releaseManager;
         $this->releaseRepository = $releaseRepository;
         $this->ticketRepository = $ticketRepository;
         $this->client = $client;
+        $this->releaseToDisplay = $releaseToDisplay;
     }
 
+    /**
+     * {@inheritdoc}
+     */
     public function fetchData(Project $project)
     {
         $this->fetchReleases($project);
         $this->fetchTickets();
     }
 
+    public function getCurrentTickets()
+    {
+        if ($this->releaseToDisplay === 'latest') {
+            $release = $this->releaseRepository->findLatestRelease();
+        } else {
+            $release = $this->releaseRepository->findReleaseByName($this->releaseToDisplay);
+        }
+
+        if (!$release) {
+            return [];
+        }
+
+        return $release->getTickets();
+    }
+
+    /**
+     * @param Project $project
+     *
+     * @throws \JodaYellowBox\Components\API\ApiException
+     */
     protected function fetchReleases(Project $project)
     {
         $versions = $this->client->getVersionsInProject($project);
@@ -67,6 +96,9 @@ class ReleaseStrategy implements StrategyInterface
         $this->releaseRepository->save();
     }
 
+    /**
+     * @throws \JodaYellowBox\Components\API\ApiException
+     */
     protected function fetchTickets()
     {
         if (!$currentRelease = $this->releaseManager->getCurrentRelease()) {

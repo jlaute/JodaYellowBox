@@ -70,8 +70,8 @@ class AddReleaseTest extends TestCase
         $output = $this->commandTester->getDisplay();
         $this->assertContains('success', $output);
 
-        $releaseManager = Shopware()->Container()->get('joda_yellow_box.services.release_manager');
-        $currentRelease = $releaseManager->getCurrentRelease();
+        $ticketService = Shopware()->Container()->get('joda_yellow_box.services.ticket');
+        $currentRelease = $ticketService->getCurrentRelease();
 
         $this->assertEquals('Ticket to Create', $currentRelease->getTickets()->current()->getName());
         $this->assertEquals('Second ticket to create', $currentRelease->getTickets()->next()->getName());

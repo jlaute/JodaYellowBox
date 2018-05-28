@@ -1,6 +1,6 @@
 <?php declare(strict_types=1);
 
-namespace JodaYellowBox\Components\RemoteAPIFetcher\Strategy;
+namespace JodaYellowBox\Components\Strategy;
 
 use JodaYellowBox\Components\API\Client\ClientInterface;
 use JodaYellowBox\Components\API\Struct\Issue;
@@ -9,7 +9,7 @@ use JodaYellowBox\Components\API\Struct\Project;
 use JodaYellowBox\Models\Ticket;
 use JodaYellowBox\Models\TicketRepository;
 
-class StateStrategy implements StrategyInterface
+class StateTicketStrategy implements TicketStrategyInterface
 {
     /** @var ClientInterface */
     private $client;
@@ -20,6 +20,11 @@ class StateStrategy implements StrategyInterface
     /** @var string */
     private $externalStatusId;
 
+    /**
+     * @param ClientInterface  $client
+     * @param TicketRepository $ticketRepository
+     * @param string           $externalStatusId
+     */
     public function __construct(ClientInterface $client, TicketRepository $ticketRepository, string $externalStatusId)
     {
         $this->client = $client;
@@ -27,12 +32,25 @@ class StateStrategy implements StrategyInterface
         $this->externalStatusId = $externalStatusId;
     }
 
+    /**
+     * {@inheritdoc}
+     */
     public function fetchData(Project $project)
     {
         $this->fetchTickets($project);
     }
 
-    public function fetchTickets(Project $project)
+    public function getCurrentTickets()
+    {
+        return $this->ticketRepository->findByExternalIds([$this->externalStatusId]);
+    }
+
+    /**
+     * @param Project $project
+     *
+     * @throws \JodaYellowBox\Components\API\ApiException
+     */
+    protected function fetchTickets(Project $project)
     {
         $issueStatus = new IssueStatus();
         $issueStatus->id = $this->externalStatusId;

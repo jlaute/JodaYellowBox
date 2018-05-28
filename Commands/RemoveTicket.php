@@ -19,12 +19,19 @@ class RemoveTicket extends ShopwareCommand
 
     protected function execute(InputInterface $input, OutputInterface $output)
     {
-        $ticketManager = $this->container->get('joda_yellow_box.services.ticket_manager');
-
-        $ticket = $ticketManager->getTicket($input->getArgument('name'));
-        $ticketManager->delete($ticket);
-
         $io = new SymfonyStyle($input, $output);
+        $name = $input->getArgument('name');
+        $ticketService = $this->container->get('joda_yellow_box.services.ticket');
+        $ticket = $ticketService->getTicket($name);
+
+        if (!$ticket) {
+            $io->error("Ticket $name could not be found!");
+        }
+
+        $em = $this->container->get('models');
+        $em->remove($ticket);
+        $em->flush();
+
         $io->success('Ticket was successfully deleted');
     }
 }

@@ -1,20 +1,20 @@
 <?php
 
-namespace spec\JodaYellowBox\Components\RemoteAPIFetcher\Strategy;
+namespace spec\JodaYellowBox\Components\Strategy;
 
 use JodaYellowBox\Components\API\Client\ClientInterface;
 use JodaYellowBox\Components\API\Struct\Issue;
 use JodaYellowBox\Components\API\Struct\Issues;
 use JodaYellowBox\Components\API\Struct\IssueStatus;
 use JodaYellowBox\Components\API\Struct\Project;
-use JodaYellowBox\Components\RemoteAPIFetcher\Strategy\StateStrategy;
-use JodaYellowBox\Components\RemoteAPIFetcher\Strategy\StrategyInterface;
+use JodaYellowBox\Components\Strategy\StateTicketStrategy;
+use JodaYellowBox\Components\Strategy\TicketStrategyInterface;
 use JodaYellowBox\Models\Ticket;
 use JodaYellowBox\Models\TicketRepository;
 use PhpSpec\ObjectBehavior;
 use Prophecy\Argument;
 
-class StateStrategySpec extends ObjectBehavior
+class StateTicketStrategySpec extends ObjectBehavior
 {
     public function let(ClientInterface $client, TicketRepository $ticketRepository)
     {
@@ -23,8 +23,8 @@ class StateStrategySpec extends ObjectBehavior
 
     public function it_is_initializable()
     {
-        $this->shouldHaveType(StateStrategy::class);
-        $this->shouldImplement(StrategyInterface::class);
+        $this->shouldHaveType(StateTicketStrategy::class);
+        $this->shouldImplement(TicketStrategyInterface::class);
     }
 
     public function it_should_be_able_to_fetch_data(

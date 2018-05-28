@@ -4,16 +4,16 @@ namespace JodaYellowBox\Subscriber;
 
 use Enlight\Event\SubscriberInterface;
 use JodaYellowBox\Components\API\ApiException;
-use JodaYellowBox\Services\RemoteApiClientInterface;
+use JodaYellowBox\Services\TicketServiceInterface;
 
 class Cron implements SubscriberInterface
 {
-    /** @var RemoteApiClientInterface */
-    protected $remoteApiClient;
+    /** @var TicketServiceInterface */
+    protected $ticketService;
 
-    public function __construct(RemoteApiClientInterface $remoteApiClient)
+    public function __construct(TicketServiceInterface $ticketService)
     {
-        $this->remoteApiClient = $remoteApiClient;
+        $this->ticketService = $ticketService;
     }
 
     public static function getSubscribedEvents()
@@ -33,10 +33,7 @@ class Cron implements SubscriberInterface
     public function onApiSyncCronjob(\Shopware_Components_Cron_CronJob $cronJob)
     {
         try {
-            $this->remoteApiClient->fetchNewData();
-
-            //$currentRelease = $this->releaseManager->getCurrentRelease();
-            //$this->ticketManager->syncTicketsFromRemote($currentRelease);
+            $this->ticketService->syncRemoteData();
         } catch (ApiException $e) {
             $cronJob->setReturn('Error: ' . $e->getMessage());
         }

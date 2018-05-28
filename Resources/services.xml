@@ -28,7 +28,7 @@
 
         <service id="joda_yellow_box.command.api_sync" class="JodaYellowBox\Commands\ApiSync">
             <argument type="string">joda:api:sync</argument>
-            <argument type="service" id="joda_yellow_box.remote.api_client" />
+            <argument type="service" id="joda_yellow_box.services.ticket" />
             <tag name="console.command" />
         </service>
 
@@ -49,17 +49,20 @@
             <argument type="service" id="models" />
         </service>
 
-        <service id="joda_yellow_box.services.ticket_manager" class="JodaYellowBox\Services\TicketManager">
+        <service id="joda_yellow_box.services.ticket_manager" class="JodaYellowBox\Services\TicketManager" public="false">
             <argument type="service" id="joda_yellow_box.repository.ticket" />
             <argument type="service" id="joda_yellow_box.sm.factory" />
-            <argument type="service" id="joda_yellow_box.api_client" />
-            <argument type="expression">service('joda_yellow_box.services.plugin_config').getExternalStatusId()</argument>
         </service>
 
-        <service id="joda_yellow_box.services.release_manager" class="JodaYellowBox\Services\ReleaseManager">
+        <service id="joda_yellow_box.services.release_manager" class="JodaYellowBox\Services\ReleaseManager" public="false">
             <argument type="service" id="joda_yellow_box.repository.release" />
-            <argument type="service" id="joda_yellow_box.api_client" />
             <argument type="expression">service('joda_yellow_box.services.plugin_config').getReleaseToDisplay()</argument>
+        </service>
+
+        <service id="joda_yellow_box.services.ticket" class="JodaYellowBox\Services\TicketService">
+            <argument type="service" id="joda_yellow_box.ticket_strategy" />
+            <argument type="service" id="joda_yellow_box.services.release_manager" />
+            <argument type="service" id="joda_yellow_box.services.ticket_manager" />
             <argument type="expression">service('joda_yellow_box.services.plugin_config').getExternalProjectId()</argument>
         </service>
 
@@ -93,21 +96,18 @@
             <argument type="expression">service('joda_yellow_box.services.plugin_config').getApiKey()</argument>
         </service>
 
-        <service id="joda_yellow_box.api_fetcher.strategy_factory" class="JodaYellowBox\Components\RemoteAPIFetcher\StrategyFactory" public="false">
+        <service id="joda_yellow_box.factory.ticket_strategy" class="JodaYellowBox\Components\Strategy\TicketStrategyFactory" public="false">
             <argument type="service" id="joda_yellow_box.services.release_manager" />
             <argument type="service" id="joda_yellow_box.repository.release" />
             <argument type="service" id="joda_yellow_box.repository.ticket" />
             <argument type="service" id="joda_yellow_box.api_client" />
+            <argument type="expression">service('joda_yellow_box.services.plugin_config').getExternalStatusId()</argument>
+            <argument type="expression">service('joda_yellow_box.services.plugin_config').getReleaseToDisplay()</argument>
         </service>
 
-        <service id="joda_yellow_box.api_fetcher.strategy" class="JodaYellowBox\Components\RemoteAPIFetcher\Strategy\StrategyInterface" public="false">
-            <factory service="joda_yellow_box.api_fetcher.strategy_factory" method="getStrategy" />
+        <service id="joda_yellow_box.ticket_strategy" class="JodaYellowBox\Components\Strategy\TicketStrategyInterface" public="false">
+            <factory service="joda_yellow_box.factory.ticket_strategy" method="getStrategy" />
             <argument type="expression">service('joda_yellow_box.services.plugin_config').doTicketsDependOnRelease()</argument>
-        </service>
-
-        <service id="joda_yellow_box.remote.api_client" class="JodaYellowBox\Services\RemoteApiClient">
-            <argument type="service" id="joda_yellow_box.api_fetcher.strategy" />
-            <argument type="expression">service('joda_yellow_box.services.plugin_config').getExternalProjectId()</argument>
         </service>
 
         <!-- State logger -->
@@ -139,7 +139,7 @@
         </service>
 
         <service id="joda_yellow_box.subscriber.cron" class="JodaYellowBox\Subscriber\Cron">
-            <argument type="service" id="joda_yellow_box.remote.api_client" />
+            <argument type="service" id="joda_yellow_box.services.ticket" />
             <tag name="shopware.event_subscriber" />
         </service>
 
