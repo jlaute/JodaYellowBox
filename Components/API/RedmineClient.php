@@ -69,6 +69,7 @@ class RedmineClient extends AbstractClient
     ): Issues {
         $defaultQuery = [
             'project_id' => $project->id,
+            'subproject_id' => '!*',
         ];
 
         return $this->getIssues($defaultQuery, $issueStatus, $offset, $limit);
@@ -77,13 +78,16 @@ class RedmineClient extends AbstractClient
     /**
      * {@inheritdoc}
      */
-    public function getIssuesByVersion(
+    public function getIssuesByVersionAndProject(
         Version $version,
+        Project $project,
         IssueStatus $issueStatus = null,
         $offset = 0,
         $limit = 100
     ): Issues {
         $defaultQuery = [
+            'project_id' => $project->id,
+            'subproject_id' => '!*',
             'fixed_version_id' => $version->id,
         ];
 
@@ -137,7 +141,7 @@ class RedmineClient extends AbstractClient
             $status = ['status_id' => $issueStatus->id];
         }
 
-        $params = $this->buildParams($defaultQuery, $status);
+        $params = $this->buildParams($query, $status);
 
         $response = $this->get('/issues.' . ClientInterface::REQUEST_FORMAT, $params);
         $jsonContent = $response->json();

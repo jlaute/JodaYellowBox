@@ -23,9 +23,11 @@
             {block name="frontend_yellow_box_content"}
                 <ul class="list">
                     {block name="frontend_yellow_box_content_list"}
-                        {if $currentRelease}
+                        {if $releaseName}
                             <li class="list--entry entry--header">{s name="ticket_list_headline"}{/s}</li>
-                            {foreach $currentRelease->getTickets() as $ticket}
+                        {/if}
+                        {if $tickets}
+                            {foreach $tickets as $ticket}
                                 <li class="list--entry" data-ticket-id="{$ticket->getId()}">
                                     {* temp comment for comment box *}
                                     <div class="temp-comment">{strip}{$ticket->getComment()}{/strip}</div>
@@ -35,7 +37,7 @@
                                             <button class="btn {$transition}" data-ticket-transition="{$transition}" title="{$transition|snippet:$snippetName:"frontend/yellow_box/index"}" data-ticket-name="{$ticket->getName()}">
                                                 <i class="icon--transition-{$transition}"></i>
                                             </button>
-                                        {foreachelse}
+                                            {foreachelse}
                                             {if $ticket->getState() == 'approved'}
                                                 <i class="icon--check"></i>
                                             {/if}
@@ -48,11 +50,9 @@
                                         {/if}
                                     </div>
                                 </li>
-                            {foreachelse}
-                                <li class="list--entry">{s name="ticket_list_no_release_tickets"}{/s}</li>
                             {/foreach}
                         {else}
-                            <li class="list--entry">{s name="ticket_list_no_release"}{/s}</li>
+                            <li class="list--entry">{s name="ticket_list_no_tickets"}{/s}</li>
                         {/if}
                     {/block}
                 </ul>

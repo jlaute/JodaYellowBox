@@ -60,7 +60,7 @@ class ReleaseTicketStrategySpec extends ObjectBehavior
 
         $releaseManager->getCurrentRelease()->shouldBeCalled()->willReturn($release);
         $release->getExternalId()->shouldBeCalled()->willReturn('33');
-        $client->getIssuesByVersion(Argument::type(Version::class))->shouldBeCalled()->willReturn($this->mockIssues());
+        $client->getIssuesByVersionAndProject(Argument::type(Version::class), Argument::type(Project::class))->shouldBeCalled()->willReturn($this->mockIssues());
 
         $ticketRepository->findByExternalIds(Argument::type('array'))->shouldBeCalled()->willReturn($this->mockExistingTickets());
         $ticketRepository->add(Argument::type(Ticket::class))->shouldBeCalledTimes(2);
@@ -102,7 +102,7 @@ class ReleaseTicketStrategySpec extends ObjectBehavior
 
         $releaseManager->getCurrentRelease()->shouldBeCalled()->willReturn($release);
         $release->getExternalId()->shouldBeCalled()->willReturn('33');
-        $client->getIssuesByVersion(Argument::type(Version::class))->shouldBeCalled()->willReturn($this->mockIssues());
+        $client->getIssuesByVersionAndProject(Argument::type(Version::class), Argument::type(Project::class))->shouldBeCalled()->willReturn($this->mockIssues());
 
         $ticketRepository->findByExternalIds(Argument::type('array'))->shouldBeCalled()->willReturn([]);
         $ticketRepository->add(Argument::type(Ticket::class))->shouldBeCalledTimes(2);

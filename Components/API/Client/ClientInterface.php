@@ -45,6 +45,7 @@ interface ClientInterface
 
     /**
      * @param Version     $version
+     * @param Project     $project
      * @param IssueStatus $issueStatus
      * @param int         $offset
      * @param int         $limit
@@ -53,8 +54,9 @@ interface ClientInterface
      *
      * @return Issues
      */
-    public function getIssuesByVersion(
+    public function getIssuesByVersionAndProject(
         Version $version,
+        Project $project,
         IssueStatus $issueStatus = null,
         $offset = 0,
         $limit = 100

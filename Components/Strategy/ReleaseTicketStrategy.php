@@ -56,7 +56,7 @@ class ReleaseTicketStrategy implements TicketStrategyInterface
     public function fetchData(Project $project)
     {
         $this->fetchReleases($project);
-        $this->fetchTickets();
+        $this->fetchTickets($project);
     }
 
     public function getCurrentTickets()
@@ -97,9 +97,11 @@ class ReleaseTicketStrategy implements TicketStrategyInterface
     }
 
     /**
+     * @param Project $project
+     *
      * @throws \JodaYellowBox\Components\API\ApiException
      */
-    protected function fetchTickets()
+    protected function fetchTickets(Project $project)
     {
         if (!$currentRelease = $this->releaseManager->getCurrentRelease()) {
             return;
@@ -108,7 +110,7 @@ class ReleaseTicketStrategy implements TicketStrategyInterface
         $version = new Version();
         $version->id = $currentRelease->getExternalId();
 
-        $issues = $this->client->getIssuesByVersion($version);
+        $issues = $this->client->getIssuesByVersionAndProject($version, $project);
         if (!$issues->valid()) {
             return;
         }
@@ -123,7 +125,7 @@ class ReleaseTicketStrategy implements TicketStrategyInterface
             }
 
             $this->ticketRepository->add(
-                new Ticket($issue->name, null, $issue->description, $issue->id)
+                new Ticket($issue->name, null, $issue->description, $issue->id, $issue->status)
             );
         }
 
