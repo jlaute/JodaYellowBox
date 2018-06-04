@@ -2,11 +2,11 @@ services:
   - mysql:5.7
 
 build:clone_shopware:
-  image: alpine/git
+  image: indiehosters/git
   tags:
     - runner
   script:
-    - alpine/git clone https://github.com/shopware/shopware.git ${SHOPWARE_DIRECTORY} --branch ${SHOPWARE_VERSION}
+    - git clone https://github.com/shopware/shopware.git ${SHOPWARE_DIRECTORY} --branch ${SHOPWARE_VERSION}
 
 build:composer_install:
   image: jlau/composer:php70
