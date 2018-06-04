@@ -54,7 +54,12 @@ class RedmineClientSpec extends ObjectBehavior
             ->shouldBeCalled()
             ->willReturn($response);
 
-        $response->json()->shouldBeCalled()->willReturn(['issues' => []]);
+        $response->json()->shouldBeCalled()->willReturn([
+            'issues' => [],
+            'total_count' => 1,
+            'limit' => 100,
+            'offset' => 0
+        ]);
 
         $this->getAllIssues();
     }
@@ -68,7 +73,12 @@ class RedmineClientSpec extends ObjectBehavior
             ->shouldBeCalled()
             ->willReturn($response);
 
-        $response->json()->shouldBeCalled()->willReturn(['issues' => []]);
+        $response->json()->shouldBeCalled()->willReturn([
+            'issues' => [],
+            'total_count' => 1,
+            'limit' => 100,
+            'offset' => 0
+        ]);
 
         $this->getIssuesByProject($project);
     }
@@ -76,14 +86,15 @@ class RedmineClientSpec extends ObjectBehavior
     public function it_can_receive_issues_by_version(
         GuzzleClientInterface $client,
         ResponseInterface $response,
-        Version $version
+        Version $version,
+        Project $project
     ) {
         $client->get(Argument::type('string'), Argument::type('array'))->shouldBeCalled()->willReturn($response);
         $jsonContent = include __DIR__ . '/data/2-issues-2-limit.php';
 
         $response->json()->shouldBeCalled()->willReturn($jsonContent);
 
-        $this->getIssuesByVersion($version, null, 0, 2);
+        $this->getIssuesByVersionAndProject($version, $project, null, 0, 2);
     }
 
     public function it_can_get_versions_in_project(

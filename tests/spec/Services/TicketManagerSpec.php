@@ -2,13 +2,9 @@
 
 namespace spec\JodaYellowBox\Services;
 
-use JodaYellowBox\Components\API\Client\ClientInterface;
 use JodaYellowBox\Components\API\Struct\Issue;
 use JodaYellowBox\Components\API\Struct\Issues;
-use JodaYellowBox\Components\API\Struct\IssueStatus;
-use JodaYellowBox\Components\API\Struct\Version;
 use JodaYellowBox\Exception\ChangeStateException;
-use JodaYellowBox\Models\Release;
 use JodaYellowBox\Models\TicketRepository;
 use JodaYellowBox\Services\TicketManager;
 use JodaYellowBox\Services\TicketManagerInterface;
@@ -26,10 +22,9 @@ class TicketManagerSpec extends ObjectBehavior
 {
     public function let(
         TicketRepository $ticketRepository,
-        StateMachineFactory $stateMachineFactory,
-        ClientInterface $client
+        StateMachineFactory $stateMachineFactory
     ) {
-        $this->beConstructedWith($ticketRepository, $stateMachineFactory, $client);
+        $this->beConstructedWith($ticketRepository, $stateMachineFactory);
         $this->getTicketRepositoryMock($ticketRepository);
     }
 
@@ -81,48 +76,6 @@ class TicketManagerSpec extends ObjectBehavior
         $stateMachine->apply('asdf')->shouldBeCalled()->willThrow(SMException::class);
 
         $this->shouldThrow(ChangeStateException::class)->during('changeState', [$ticket, 'asdf']);
-    }
-
-    public function it_is_able_to_delete_a_ticket(
-        TicketRepository $ticketRepository,
-        Ticket $ticket
-    ) {
-        $ticketRepository->remove($ticket)->shouldBeCalled();
-
-        $this->delete($ticket);
-    }
-
-    public function it_can_sync_tickets_from_remote(
-        TicketRepository $ticketRepository,
-        ClientInterface $client,
-        Release $release
-    ) {
-        $release->getExternalId()->shouldBeCalled()->willReturn('12');
-
-        $issues = $this->mockIssues();
-        $client->getIssuesByVersion(Argument::type(Version::class), Argument::type(IssueStatus::class))->shouldBeCalled()->willReturn($issues);
-
-        $ticketRepository->findByExternalIds(Argument::type('array'))->shouldBeCalled()->willReturn([]);
-        $ticketRepository->add(Argument::type(Ticket::class))->shouldBeCalled();
-        $ticketRepository->save()->shouldBeCalled();
-        $this->syncTicketsFromRemote($release);
-    }
-
-    public function it_does_not_duplicate_tickets(
-        TicketRepository $ticketRepository,
-        ClientInterface $client,
-        Release $release
-    ) {
-        $release->getExternalId()->shouldBeCalled()->willReturn('12');
-
-        $issues = $this->mockIssues();
-        $client->getIssuesByVersion(Argument::type(Version::class), Argument::type(IssueStatus::class))->shouldBeCalled()->willReturn($issues);
-
-        $tickets = $this->mockTickets();
-        $ticketRepository->findByExternalIds(Argument::type('array'))->shouldBeCalled()->willReturn($tickets);
-        $ticketRepository->add(Argument::type(Ticket::class))->shouldBeCalledTimes(1);
-        $ticketRepository->save()->shouldBeCalled();
-        $this->syncTicketsFromRemote($release);
     }
 
     /**

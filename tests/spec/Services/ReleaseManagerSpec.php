@@ -2,9 +2,6 @@
 
 namespace spec\JodaYellowBox\Services;
 
-use JodaYellowBox\Components\API\ApiException;
-use JodaYellowBox\Components\API\Client\ClientInterface;
-use JodaYellowBox\Components\API\Struct\Project;
 use JodaYellowBox\Components\API\Struct\Version;
 use JodaYellowBox\Components\API\Struct\Versions;
 use JodaYellowBox\Models\Release;
@@ -16,9 +13,9 @@ use Prophecy\Argument;
 
 class ReleaseManagerSpec extends ObjectBehavior
 {
-    public function let(ReleaseRepository $releaseRepository, ClientInterface $client)
+    public function let(ReleaseRepository $releaseRepository)
     {
-        $this->beConstructedWith($releaseRepository, $client, 'Release 123', '20');
+        $this->beConstructedWith($releaseRepository, 'Release 123');
     }
 
     public function it_is_initializable()
@@ -27,36 +24,10 @@ class ReleaseManagerSpec extends ObjectBehavior
         $this->shouldBeAnInstanceOf(ReleaseManagerInterface::class);
     }
 
-    public function it_can_return_current_release_name()
-    {
-        $this->getCurrentReleaseName()->shouldBe('Release 123');
-    }
-
-    public function it_will_return_latest_release_name_when_no_release_can_be_found(
-        ReleaseRepository $releaseRepository,
-        ClientInterface $client
-    ) {
-        $this->beConstructedWith($releaseRepository, $client, 'latest');
-        $releaseRepository->findLatestRelease()->shouldBeCalled()->willReturn(null);
-        $this->getCurrentReleaseName()->shouldBe('latest');
-    }
-
-    public function it_will_return_the_latest_release_name(
-        ReleaseRepository $releaseRepository,
-        ClientInterface $client,
-        Release $release
-    ) {
-        $this->beConstructedWith($releaseRepository, $client, 'latest');
-        $releaseRepository->findLatestRelease()->shouldBeCalled()->willReturn($release);
-        $release->getName()->shouldBeCalled()->willReturn('New Release');
-        $this->getCurrentReleaseName()->shouldBe('New Release');
-    }
-
     public function it_can_return_current_release(
-        ReleaseRepository $releaseRepository,
-        ClientInterface $client
+        ReleaseRepository $releaseRepository
     ) {
-        $this->beConstructedWith($releaseRepository, $client, 'latest');
+        $this->beConstructedWith($releaseRepository, 'latest');
         $releaseRepository->findLatestRelease()->shouldBeCalled();
         $this->getCurrentRelease();
     }
@@ -65,43 +36,6 @@ class ReleaseManagerSpec extends ObjectBehavior
     {
         $releaseRepository->findReleaseByName('Release 123')->shouldBeCalled();
         $this->getCurrentRelease();
-    }
-
-    public function it_can_sync_releases_from_remote(
-        ReleaseRepository $releaseRepository,
-        ClientInterface $client
-    ) {
-        $versions = $this->mockVersions();
-
-        $client->getVersionsInProject(Argument::type(Project::class))->shouldBeCalled()->willReturn($versions);
-        $releaseRepository->findByExternalIds(Argument::type('array'))->shouldBeCalled()->willReturn([]);
-        $releaseRepository->add(Argument::type(Release::class))->shouldBeCalled();
-        $releaseRepository->save()->shouldBeCalled();
-
-        $this->syncReleasesFromRemote();
-    }
-
-    public function it_does_not_add_releases_that_already_exists(
-        ReleaseRepository $releaseRepository,
-        ClientInterface $client
-    ) {
-        $versions = $this->mockVersions();
-        $client->getVersionsInProject(Argument::type(Project::class))->shouldBeCalled()->willReturn($versions);
-
-        $releases = $this->mockReleases();
-        $releaseRepository->findByExternalIds(Argument::type('array'))->shouldBeCalled()->willReturn($releases);
-        $releaseRepository->add(Argument::type(Release::class))->shouldBeCalledTimes(1);
-        $releaseRepository->save()->shouldBeCalled();
-
-        $this->syncReleasesFromRemote();
-    }
-
-    public function it_throws_an_exception_when_no_external_project_config_id_is_set(
-        ReleaseRepository $releaseRepository,
-        ClientInterface $client
-    ) {
-        $this->beConstructedWith($releaseRepository, $client, '124');
-        $this->shouldThrow(ApiException::class)->during('syncReleasesFromRemote');
     }
 
     protected function mockVersions()

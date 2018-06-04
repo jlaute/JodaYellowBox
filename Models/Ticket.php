@@ -74,6 +74,13 @@ class Ticket extends ModelEntity
     private $state;
 
     /**
+     * @var string
+     *
+     * @ORM\Column(name="external_state", type="string", nullable=true)
+     */
+    private $externalState;
+
+    /**
      * @var \DateTime
      *
      * @ORM\Column(name="created_at", type="datetime", nullable=false)
@@ -109,6 +116,7 @@ class Ticket extends ModelEntity
      * @param string                $number
      * @param string                $description
      * @param string                $externalId
+     * @param string|null           $externalState
      * @param StateMachineInterface $stateMachine
      */
     public function __construct(
@@ -116,6 +124,7 @@ class Ticket extends ModelEntity
         string $number = null,
         string $description = null,
         string $externalId = null,
+        string $externalState = null,
         StateMachineInterface $stateMachine = null
     ) {
         $this->createdAt = new \DateTime();
@@ -124,6 +133,7 @@ class Ticket extends ModelEntity
         $this->number = $number;
         $this->description = $description;
         $this->externalId = $externalId;
+        $this->externalState = $externalState;
         $this->stateMachine = $stateMachine;
         $this->releases = new ArrayCollection();
     }
@@ -246,6 +256,22 @@ class Ticket extends ModelEntity
     public function setState(string $state)
     {
         $this->state = $state;
+    }
+
+    /**
+     * @return string
+     */
+    public function getExternalState(): string
+    {
+        return $this->externalState ?: '';
+    }
+
+    /**
+     * @param string $externalState
+     */
+    public function setExternalState(string $externalState)
+    {
+        $this->externalState = $externalState;
     }
 
     /**

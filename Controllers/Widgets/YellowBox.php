@@ -3,8 +3,7 @@
 declare(strict_types=1);
 
 use JodaYellowBox\Exception\ChangeStateException;
-use JodaYellowBox\Services\ReleaseManagerInterface;
-use JodaYellowBox\Services\TicketManagerInterface;
+use JodaYellowBox\Services\TicketServiceInterface;
 use SM\Factory\Factory;
 
 class Shopware_Controllers_Widgets_YellowBox extends Enlight_Controller_Action
@@ -18,33 +17,24 @@ class Shopware_Controllers_Widgets_YellowBox extends Enlight_Controller_Action
     protected $stateManager;
 
     /**
-     * @var TicketManagerInterface
+     * @var TicketServiceInterface
      */
-    protected $ticketManager;
-
-    /**
-     * @var ReleaseManagerInterface
-     */
-    protected $releaseManager;
+    protected $ticketService;
 
     public function preDispatch()
     {
         $this->stateManager = $this->get('joda_yellow_box.sm.factory');
-        $this->ticketManager = $this->get('joda_yellow_box.services.ticket_manager');
-        $this->releaseManager = $this->get('joda_yellow_box.services.release_manager');
+        $this->ticketService = $this->get('joda_yellow_box.services.ticket');
     }
 
     public function indexAction()
     {
-        $view = $this->View();
-
-        $currentRelease = $this->releaseManager->getCurrentRelease();
         $snapCookie = $this->request->getCookie(self::SNAP_COOKIE);
         $minimizeCookie = $this->request->getCookie(self::MINIMIZE_COOKIE);
 
-        $view->assign('currentRelease', $currentRelease);
-        $view->assign('snapPosition', $snapCookie);
-        $view->assign('isMinimized', $minimizeCookie);
+        $this->assignTicketDataToView();
+        $this->view->assign('snapPosition', $snapCookie);
+        $this->view->assign('isMinimized', $minimizeCookie);
     }
 
     public function transitionAction()
@@ -52,14 +42,14 @@ class Shopware_Controllers_Widgets_YellowBox extends Enlight_Controller_Action
         $this->view->loadTemplate('frontend/yellow_box/index.tpl');
 
         $ticketId = (int) $this->request->get('ticketId');
-        if ($this->ticketManager->existsTicket($ticketId) === false) {
+        if ($this->ticketService->existsTicket($ticketId) === false) {
             return $this->view->assign([
                 'success' => false,
                 'error' => 'ticket does not exists',
             ]);
         }
 
-        $ticket = $this->ticketManager->getTicket($ticketId);
+        $ticket = $this->ticketService->getTicket($ticketId);
         $ticketTransition = $this->request->get('ticketTransition');
 
         $comment = $this->request->get('comment');
@@ -68,7 +58,7 @@ class Shopware_Controllers_Widgets_YellowBox extends Enlight_Controller_Action
         }
 
         try {
-            $this->ticketManager->changeState($ticket, $ticketTransition);
+            $this->ticketService->changeState($ticket, $ticketTransition);
         } catch (ChangeStateException $ex) {
             // Invalid transition state
             return $this->view->assign([
@@ -80,8 +70,15 @@ class Shopware_Controllers_Widgets_YellowBox extends Enlight_Controller_Action
         // Success
         $this->getModelManager()->flush($ticket);
 
-        $currentRelease = $this->releaseManager->getCurrentRelease();
-        $this->view->assign('currentRelease', $currentRelease);
+        $this->assignTicketDataToView();
         $this->view->assign('success', true);
+    }
+
+    protected function assignTicketDataToView()
+    {
+        $tickets = $this->ticketService->getCurrentTickets();
+
+        $this->view->assign('releaseName', $this->ticketService->getCurrentReleaseName());
+        $this->view->assign('tickets', $tickets);
     }
 }

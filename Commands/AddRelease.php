@@ -34,7 +34,7 @@ class AddRelease extends ShopwareCommand
     {
         $io = new SymfonyStyle($input, $output);
 
-        $ticketManager = $this->getContainer()->get('joda_yellow_box.services.ticket_manager');
+        $ticketService = $this->getContainer()->get('joda_yellow_box.services.ticket');
 
         $releasedate = new \DateTime();
         if ($input->getOption('releasedate')) {
@@ -43,7 +43,7 @@ class AddRelease extends ShopwareCommand
 
         $release = new Release($input->getArgument('name'), $releasedate);
         foreach ($input->getOption('tickets') as $ticketName) {
-            $ticket = $ticketManager->getTicket($ticketName);
+            $ticket = $ticketService->getTicket($ticketName);
 
             if (!$ticket) {
                 if (!$io->confirm("Ticket '$ticketName' does not exist. Create it for this release?")) {

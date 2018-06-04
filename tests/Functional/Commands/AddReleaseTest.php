@@ -11,6 +11,7 @@ class AddReleaseTest extends TestCase
         'JodaYellowBox' => [
             'JodaYellowBoxReleaseToDisplay' => 'latest',
             'JodaYellowBoxManagementToolName' => 'Redmine',
+            'JodaYellowBoxTicketsDependOnRelease' => 1,
         ],
     ];
 
@@ -23,33 +24,15 @@ class AddReleaseTest extends TestCase
         $command->setContainer(Shopware()->Container());
 
         $this->commandTester = new CommandTester($command);
+
+        $em = Shopware()->Container()->get('models');
+        $em->beginTransaction();
     }
 
     public function tearDown()
     {
         $em = Shopware()->Container()->get('models');
-        $releaseRepo = $em->getRepository(Release::class);
-        $ticketRepo = $em->getRepository(Ticket::class);
-
-        $release = $releaseRepo->findOneBy(['name' => 'New Testing Release!']);
-        $release2 = $releaseRepo->findOneBy(['name' => 'Second Testing Release!']);
-        $ticket = $ticketRepo->findOneBy(['name' => 'Ticket to Create']);
-        $ticket2 = $ticketRepo->findOneBy(['name' => 'Second ticket to Create']);
-
-        if (!empty($release)) {
-            $em->remove($release);
-        }
-        if (!empty($release2)) {
-            $em->remove($release2);
-        }
-        if (!empty($ticket)) {
-            $em->remove($ticket);
-        }
-        if (!empty($ticket2)) {
-            $em->remove($ticket2);
-        }
-
-        $em->flush();
+        $em->rollback();
     }
 
     public function testExecute()
@@ -70,10 +53,10 @@ class AddReleaseTest extends TestCase
         $output = $this->commandTester->getDisplay();
         $this->assertContains('success', $output);
 
-        $releaseManager = Shopware()->Container()->get('joda_yellow_box.services.release_manager');
-        $currentRelease = $releaseManager->getCurrentRelease();
+        $ticketService = Shopware()->Container()->get('joda_yellow_box.services.ticket');
+        $currentTickets = $ticketService->getCurrentTickets();
 
-        $this->assertEquals('Ticket to Create', $currentRelease->getTickets()->current()->getName());
-        $this->assertEquals('Second ticket to create', $currentRelease->getTickets()->next()->getName());
+        $this->assertEquals('Ticket to Create', $currentTickets[0]->getName());
+        $this->assertEquals('Second ticket to create', $currentTickets[1]->getName());
     }
 }

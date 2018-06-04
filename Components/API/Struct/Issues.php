@@ -56,4 +56,14 @@ class Issues implements \Iterator
 
         return $this;
     }
+
+    public function getAllIssueIds(): array
+    {
+        $ids = [];
+        foreach ($this->issues as $issue) {
+            $ids[] = $issue->id;
+        }
+
+        return $ids;
+    }
 }

@@ -22,19 +22,15 @@ class AddTicketTest extends TestCase
         $command->setContainer(Shopware()->Container());
 
         $this->commandTester = new CommandTester($command);
+
+        $em = Shopware()->Container()->get('models');
+        $em->beginTransaction();
     }
 
     public function tearDown()
     {
         $em = Shopware()->Container()->get('models');
-        $ticketRepo = $em->getRepository(Ticket::class);
-
-        $ticket = $ticketRepo->findOneBy(['name' => 'New Testing Ticket!']);
-
-        if (!empty($ticket)) {
-            $em->remove($ticket);
-            $em->flush();
-        }
+        $em->rollback();
     }
 
     public function testExecute()

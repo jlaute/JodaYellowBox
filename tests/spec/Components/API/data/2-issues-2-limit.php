@@ -7,6 +7,7 @@ return [
             'project' => [],
             'tracker' => [],
             'status' => [
+                'id' => 11,
                 'name' => 'Done'
             ],
             'priority' => [],
@@ -26,6 +27,7 @@ return [
             'project' => [],
             'tracker' => [],
             'status' => [
+                'id' => 21,
                 'name' => 'Not Done'
             ],
             'priority' => [],

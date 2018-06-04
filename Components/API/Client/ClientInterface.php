@@ -27,16 +27,25 @@ interface ClientInterface
     /**
      * get all project specific issues
      *
-     * @param Project $project
+     * @param Project          $project
+     * @param IssueStatus|null $issueStatus
+     * @param int              $offset
+     * @param int              $limit
      *
      * @throws ApiException
      *
      * @return Issues
      */
-    public function getIssuesByProject(Project $project): Issues;
+    public function getIssuesByProject(
+        Project $project,
+        IssueStatus $issueStatus = null,
+        $offset = 0,
+        $limit = 100
+    ): Issues;
 
     /**
      * @param Version     $version
+     * @param Project     $project
      * @param IssueStatus $issueStatus
      * @param int         $offset
      * @param int         $limit
@@ -45,8 +54,9 @@ interface ClientInterface
      *
      * @return Issues
      */
-    public function getIssuesByVersion(
+    public function getIssuesByVersionAndProject(
         Version $version,
+        Project $project,
         IssueStatus $issueStatus = null,
         $offset = 0,
         $limit = 100

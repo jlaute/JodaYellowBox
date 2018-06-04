@@ -2,24 +2,14 @@
 
 namespace JodaYellowBox\Services;
 
-use JodaYellowBox\Exception\ChangeStateException;
 use JodaYellowBox\Models\Ticket;
 
-interface TicketManagerInterface
+interface TicketServiceInterface
 {
     /**
-     * @param mixed $ident Id or name of ticket
-     *
-     * @return Ticket
+     * @return mixed
      */
-    public function getTicket($ident);
-
-    /**
-     * @param mixed $ident Id or name of ticket
-     *
-     * @return bool
-     */
-    public function existsTicket($ident): bool;
+    public function syncRemoteData();
 
     /**
      * @return array
@@ -27,12 +17,27 @@ interface TicketManagerInterface
     public function getCurrentTickets(): array;
 
     /**
-     * Change state of ticket
+     * @return string
+     */
+    public function getCurrentReleaseName(): string;
+
+    /**
+     * @param $ident
      *
+     * @return Ticket|null
+     */
+    public function getTicket($ident);
+
+    /**
+     * @param $ident
+     *
+     * @return bool
+     */
+    public function existsTicket($ident): bool;
+
+    /**
      * @param Ticket $ticket
      * @param string $state
-     *
-     * @throws ChangeStateException
      */
     public function changeState(Ticket $ticket, string $state);
 }

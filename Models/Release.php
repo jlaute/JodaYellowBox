@@ -117,7 +117,7 @@ class Release extends ModelEntity
     }
 
     /**
-     * @return Collection[Ticket]
+     * @return Collection|Ticket[]
      */
     public function getTickets(): Collection
     {
