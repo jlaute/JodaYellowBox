@@ -6,7 +6,7 @@ build:clone_shopware:
   tags:
     - runner
   script:
-    - git clone https://github.com/shopware/shopware.git ${SHOPWARE_DIRECTORY} --branch ${SHOPWARE_VERSION}
+    - alpine/git clone https://github.com/shopware/shopware.git ${SHOPWARE_DIRECTORY} --branch ${SHOPWARE_VERSION}
 
 build:composer_install:
   image: jlau/composer:php70
