@@ -1,0 +1,34 @@
+services:
+  - mysql:5.7
+
+build:clone_shopware:
+  image: alpine/git
+  tags:
+    - runner
+  script:
+    - git clone https://github.com/shopware/shopware.git ${SHOPWARE_DIRECTORY} --branch ${SHOPWARE_VERSION}
+
+build:composer_install:
+  image: jlau/composer:php70
+  tags:
+    - runner
+  script:
+    - cd ${SHOPWARE_DIRECTORY}
+    - composer install
+
+build:ant_install:
+  image: frekele/ant
+  tags:
+    - runner
+  script:
+    - ant -f ${SHOPWARE_DIRECTORY}/build/build.xml -Dapp.host=localhost -Ddb.user=root -Ddb.host=127.0.0.1 -Ddb.password=${MYSQL_ROOT_PASSWORD} -Ddb.name=${MYSQL_DATABASE} build-unit
+
+
+variables:
+  # Configure mysql environment variables (https://hub.docker.com/r/_/mysql/)
+  MYSQL_DATABASE: yellowbox
+  MYSQL_ROOT_PASSWORD: strong_yellowbox_password
+  SHOPWARE_VERSION: "5.2"
+  PLUGIN_NAME: JodaYellowBox
+  SHOPWARE_DIRECTORY: "${HOME}/shopware"
+  PLUGIN_DIRECTORY: "${SHOPWARE_DIRECTORY}/custom/plugins"
