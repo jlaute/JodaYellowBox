@@ -76,14 +76,9 @@ class Shopware_Controllers_Widgets_YellowBox extends Enlight_Controller_Action
 
     protected function assignTicketDataToView()
     {
-        $currentRelease = $this->ticketService->getCurrentRelease();
-        $releaseName = '';
-        if ($currentRelease) {
-            $releaseName = $currentRelease->getName();
-        }
         $tickets = $this->ticketService->getCurrentTickets();
 
-        $this->view->assign('releaseName', $releaseName);
+        $this->view->assign('releaseName', $this->ticketService->getCurrentReleaseName());
         $this->view->assign('tickets', $tickets);
     }
 }

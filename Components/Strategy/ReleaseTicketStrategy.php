@@ -59,7 +59,7 @@ class ReleaseTicketStrategy implements TicketStrategyInterface
         $this->fetchTickets($project);
     }
 
-    public function getCurrentTickets()
+    public function getCurrentTickets(): array
     {
         if ($this->releaseToDisplay === 'latest') {
             $release = $this->releaseRepository->findLatestRelease();
@@ -68,10 +68,20 @@ class ReleaseTicketStrategy implements TicketStrategyInterface
         }
 
         if (!$release) {
-            return [];
+            return null;
         }
 
-        return $release->getTickets();
+        return $release->getTickets()->toArray();
+    }
+
+    public function getCurrentReleaseName(): string
+    {
+        $release = $this->releaseManager->getCurrentRelease();
+        if ($release) {
+            return $release->getName();
+        }
+
+        return '';
     }
 
     /**

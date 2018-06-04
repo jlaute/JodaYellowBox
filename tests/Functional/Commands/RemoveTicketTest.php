@@ -17,6 +17,15 @@ class RemoveTicketTest extends TestCase
     {
         $this->removeCommand = new RemoveTicket('joda:ticket:remove');
         $this->removeCommand->setContainer(Shopware()->Container());
+
+        $em = Shopware()->Container()->get('models');
+        $em->beginTransaction();
+    }
+
+    public function tearDown()
+    {
+        $em = Shopware()->Container()->get('models');
+        $em->rollback();
     }
 
     public function testExecute()

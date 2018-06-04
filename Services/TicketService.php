@@ -60,9 +60,9 @@ class TicketService implements TicketServiceInterface
     /**
      * {@inheritdoc}
      */
-    public function getCurrentRelease()
+    public function getCurrentReleaseName(): string
     {
-        return $this->releaseManager->getCurrentRelease();
+        return $this->ticketStrategy->getCurrentReleaseName();
     }
 
     /**

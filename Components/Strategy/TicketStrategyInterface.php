@@ -14,7 +14,12 @@ interface TicketStrategyInterface
     public function fetchData(Project $project);
 
     /**
-     * @return mixed
+     * @return array
      */
-    public function getCurrentTickets();
+    public function getCurrentTickets(): array;
+
+    /**
+     * @return string
+     */
+    public function getCurrentReleaseName(): string;
 }

@@ -40,9 +40,14 @@ class StateTicketStrategy implements TicketStrategyInterface
         $this->fetchTickets($project);
     }
 
-    public function getCurrentTickets()
+    public function getCurrentTickets(): array
     {
-        return $this->ticketRepository->findByExternalIds([$this->externalStatusId]);
+        return $this->ticketRepository->findByExternalStateId($this->externalStatusId);
+    }
+
+    public function getCurrentReleaseName(): string
+    {
+        return '';
     }
 
     /**
@@ -70,7 +75,7 @@ class StateTicketStrategy implements TicketStrategyInterface
             }
 
             $this->ticketRepository->add(
-                new Ticket($issue->name, null, $issue->description, $issue->id)
+                new Ticket($issue->name, null, $issue->description, $issue->id, $issue->status)
             );
         }
 

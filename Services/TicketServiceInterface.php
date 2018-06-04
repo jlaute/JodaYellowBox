@@ -2,7 +2,6 @@
 
 namespace JodaYellowBox\Services;
 
-use JodaYellowBox\Models\Release;
 use JodaYellowBox\Models\Ticket;
 
 interface TicketServiceInterface
@@ -18,9 +17,9 @@ interface TicketServiceInterface
     public function getCurrentTickets(): array;
 
     /**
-     * @return Release|null
+     * @return string
      */
-    public function getCurrentRelease();
+    public function getCurrentReleaseName(): string;
 
     /**
      * @param $ident
