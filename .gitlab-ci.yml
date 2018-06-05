@@ -2,7 +2,7 @@ services:
   - mysql:5.7
 
 image:
-  name: jlau/shopware-plugin-test:php70
+  name: jlau/shopware-plugin-test:php7.0
   entrypoint: [""]
 
 build:clone_shopware:
