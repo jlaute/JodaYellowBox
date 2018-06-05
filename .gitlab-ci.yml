@@ -23,11 +23,11 @@ test:php7.0:
   tags:
     - runner
   script:
-    - echo "hello world"
+    #- echo "hello world"
     - pwd
     - ls -la
-#    - composer test
-#    - composer test-spec
+    - composer test-spec
+    - composer test
 
 variables:
   # Configure mysql environment variables (https://hub.docker.com/r/_/mysql/)
