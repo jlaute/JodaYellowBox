@@ -6,20 +6,21 @@ before_script:
   #- git clone https://github.com/shopware/shopware.git ${SHOPWARE_DIRECTORY} --branch ${SHOPWARE_VERSION}
   #- ant -f ${SHOPWARE_DIRECTORY}/build/build.xml -Dapp.host=localhost -Ddb.user=root -Ddb.host=mysql -Ddb.password=${MYSQL_ROOT_PASSWORD} -Ddb.name=${MYSQL_DATABASE} build-unit
   #- composer install
-  #- mv ${CI_PROJECT_DIR} ${PLUGIN_DIRECTORY}/${PLUGIN_NAME}
   - echo ${CI_PROJECT_DIR} ${PLUGIN_DIRECTORY}/${PLUGIN_NAME}
+  #- mv ${CI_PROJECT_DIR} ${PLUGIN_DIRECTORY}/${PLUGIN_NAME}
   #- php ${SHOPWARE_DIRECTORY}/bin/console sw:plugin:refresh
   #- php ${SHOPWARE_DIRECTORY}/bin/console sw:plugin:install ${PLUGIN_NAME}
   #- php ${SHOPWARE_DIRECTORY}/bin/console sw:plugin:activate ${PLUGIN_NAME}
   #- cd ${PLUGIN_DIRECTORY}/${PLUGIN_NAME}
 
-#test:php7.0:
-#  image:
-#    name: jlau/shopware-plugin-test:php7.0
-#    entrypoint: [""]
-#  tags:
-#    - runner
-#  script:
+test:php7.0:
+  image:
+    name: jlau/shopware-plugin-test:php7.0
+    entrypoint: [""]
+  tags:
+    - runner
+  script:
+    - echo "hello world"
 #    - composer test
 #    - composer test-spec
 
