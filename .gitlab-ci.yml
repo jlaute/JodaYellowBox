@@ -1,28 +1,26 @@
 services:
-  - mysql:5.7
+  - name: mysql:5.7
+    alias: mysql
 
-image:
-  name: jlau/shopware-plugin-test:php7.0
-  entrypoint: [""]
+before_script:
+  - git clone https://github.com/shopware/shopware.git ${SHOPWARE_DIRECTORY} --branch ${SHOPWARE_VERSION}
+  - composer install --working-dir ${SHOPWARE_DIRECTORY}
+  - ant -f ${SHOPWARE_DIRECTORY}/build/build.xml -Dapp.host=localhost -Ddb.user=root -Ddb.host=mysql -Ddb.password=${MYSQL_ROOT_PASSWORD} -Ddb.name=${MYSQL_DATABASE} build-unit
+  - mv ${CI_PROJECT_DIR} ${PLUGIN_DIRECTORY}/${PLUGIN_NAME}
+  - php ${SHOPWARE_DIRECTORY}/bin/console sw:plugin:refresh
+  - php ${SHOPWARE_DIRECTORY}/bin/console sw:plugin:install ${PLUGIN_NAME}
+  - php ${SHOPWARE_DIRECTORY}/bin/console sw:plugin:activate ${PLUGIN_NAME}
+  - cd ${PLUGIN_DIRECTORY}/${PLUGIN_NAME}
 
-build:clone_shopware:
+test:php7.0:
+  image:
+    name: jlau/shopware-plugin-test:php7.0
+    entrypoint: [""]
   tags:
     - runner
   script:
-    - git clone https://github.com/shopware/shopware.git ${SHOPWARE_DIRECTORY} --branch ${SHOPWARE_VERSION}
-
-build:composer_install:
-  tags:
-    - runner
-  script:
-    - composer install --working-dir ${SHOPWARE_DIRECTORY}
-
-build:ant_install:
-  tags:
-    - runner
-  script:
-    - ant -f ${SHOPWARE_DIRECTORY}/build/build.xml -Dapp.host=localhost -Ddb.user=root -Ddb.host=mysql -Ddb.password=${MYSQL_ROOT_PASSWORD} -Ddb.name=${MYSQL_DATABASE} build-unit
-
+    - composer test
+    - composer test-spec
 
 variables:
   # Configure mysql environment variables (https://hub.docker.com/r/_/mysql/)
