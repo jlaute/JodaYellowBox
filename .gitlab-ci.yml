@@ -1,27 +1,27 @@
 services:
   - mysql:5.7
 
+image:
+  name: jlau/shopware-plugin-test:php70
+  entrypoint: [""]
+
 build:clone_shopware:
-  image: indiehosters/git
   tags:
     - runner
   script:
     - git clone https://github.com/shopware/shopware.git ${SHOPWARE_DIRECTORY} --branch ${SHOPWARE_VERSION}
 
 build:composer_install:
-  image: jlau/composer:php70
   tags:
     - runner
   script:
-    - cd ${SHOPWARE_DIRECTORY}
-    - composer install
+    - composer install --working-dir ${SHOPWARE_DIRECTORY}
 
 build:ant_install:
-  image: frekele/ant
   tags:
     - runner
   script:
-    - ant -f ${SHOPWARE_DIRECTORY}/build/build.xml -Dapp.host=localhost -Ddb.user=root -Ddb.host=127.0.0.1 -Ddb.password=${MYSQL_ROOT_PASSWORD} -Ddb.name=${MYSQL_DATABASE} build-unit
+    - ant -f ${SHOPWARE_DIRECTORY}/build/build.xml -Dapp.host=localhost -Ddb.user=root -Ddb.host=mysql -Ddb.password=${MYSQL_ROOT_PASSWORD} -Ddb.name=${MYSQL_DATABASE} build-unit
 
 
 variables:
