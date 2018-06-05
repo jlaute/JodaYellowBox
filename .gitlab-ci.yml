@@ -5,7 +5,7 @@ services:
 before_script:
   - git clone https://github.com/shopware/shopware.git ${SHOPWARE_DIRECTORY} --branch ${SHOPWARE_VERSION}
   - ant -f ${SHOPWARE_DIRECTORY}/build/build.xml -Dapp.host=localhost -Ddb.user=root -Ddb.host=mysql -Ddb.password=${MYSQL_ROOT_PASSWORD} -Ddb.name=${MYSQL_DATABASE} build-unit
-  - composer install
+  - composer install --no-scripts
   #- ls -la ${CI_PROJECT_DIR}
   #- ls -la ${PLUGIN_DIRECTORY}/${PLUGIN_NAME}
   #- ls -la /shopware
