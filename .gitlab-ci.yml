@@ -7,7 +7,7 @@ before_script:
   #- ant -f ${SHOPWARE_DIRECTORY}/build/build.xml -Dapp.host=localhost -Ddb.user=root -Ddb.host=mysql -Ddb.password=${MYSQL_ROOT_PASSWORD} -Ddb.name=${MYSQL_DATABASE} build-unit
   #- composer install
   - ls -la ${CI_PROJECT_DIR}
-  - ls -la ${PLUGIN_DIRECTORY}/${PLUGIN_NAME}
+  #- ls -la ${PLUGIN_DIRECTORY}/${PLUGIN_NAME}
   - ls -la /shopware
   - echo ${CI_PROJECT_DIR} ${PLUGIN_DIRECTORY}/${PLUGIN_NAME}
   #- mv ${CI_PROJECT_DIR} ${PLUGIN_DIRECTORY}/${PLUGIN_NAME}
