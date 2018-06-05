@@ -33,5 +33,5 @@ variables:
   MYSQL_ROOT_PASSWORD: strong_yellowbox_password
   SHOPWARE_VERSION: "5.2"
   PLUGIN_NAME: JodaYellowBox
-  SHOPWARE_DIRECTORY: "${HOME}/shopware"
+  SHOPWARE_DIRECTORY: "/root/shopware"
   PLUGIN_DIRECTORY: "${SHOPWARE_DIRECTORY}/custom/plugins"
