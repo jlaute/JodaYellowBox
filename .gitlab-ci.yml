@@ -21,6 +21,7 @@ test:php7.0:
   script:
     - composer test-spec
     - ${SHOPWARE_DIRECTORY}/vendor/bin/phpunit -c ${PLUGIN_DIRECTORY}/${PLUGIN_NAME}/phpunit.xml.dist
+    - mkdir ${CI_PROJECT_DIR}
 
 after_script:
   - mv ${PLUGIN_DIRECTORY}/${PLUGIN_NAME} ${CI_PROJECT_DIR}
