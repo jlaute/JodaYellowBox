@@ -20,6 +20,8 @@ test:php7.0:
     - runner
   script:
     - composer test-spec
+    - ls -la ${SHOPWARE_DIRECTORY}/
+    - ls -la ${SHOPWARE_DIRECTORY}/vendor/bin/
     - composer test
 
 variables:
