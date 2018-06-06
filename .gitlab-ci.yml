@@ -6,7 +6,7 @@ before_script:
   - git clone https://github.com/shopware/shopware.git ${SHOPWARE_DIRECTORY} --branch ${SHOPWARE_VERSION}
   - ant -f ${SHOPWARE_DIRECTORY}/build/build.xml -Dapp.host=localhost -Ddb.user=root -Ddb.host=mysql -Ddb.password=${MYSQL_ROOT_PASSWORD} -Ddb.name=${MYSQL_DATABASE} build-unit
   - composer install --no-scripts
-  - cp ${CI_PROJECT_DIR} ${PLUGIN_DIRECTORY}/${PLUGIN_NAME}
+  - cp ${CI_PROJECT_DIR}/* ${PLUGIN_DIRECTORY}/${PLUGIN_NAME}/
   - php ${SHOPWARE_DIRECTORY}/bin/console sw:plugin:refresh
   - php ${SHOPWARE_DIRECTORY}/bin/console sw:plugin:install ${PLUGIN_NAME}
   - php ${SHOPWARE_DIRECTORY}/bin/console sw:plugin:activate ${PLUGIN_NAME}
