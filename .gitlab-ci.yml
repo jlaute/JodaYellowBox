@@ -7,6 +7,7 @@ before_script:
   - ant -f ${SHOPWARE_DIRECTORY}/build/build.xml -Dapp.host=localhost -Ddb.user=root -Ddb.host=mysql -Ddb.password=${MYSQL_ROOT_PASSWORD} -Ddb.name=${MYSQL_DATABASE} build-unit
   - composer install --no-scripts
   - mv ${CI_PROJECT_DIR} ${PLUGIN_DIRECTORY}/${PLUGIN_NAME}
+  - mkdir ${CI_PROJECT_DIR}
   - php ${SHOPWARE_DIRECTORY}/bin/console sw:plugin:refresh
   - php ${SHOPWARE_DIRECTORY}/bin/console sw:plugin:install ${PLUGIN_NAME}
   - php ${SHOPWARE_DIRECTORY}/bin/console sw:plugin:activate ${PLUGIN_NAME}
@@ -21,10 +22,6 @@ test:php7.0:
   script:
     - composer test-spec
     - ${SHOPWARE_DIRECTORY}/vendor/bin/phpunit -c ${PLUGIN_DIRECTORY}/${PLUGIN_NAME}/phpunit.xml.dist
-    - mkdir ${CI_PROJECT_DIR}
-
-after_script:
-  - mv ${PLUGIN_DIRECTORY}/${PLUGIN_NAME} ${CI_PROJECT_DIR}
 
 variables:
   # Configure mysql environment variables (https://hub.docker.com/r/_/mysql/)
