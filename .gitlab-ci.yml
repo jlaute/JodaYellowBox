@@ -20,9 +20,7 @@ test:php7.0:
     - runner
   script:
     - composer test-spec
-    - ls -la ${SHOPWARE_DIRECTORY}/
-    - ls -la ${SHOPWARE_DIRECTORY}/vendor/bin/
-    - composer test
+    - ${SHOPWARE_DIRECTORY}/vendor/bin/phpunit -c ${PLUGIN_DIRECTORY}/${PLUGIN_NAME}/phpunit.xml.dist
 
 variables:
   # Configure mysql environment variables (https://hub.docker.com/r/_/mysql/)
