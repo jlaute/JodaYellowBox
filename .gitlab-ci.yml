@@ -1,0 +1,33 @@
+services:
+  - name: mysql:5.7
+    alias: mysql
+
+before_script:
+  - git clone https://github.com/shopware/shopware.git ${SHOPWARE_DIRECTORY} --branch ${SHOPWARE_VERSION}
+  - ant -f ${SHOPWARE_DIRECTORY}/build/build.xml -Dapp.host=localhost -Ddb.user=root -Ddb.host=mysql -Ddb.password=${MYSQL_ROOT_PASSWORD} -Ddb.name=${MYSQL_DATABASE} build-unit
+  - composer install --no-scripts
+  - mv ${CI_PROJECT_DIR} ${PLUGIN_DIRECTORY}/${PLUGIN_NAME}
+  - mkdir ${CI_PROJECT_DIR}
+  - php ${SHOPWARE_DIRECTORY}/bin/console sw:plugin:refresh
+  - php ${SHOPWARE_DIRECTORY}/bin/console sw:plugin:install ${PLUGIN_NAME}
+  - php ${SHOPWARE_DIRECTORY}/bin/console sw:plugin:activate ${PLUGIN_NAME}
+  - cd ${PLUGIN_DIRECTORY}/${PLUGIN_NAME}
+
+test:php7.0:
+  image:
+    name: jlau/shopware-plugin-test:php7.0
+    entrypoint: [""]
+  tags:
+    - runner
+  script:
+    - composer test-spec
+    - ${SHOPWARE_DIRECTORY}/vendor/bin/phpunit -c ${PLUGIN_DIRECTORY}/${PLUGIN_NAME}/phpunit.xml.dist
+
+variables:
+  # Configure mysql environment variables (https://hub.docker.com/r/_/mysql/)
+  MYSQL_DATABASE: yellowbox
+  MYSQL_ROOT_PASSWORD: strong_yellowbox_password
+  SHOPWARE_VERSION: "5.2"
+  PLUGIN_NAME: JodaYellowBox
+  SHOPWARE_DIRECTORY: "/root/shopware"
+  PLUGIN_DIRECTORY: "${SHOPWARE_DIRECTORY}/custom/plugins"
