@@ -4,6 +4,7 @@ namespace JodaYellowBox\Components\API\Factory;
 
 use GuzzleHttp\ClientInterface as GuzzleClientInterface;
 use JodaYellowBox\Components\API\Client\ClientInterface;
+use JodaYellowBox\Components\API\JiraClient;
 use JodaYellowBox\Components\API\RedmineClient;
 
 class ApiClientFactory
@@ -12,6 +13,7 @@ class ApiClientFactory
      * @param GuzzleClientInterface $client
      * @param string                $projectManagementToolName
      * @param string                $apiKey
+     * @param string                $passwd
      *
      * @throws ClientNotExistException
      *
@@ -20,10 +22,15 @@ class ApiClientFactory
     public static function createApiClient(
         GuzzleClientInterface $client,
         string $projectManagementToolName,
-        string $apiKey
+        string $apiKey,
+        string $passwd
     ) {
         if ($projectManagementToolName === 'Redmine') {
             return new RedmineClient($client, $apiKey);
+        }
+
+        if ($projectManagementToolName === 'Jira') {
+            return new JiraClient($client, $apiKey, $passwd);
         }
 
         throw new ClientNotExistException(

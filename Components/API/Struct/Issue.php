@@ -11,6 +11,9 @@ class Issue
     public $name;
 
     /** @var string */
+    public $number;
+
+    /** @var string */
     public $status;
 
     /** @var string */

@@ -51,7 +51,8 @@ class TicketRepository
     {
         $qb = $this->repository->createQueryBuilder('ticket')
             ->select('ticket');
-        $query = $qb->where($qb->expr()->in('ticket.externalId', $externalIds))
+        $query = $qb->where($qb->expr()->in('ticket.externalId', ':externalIds'))
+            ->setParameter('externalIds', $externalIds)
             ->getQuery();
 
         return $query->getResult();
@@ -66,7 +67,8 @@ class TicketRepository
     {
         $qb = $this->repository->createQueryBuilder('ticket')
             ->select('ticket');
-        $query = $qb->where($qb->expr()->eq('ticket.externalState', $externalStateId))
+        $query = $qb->where($qb->expr()->eq('ticket.externalState', ':externalStateId'))
+            ->setParameter('externalStateId', $externalStateId)
             ->getQuery();
 
         return $query->getResult();

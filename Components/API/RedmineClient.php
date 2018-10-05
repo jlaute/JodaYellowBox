@@ -33,34 +33,6 @@ class RedmineClient extends AbstractClient
     /**
      * {@inheritdoc}
      */
-    public function getProjects(): Projects
-    {
-        $response = $this->get('/projects.' . ClientInterface::REQUEST_FORMAT);
-
-        return $this->mapProjects($response);
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    public function getAllIssueStatuses(): IssueStatuses
-    {
-        $response = $this->get('/issue_statuses.' . ClientInterface::REQUEST_FORMAT);
-
-        return $this->mapIssueStatuses($response);
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    public function getAllIssues(): Issues
-    {
-        return $this->getIssues([]);
-    }
-
-    /**
-     * {@inheritdoc}
-     */
     public function getIssuesByProject(
         Project $project,
         IssueStatus $issueStatus = null,

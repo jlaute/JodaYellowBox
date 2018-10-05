@@ -22,6 +22,11 @@
      * Enables and shows the confirmation in yellowbox
      */
     $.subscribe('plugin/jodaYellowBox/canTransition', function (event, me, data) {
+        if (!me.opts.showConfirmation) {
+            me.canTransition = true;
+            return;
+        }
+
         if ($.inArray(data.ticketTransition, ignoreTransitions) !== -1) {
             return me.canTransition = true;
         }

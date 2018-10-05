@@ -8,7 +8,7 @@ use JodaYellowBox\Exception\NotificationException;
 
 class TelegramNotification implements NotificationInterface
 {
-    public function send(string $message)
+    public function send(string $message): bool
     {
         throw new NotificationException('Error while notification');
     }

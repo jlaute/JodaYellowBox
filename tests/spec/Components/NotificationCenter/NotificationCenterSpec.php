@@ -35,19 +35,22 @@ class NotificationCenterSpec extends ObjectBehavior
             ->shouldReturnAnInstanceOf(NotificationInterface::class);
     }
 
-    function it_is_able_to_check_existing_notifications(NotificationInterface $notification) {
+    function it_is_able_to_check_existing_notifications(NotificationInterface $notification)
+    {
         $this->existsNotification('test')->shouldReturn(false);
         $this->addNotification('test', $notification);
         $this->existsNotification('test')->shouldReturn(true);
     }
 
-    function it_is_able_to_get_set_notification(NotificationInterface $notification) {
+    function it_is_able_to_get_set_notification(NotificationInterface $notification)
+    {
         $this->getNotification('test')->shouldReturn(null);
         $this->addNotification('test', $notification);
         $this->getNotification('test')->shouldReturnAnInstanceOf(NotificationInterface::class);
     }
 
-    function it_is_able_to_remove_notification() {
+    function it_is_able_to_remove_notification()
+    {
         $this->removeNotification('joda_yellow_box.notification.email');
         $this->getNotification('joda_yellow_box.notification.email')->shouldReturn(null);
     }
