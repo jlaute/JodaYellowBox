@@ -64,7 +64,12 @@
 
         <element scope="shop">
             <name>JodaYellowBoxApiKey</name>
-            <label>API Key</label>
+            <label>API Key/User</label>
+        </element>
+
+        <element type="password" scope="shop">
+            <name>JodaYellowBoxApiPassword</name>
+            <label>API Password</label>
         </element>
 
         <element type="select">
@@ -76,6 +81,10 @@
                 <option>
                     <value>Redmine</value>
                     <label>Redmine</label>
+                </option>
+                <option>
+                    <value>Jira</value>
+                    <label>Jira</label>
                 </option>
             </store>
         </element>

@@ -112,6 +112,14 @@ class PluginConfig extends ArrayCollection implements PluginConfigInterface
     }
 
     /**
+     * {@inheritdoc}
+     */
+    public function getApiPassword(): string
+    {
+        return (string) $this->get('JodaYellowBoxApiPassword');
+    }
+
+    /**
      * @return string
      */
     public function getManagementToolName(): string

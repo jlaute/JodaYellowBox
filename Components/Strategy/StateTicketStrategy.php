@@ -75,7 +75,7 @@ class StateTicketStrategy implements TicketStrategyInterface
             }
 
             $this->ticketRepository->add(
-                new Ticket($issue->name, null, $issue->description, $issue->id, $issue->status)
+                new Ticket($issue->name, $issue->number, $issue->description, $issue->id, $issue->status)
             );
         }
 
@@ -95,6 +95,9 @@ class StateTicketStrategy implements TicketStrategyInterface
                 $ticket->setExternalState($issue->status);
                 $ticket->setDescription($issue->description);
                 $ticket->setName($issue->name);
+                if ($issue->number) {
+                    $ticket->setNumber($issue->number);
+                }
 
                 return $ticket;
             }

@@ -94,6 +94,7 @@
             <argument type="service" id="joda_yellow_box.guzzle_client" />
             <argument type="expression">service('joda_yellow_box.services.plugin_config').getManagementToolName()</argument>
             <argument type="expression">service('joda_yellow_box.services.plugin_config').getApiKey()</argument>
+            <argument type="expression">service('joda_yellow_box.services.plugin_config').getApiPassword()</argument>
         </service>
 
         <service id="joda_yellow_box.factory.ticket_strategy" class="JodaYellowBox\Components\Strategy\TicketStrategyFactory" public="false">
