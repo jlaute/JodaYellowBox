@@ -26,44 +26,6 @@ class RedmineClientSpec extends ObjectBehavior
         $this->shouldBeAnInstanceOf(ClientInterface::class);
     }
 
-    public function it_can_get_projects(GuzzleClientInterface $client, ResponseInterface $response)
-    {
-        $client->get(Argument::type('string'), Argument::type('array'))
-            ->shouldBeCalled()
-            ->willReturn($response);
-
-        $response->json()->shouldBeCalled()->willReturn(['projects' => []]);
-
-        $this->getProjects();
-    }
-
-    public function it_can_get_all_issue_statuses(GuzzleClientInterface $client, ResponseInterface $response)
-    {
-        $client->get(Argument::type('string'), Argument::type('array'))
-            ->shouldBeCalled()
-            ->willReturn($response);
-
-        $response->json()->shouldBeCalled()->willReturn(['issue_statuses' => []]);
-
-        $this->getAllIssueStatuses();
-    }
-
-    public function it_can_get_all_issues(GuzzleClientInterface $client, ResponseInterface $response)
-    {
-        $client->get(Argument::type('string'), Argument::type('array'))
-            ->shouldBeCalled()
-            ->willReturn($response);
-
-        $response->json()->shouldBeCalled()->willReturn([
-            'issues' => [],
-            'total_count' => 1,
-            'limit' => 100,
-            'offset' => 0
-        ]);
-
-        $this->getAllIssues();
-    }
-
     public function it_can_get_issues_by_project(
         GuzzleClientInterface $client,
         ResponseInterface $response,

@@ -11,9 +11,7 @@ use JodaYellowBox\Components\API\Client\AbstractClient;
 use JodaYellowBox\Components\API\Struct\Issue;
 use JodaYellowBox\Components\API\Struct\Issues;
 use JodaYellowBox\Components\API\Struct\IssueStatus;
-use JodaYellowBox\Components\API\Struct\IssueStatuses;
 use JodaYellowBox\Components\API\Struct\Project;
-use JodaYellowBox\Components\API\Struct\Projects;
 use JodaYellowBox\Components\API\Struct\Version;
 use JodaYellowBox\Components\API\Struct\Versions;
 
@@ -43,34 +41,16 @@ class JiraClient extends AbstractClient
         $this->issues = new Issues();
     }
 
-    public function getAllIssues(): Issues
-    {
-        // ignore
-        return new Issues();
-    }
-
+    /**
+     * {@inheritdoc}
+     */
     public function getIssuesByProject(Project $project,
                                        IssueStatus $issueStatus = null,
                                        $offset = 0,
                                        $limit = 100): Issues
     {
-        // DO NOT IGNORE
         $defaultQuery = [
             'jql' => 'project=' . $project->id,
-        ];
-
-        return $this->getIssues($defaultQuery, $issueStatus, $offset, $limit);
-    }
-
-    public function getIssuesByVersionAndProject(Version $version,
-                                                 Project $project,
-                                                 IssueStatus $issueStatus = null,
-                                                 $offset = 0,
-                                                 $limit = 100): Issues
-    {
-        // DO NOT IGNORE
-        $defaultQuery = [
-            'jql' => 'project=' . $project->id . ' AND fixVersion in unreleasedVersions(' . $version->id . ')',
         ];
 
         return $this->getIssues($defaultQuery, $issueStatus, $offset, $limit);
@@ -79,21 +59,21 @@ class JiraClient extends AbstractClient
     /**
      * {@inheritdoc}
      */
-    public function getProjects(): Projects
+    public function getIssuesByVersionAndProject(Version $version,
+                                                 Project $project,
+                                                 IssueStatus $issueStatus = null,
+                                                 $offset = 0,
+                                                 $limit = 100): Issues
     {
-        // ignore
-        return new Projects();
-    }
+        $defaultQuery = [
+            'jql' => 'project=' . $project->id . ' AND fixVersion in unreleasedVersions(' . $version->id . ')',
+        ];
 
-    public function getAllIssueStatuses(): IssueStatuses
-    {
-        // ignore
-        return new IssueStatuses();
+        return $this->getIssues($defaultQuery, $issueStatus, $offset, $limit);
     }
 
     public function getVersionsInProject(Project $project): Versions
     {
-        // DO NOT IGNORE
         $response = $this->get('project/' . $project->id . '/versions');
 
         return $this->mapVersions($response);
@@ -131,7 +111,7 @@ class JiraClient extends AbstractClient
         ];
         $query = array_merge($defaultQuery, $query);
 
-        $status = '';
+        $status = [];
         if ($issueStatus) {
             $status = ['status' => $issueStatus->id];
         }
