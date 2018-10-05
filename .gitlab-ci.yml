@@ -9,8 +9,7 @@ before_script:
   - mv ${CI_PROJECT_DIR} ${PLUGIN_DIRECTORY}/${PLUGIN_NAME}
   - mkdir ${CI_PROJECT_DIR}
   - php ${SHOPWARE_DIRECTORY}/bin/console sw:plugin:refresh
-  - php ${SHOPWARE_DIRECTORY}/bin/console sw:plugin:install ${PLUGIN_NAME}
-  - php ${SHOPWARE_DIRECTORY}/bin/console sw:plugin:activate ${PLUGIN_NAME}
+  - php ${SHOPWARE_DIRECTORY}/bin/console sw:plugin:install ${PLUGIN_NAME} --activate
   - cd ${PLUGIN_DIRECTORY}/${PLUGIN_NAME}
 
 test:php7.0:
