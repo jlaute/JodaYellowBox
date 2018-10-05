@@ -113,5 +113,14 @@
             <description lang="de">Zeigt immer nur Tickets eines Releases im Frontend an. Andernfalls werden die Tickets anhand der "Externe Status-ID" dargestellt.</description>
             <description>Shows only tickets for one release. If not, the state on the "External Status-ID" defines whether the ticket is displayed or not.</description>
         </element>
+
+        <element type="boolean">
+            <name>JodaYellowBoxShowConfirmation</name>
+            <label lang="de">Bestätigung bei Abnahme</label>
+            <label>Show confirmation</label>
+            <value>false</value>
+            <description lang="de">Verlangt immer eine zusätzliche Bestätigung wenn ein Ticket im Frontend angenommen/abgelehnt wird.</description>
+            <description>Shows a confirmation when a ticket gets accepted/declined in frontend.</description>
+        </element>
     </elements>
 </config>

@@ -32,6 +32,8 @@
             commentAbortButtonSelector: '.abort',
 
             commentSubmitButtonSelector: '.submit',
+
+            showConfirmation: false
         },
 
         /**

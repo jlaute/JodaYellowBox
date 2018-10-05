@@ -2,6 +2,7 @@
 
 declare(strict_types=1);
 
+use JodaYellowBox\Components\Config\PluginConfig;
 use JodaYellowBox\Exception\ChangeStateException;
 use JodaYellowBox\Services\TicketServiceInterface;
 use SM\Factory\Factory;
@@ -21,10 +22,16 @@ class Shopware_Controllers_Widgets_YellowBox extends Enlight_Controller_Action
      */
     protected $ticketService;
 
+    /**
+     * @var PluginConfig
+     */
+    protected $pluginConfig;
+
     public function preDispatch()
     {
         $this->stateManager = $this->get('joda_yellow_box.sm.factory');
         $this->ticketService = $this->get('joda_yellow_box.services.ticket');
+        $this->pluginConfig = $this->get('joda_yellow_box.services.plugin_config');
     }
 
     public function indexAction()
@@ -78,6 +85,7 @@ class Shopware_Controllers_Widgets_YellowBox extends Enlight_Controller_Action
     {
         $tickets = $this->ticketService->getCurrentTickets();
 
+        $this->view->assign('showConfirmation', $this->pluginConfig->getShowConfirmation());
         $this->view->assign('releaseName', $this->ticketService->getCurrentReleaseName());
         $this->view->assign('tickets', $tickets);
     }

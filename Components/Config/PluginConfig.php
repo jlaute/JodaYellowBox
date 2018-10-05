@@ -127,6 +127,11 @@ class PluginConfig extends ArrayCollection implements PluginConfigInterface
         return (string) $this->get('JodaYellowBoxManagementToolName');
     }
 
+    public function getShowConfirmation(): bool
+    {
+        return (bool) $this->get('JodaYellowBoxShowConfirmation');
+    }
+
     /**
      * Converts a string to an array by given delimiter
      *

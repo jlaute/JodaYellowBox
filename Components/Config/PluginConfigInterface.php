@@ -77,4 +77,9 @@ interface PluginConfigInterface
      * @return string
      */
     public function getManagementToolName(): string;
+
+    /**
+     * @return bool
+     */
+    public function getShowConfirmation(): bool;
 }
