@@ -4,8 +4,10 @@ namespace spec\JodaYellowBox\Components\NotificationCenter;
 
 use JodaYellowBox\Components\NotificationCenter\NotificationCenter;
 use JodaYellowBox\Components\NotificationCenter\NotificationCenterInterface;
+use JodaYellowBox\Components\NotificationCenter\NotificationRegistry;
 use JodaYellowBox\Components\NotificationCenter\Notifications\NotificationInterface;
 use PhpSpec\ObjectBehavior;
+use Prophecy\Argument;
 
 /**
  * @package spec\JodaYellowBox\Components\NotificationCenter
@@ -13,45 +15,26 @@ use PhpSpec\ObjectBehavior;
  */
 class NotificationCenterSpec extends ObjectBehavior
 {
-    function let()
+    public function let(NotificationRegistry $notificationRegistry)
     {
-        $configuration = [
-            'joda_yellow_box.notification.email'
-        ];
-
-        $this->beConstructedWith($configuration);
+        $this->beConstructedWith($notificationRegistry);
     }
 
-    function it_is_initializable()
+    public function it_is_initializable()
     {
         $this->shouldHaveType(NotificationCenter::class);
         $this->shouldImplement(NotificationCenterInterface::class);
     }
 
-    function it_able_to_register_notifications()
-    {
-        $this
-            ->getNotification('joda_yellow_box.notification.email')
-            ->shouldReturnAnInstanceOf(NotificationInterface::class);
-    }
+    public function it_can_send_notifications(
+        NotificationRegistry $notificationRegistry,
+        NotificationInterface $emailNotification,
+        NotificationInterface $telegramNotification
+    ) {
+        $notificationRegistry->getAll()->shouldBeCalled()->willReturn([$emailNotification, $telegramNotification]);
+        $emailNotification->send(Argument::is('asdf'))->shouldBeCalled();
+        $telegramNotification->send(Argument::is('asdf'))->shouldBeCalled();
 
-    function it_is_able_to_check_existing_notifications(NotificationInterface $notification)
-    {
-        $this->existsNotification('test')->shouldReturn(false);
-        $this->addNotification('test', $notification);
-        $this->existsNotification('test')->shouldReturn(true);
-    }
-
-    function it_is_able_to_get_set_notification(NotificationInterface $notification)
-    {
-        $this->getNotification('test')->shouldReturn(null);
-        $this->addNotification('test', $notification);
-        $this->getNotification('test')->shouldReturnAnInstanceOf(NotificationInterface::class);
-    }
-
-    function it_is_able_to_remove_notification()
-    {
-        $this->removeNotification('joda_yellow_box.notification.email');
-        $this->getNotification('joda_yellow_box.notification.email')->shouldReturn(null);
+        $this->notify('asdf');
     }
 }

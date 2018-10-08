@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace JodaYellowBox;
 
+use JodaYellowBox\Components\NotificationCenter\NotificationCenterCompilerPass;
 use JodaYellowBox\Setup\Installer;
 use Shopware\Components\Plugin;
 use Shopware\Components\Plugin\Context\UninstallContext;
@@ -22,6 +23,8 @@ class JodaYellowBox extends Plugin
     {
         $config = include $this->getPath() . '/Resources/StateMachine/config.php';
         $container->setParameter('joda_yellow_box.sm.configs', [$config]);
+
+        $container->addCompilerPass(new NotificationCenterCompilerPass());
 
         parent::build($container);
     }
