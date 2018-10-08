@@ -56,14 +56,14 @@
 
         <service id="joda_yellow_box.services.release_manager" class="JodaYellowBox\Services\ReleaseManager" public="false">
             <argument type="service" id="joda_yellow_box.repository.release" />
-            <argument type="expression">service('joda_yellow_box.services.plugin_config').get('JodaYellowBoxReleaseToDisplay')</argument>
+            <argument type="expression">service('joda_yellow_box.services.plugin_config').get('JodaYellowBoxReleaseToDisplay') ?: ''</argument>
         </service>
 
         <service id="joda_yellow_box.services.ticket" class="JodaYellowBox\Services\TicketService">
             <argument type="service" id="joda_yellow_box.ticket_strategy" />
             <argument type="service" id="joda_yellow_box.services.release_manager" />
             <argument type="service" id="joda_yellow_box.services.ticket_manager" />
-            <argument type="expression">service('joda_yellow_box.services.plugin_config').get('JodaYellowBoxExternalProjectId')</argument>
+            <argument type="expression">service('joda_yellow_box.services.plugin_config').get('JodaYellowBoxExternalProjectId') ?: ''</argument>
         </service>
 
         <service id="joda_yellow_box.services.plugin_config" class="JodaYellowBox\Components\Config\PluginConfig">
@@ -96,15 +96,15 @@
         <!-- API -->
         <service id="joda_yellow_box.guzzle_client" class="GuzzleHttp\Client" public="false">
             <factory class="JodaYellowBox\Components\API\Factory\GuzzleClientFactory" method="createGuzzleClient" />
-            <argument type="expression">service('joda_yellow_box.services.plugin_config').get('JodaYellowBoxApiUrl')</argument>
+            <argument type="expression">service('joda_yellow_box.services.plugin_config').get('JodaYellowBoxApiUrl') ?: ''</argument>
         </service>
 
         <service id="joda_yellow_box.api_client" class="JodaYellowBox\Components\API\Client\AbstractClient" public="false">
             <factory class="JodaYellowBox\Components\API\Factory\ApiClientFactory" method="createApiClient" />
             <argument type="service" id="joda_yellow_box.guzzle_client" />
-            <argument type="expression">service('joda_yellow_box.services.plugin_config').get('JodaYellowBoxManagementToolName')</argument>
-            <argument type="expression">service('joda_yellow_box.services.plugin_config').get('JodaYellowBoxApiKey')</argument>
-            <argument type="expression">service('joda_yellow_box.services.plugin_config').get('JodaYellowBoxApiPassword')</argument>
+            <argument type="expression">service('joda_yellow_box.services.plugin_config').get('JodaYellowBoxManagementToolName') ?: ''</argument>
+            <argument type="expression">service('joda_yellow_box.services.plugin_config').get('JodaYellowBoxApiKey') ?: ''</argument>
+            <argument type="expression">service('joda_yellow_box.services.plugin_config').get('JodaYellowBoxApiPassword') ?: ''</argument>
         </service>
 
         <service id="joda_yellow_box.factory.ticket_strategy" class="JodaYellowBox\Components\Strategy\TicketStrategyFactory" public="false">
