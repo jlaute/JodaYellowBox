@@ -76,6 +76,8 @@ Ext.define('Shopware.apps.Index.jodaTicketsWidget.view.Main', {
      * @return { Array } - generated columns
      */
     createColumns: function() {
+        var me = this;
+
         return [{
             dataIndex: 'number',
             header: '{s name=joda-tickets/number}{/s}',
@@ -88,26 +90,71 @@ Ext.define('Shopware.apps.Index.jodaTicketsWidget.view.Main', {
             xtype: 'actioncolumn',
             width: 50,
             items: [{
-                iconCls:'sprite-tick',
                 tooltip: '{s name=joda-tickets/approve}{/s}',
+                getClass: function(v, meta, rec) {
+                    var transitions = rec.get('possible_transitions');
+                    if (Ext.isArray(transitions) && Ext.Array.contains(transitions, 'approve')) {
+                        return 'sprite-tick';
+                    }
+                    return 'x-hide-visibility';
+                },
                 handler: function(view, rowIndex, colIndex, item, event, record) {
-                    openNewModule('Shopware.apps.Customer', {
-                        action: 'detail',
+                    Ext.Ajax.request({
+                        url: '{url controller=JodaTicketsWidget action=transition}',
+                        method: 'POST',
                         params: {
-                            customerId: ~~(record.get('id'))
+                            id: record.get('id'),
+                            transition: 'approve'
+                        },
+                        success: function (response, operation) {
+                            me.refreshView();
                         }
-                    });
+                    })
                 }
             }, {
-                iconCls:'sprite-cross',
                 tooltip: '{s name=joda-tickets/reject}{/s}',
+                getClass: function(v, meta, rec) {
+                    var transitions = rec.get('possible_transitions');
+                    if (Ext.isArray(transitions) && Ext.Array.contains(transitions, 'reject')) {
+                        return 'sprite-cross';
+                    }
+                    return 'x-hide-visibility';
+                },
                 handler: function(view, rowIndex, colIndex, item, event, record) {
-                    openNewModule('Shopware.apps.Customer', {
-                        action: 'detail',
+                    Ext.Ajax.request({
+                        url: '{url controller=JodaTicketsWidget action=transition}',
+                        method: 'POST',
                         params: {
-                            customerId: ~~(record.get('id'))
+                            id: record.get('id'),
+                            transition: 'reject'
+                        },
+                        success: function (response, operation) {
+                            me.refreshView();
                         }
-                    });
+                    })
+                }
+            }, {
+                tooltip: '{s name=joda-tickets/reopen}{/s}',
+                getClass: function(v, meta, rec) {
+                    var transitions = rec.get('possible_transitions');
+                    console.log(transitions);
+                    if (Ext.isArray(transitions) && Ext.Array.contains(transitions, 'reopen')) {
+                        return 'sprite-pencil';
+                    }
+                    return 'x-hide-visibility';
+                },
+                handler: function(view, rowIndex, colIndex, item, event, record) {
+                    Ext.Ajax.request({
+                        url: '{url controller=JodaTicketsWidget action=transition}',
+                        method: 'POST',
+                        params: {
+                            id: record.get('id'),
+                            transition: 'reopen'
+                        },
+                        success: function (response, operation) {
+                            me.refreshView();
+                        }
+                    })
                 }
             }]
         }]

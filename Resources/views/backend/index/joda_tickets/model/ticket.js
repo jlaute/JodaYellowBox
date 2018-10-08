@@ -8,6 +8,7 @@ Ext.define('Shopware.apps.Index.jodaTicketsWidget.model.Ticket', {
         'id',
         'number',
         'name',
-        'created'
+        'created',
+        'possible_transitions'
     ]
 });

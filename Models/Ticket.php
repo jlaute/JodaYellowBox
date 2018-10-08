@@ -347,6 +347,7 @@ class Ticket extends ModelEntity
             'created' => $this->createdAt,
             'changed' => $this->changedAt,
             'description' => $this->description,
+            'possible_transitions' => $this->getPossibleTransitions(),
         ];
     }
 
