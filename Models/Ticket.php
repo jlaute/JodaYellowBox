@@ -332,6 +332,24 @@ class Ticket extends ModelEntity
         return $this->releases;
     }
 
+    /**
+     * @return array
+     */
+    public function toArray()
+    {
+        return [
+            'id' => $this->id,
+            'name' => $this->name,
+            'number' => $this->number,
+            'state' => $this->state,
+            'external_number' => $this->externalId,
+            'external_state' => $this->externalState,
+            'created' => $this->createdAt,
+            'changed' => $this->changedAt,
+            'description' => $this->description,
+        ];
+    }
+
     protected function updatePossibleTransitions()
     {
         if (!$this->stateMachine) {

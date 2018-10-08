@@ -11,6 +11,7 @@ use JodaYellowBox\Models\TicketHistory;
 use Shopware\Components\DependencyInjection\Container;
 use Shopware\Components\Plugin\Context\InstallContext;
 use Shopware\Components\Plugin\Context\UninstallContext;
+use Shopware\Models\Widget\Widget;
 
 /**
  * @author Jörg Lautenschlager <joerg.lautenschlager@gmail.com>
@@ -30,6 +31,7 @@ class Installer
     public function install(InstallContext $installContext)
     {
         $this->createDatabase();
+        $this->installWidget($installContext);
         $this->clearCache($installContext);
     }
 
@@ -38,6 +40,8 @@ class Installer
         if (!$uninstallContext->keepUserData()) {
             $this->removeDatabase();
         }
+
+        $this->removeWidget($uninstallContext);
 
         $this->clearCache($uninstallContext);
     }
@@ -64,5 +68,26 @@ class Installer
     protected function clearCache(InstallContext $installContext)
     {
         $installContext->scheduleClearCache(InstallContext::CACHE_LIST_FRONTEND);
+    }
+
+    protected function installWidget(InstallContext $installContext)
+    {
+        $plugin = $installContext->getPlugin();
+        $widget = new Widget();
+
+        $widget->setName('joda-tickets');
+        $widget->setPlugin($plugin);
+        $plugin->getWidgets()->add($widget);
+    }
+
+    protected function removeWidget(UninstallContext $uninstallContext)
+    {
+        $plugin = $uninstallContext->getPlugin();
+        $widget = $plugin->getWidgets()->first();
+
+        if ($widget) {
+            $this->em->remove($widget);
+            $this->em->flush();
+        }
     }
 }

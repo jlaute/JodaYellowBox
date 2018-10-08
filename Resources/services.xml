@@ -151,6 +151,12 @@
             <tag name="shopware.event_subscriber" />
         </service>
 
+        <service id="joda_yellow_box.subscriber.backend_widget" class="JodaYellowBox\Subscriber\BackendWidget">
+            <argument type="string">%joda_yellow_box.plugin_dir%</argument>
+            <argument type="string">%joda_yellow_box.view_dir%</argument>
+            <tag name="shopware.event_subscriber" />
+        </service>
+
         <!-- Repositories -->
         <service id="joda_yellow_box.repository.ticket" class="JodaYellowBox\Models\TicketRepository" public="false">
             <argument type="service" id="models" />
