@@ -6,7 +6,6 @@ namespace JodaYellowBox\Subscriber;
 
 use Doctrine\Common\Collections\ArrayCollection;
 use Enlight\Event\SubscriberInterface;
-use JodaYellowBox\Components\Config\PluginConfigInterface;
 use Shopware\Components\Theme\LessDefinition;
 
 class Assets implements SubscriberInterface
@@ -15,6 +14,7 @@ class Assets implements SubscriberInterface
      * @var array
      */
     protected $lessConfig;
+
     /**
      * @var string
      */
@@ -26,16 +26,13 @@ class Assets implements SubscriberInterface
     private $jsDir;
 
     /**
-     * @param string                $lessDir
-     * @param string                $jsDir
-     * @param PluginConfigInterface $config
+     * @param string $lessDir
+     * @param string $jsDir
      */
-    public function __construct(string $lessDir, string $jsDir, PluginConfigInterface $config)
+    public function __construct(string $lessDir, string $jsDir)
     {
         $this->lessDir = $lessDir;
         $this->jsDir = $jsDir;
-
-        $this->lessConfig = $config->getLessConfiguration();
     }
 
     /**
@@ -54,7 +51,7 @@ class Assets implements SubscriberInterface
      */
     public function onCollectLess()
     {
-        return new LessDefinition($this->lessConfig, [
+        return new LessDefinition([], [
             $this->lessDir . '/all.less',
         ]);
     }

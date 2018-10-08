@@ -13,10 +13,7 @@ class EmailNotificationSpec extends ObjectBehavior
 {
     function let (\Enlight_Components_Mail $mail)
     {
-        $to = [
-            'test@joda.de',
-            'test1@joda.de'
-        ];
+        $to = 'test@joda.de; test1@joda.de';
 
         $this->beConstructedWith($mail, $to);
     }

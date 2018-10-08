@@ -22,7 +22,7 @@ class NotificationRegistrySpec extends ObjectBehavior
 
     public function it_can_add_notifications(PluginConfig $pluginConfig, NotificationInterface $notification)
     {
-        $pluginConfig->getNotifications()->shouldBeCalled()->willReturn(['notification_id']);
+        $pluginConfig->get(Argument::is('JodaYellowBoxNotifications'))->shouldBeCalled()->willReturn(['notification_id']);
         $this->add($notification, 'notification_id');
 
         $this->getAll()->shouldReturn([$notification]);

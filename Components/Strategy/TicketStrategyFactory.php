@@ -3,6 +3,7 @@
 namespace JodaYellowBox\Components\Strategy;
 
 use JodaYellowBox\Components\API\Client\ClientInterface;
+use JodaYellowBox\Components\Config\PluginConfig;
 use JodaYellowBox\Models\ReleaseRepository;
 use JodaYellowBox\Models\TicketRepository;
 use JodaYellowBox\Services\ReleaseManagerInterface;
@@ -27,37 +28,38 @@ class TicketStrategyFactory
     /** @var string */
     private $releaseToDisplay;
 
+    /** @var PluginConfig */
+    private $pluginConfig;
+
     /**
      * @param ReleaseManagerInterface $releaseManager
      * @param ReleaseRepository       $releaseRepository
      * @param TicketRepository        $ticketRepository
      * @param ClientInterface         $client
-     * @param string|null             $externalStatusId
-     * @param string|null             $releaseToDisplay
+     * @param PluginConfig            $pluginConfig
      */
     public function __construct(
         ReleaseManagerInterface $releaseManager,
         ReleaseRepository $releaseRepository,
         TicketRepository $ticketRepository,
         ClientInterface $client,
-        string $externalStatusId = null,
-        string $releaseToDisplay = null
+        PluginConfig $pluginConfig
     ) {
         $this->releaseManager = $releaseManager;
         $this->releaseRepository = $releaseRepository;
         $this->ticketRepository = $ticketRepository;
         $this->client = $client;
-        $this->externalStatusId = $externalStatusId;
-        $this->releaseToDisplay = $releaseToDisplay;
+        $this->pluginConfig = $pluginConfig;
+        $this->externalStatusId = (string) $pluginConfig->get('JodaYellowBoxExternalStatusId');
+        $this->releaseToDisplay = (string) $pluginConfig->get('JodaYellowBoxReleaseToDisplay');
     }
 
     /**
-     * @param bool $ticketsDependOnRelease
-     *
      * @return TicketStrategyInterface
      */
-    public function getStrategy(bool $ticketsDependOnRelease): TicketStrategyInterface
+    public function getStrategy(): TicketStrategyInterface
     {
+        $ticketsDependOnRelease = (bool) $this->pluginConfig->get('JodaYellowBoxTicketsDependOnRelease');
         if ($ticketsDependOnRelease) {
             return new ReleaseTicketStrategy(
                 $this->releaseManager,
