@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace JodaYellowBox\Models;
 
+use Doctrine\DBAL\Connection;
 use Doctrine\ORM\EntityManager;
 use Shopware\Components\Model\ModelRepository;
 
@@ -52,7 +53,7 @@ class TicketRepository
         $qb = $this->repository->createQueryBuilder('ticket')
             ->select('ticket');
         $query = $qb->where($qb->expr()->in('ticket.externalId', ':externalIds'))
-            ->setParameter('externalIds', $externalIds)
+            ->setParameter('externalIds', $externalIds, Connection::PARAM_STR_ARRAY)
             ->getQuery();
 
         return $query->getResult();
