@@ -73,15 +73,25 @@
 
         <!-- Notification center -->
         <service id="joda_yellow_box.components.notification_center.notification_center" class="JodaYellowBox\Components\NotificationCenter\NotificationCenter">
-            <argument type="expression">service('joda_yellow_box.services.plugin_config').getNotifications()</argument>
+            <argument type="service" id="joda_yellow_box.notification.registry" />
+        </service>
+
+        <service id="joda_yellow_box.notification.registry" class="JodaYellowBox\Components\NotificationCenter\NotificationRegistry">
+            <argument type="service" id="joda_yellow_box.services.plugin_config" />
         </service>
 
         <service id="joda_yellow_box.notification.email" class="JodaYellowBox\Components\NotificationCenter\Notifications\EmailNotification">
             <argument type="service" id="mail" />
             <argument type="expression">service('joda_yellow_box.services.plugin_config').getNotificationEmails()</argument>
+
+            <tag name="joda_yellow_box.notification" />
         </service>
-        <service id="joda_yellow_box.notification.sms" class="JodaYellowBox\Components\NotificationCenter\Notifications\SmsNotification" />
-        <service id="joda_yellow_box.notification.telegram" class="JodaYellowBox\Components\NotificationCenter\Notifications\TelegramNotification" />
+        <service id="joda_yellow_box.notification.sms" class="JodaYellowBox\Components\NotificationCenter\Notifications\SmsNotification">
+            <tag name="joda_yellow_box.notification" />
+        </service>
+        <service id="joda_yellow_box.notification.telegram" class="JodaYellowBox\Components\NotificationCenter\Notifications\TelegramNotification">
+            <tag name="joda_yellow_box.notification" />
+        </service>
 
         <!-- API -->
         <service id="joda_yellow_box.guzzle_client" class="GuzzleHttp\Client" public="false">

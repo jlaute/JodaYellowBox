@@ -10,16 +10,16 @@ use JodaYellowBox\Exception\NotificationException;
 class NotificationCenter implements NotificationCenterInterface
 {
     /**
-     * @var NotificationInterface[]
+     * @var NotificationRegistry
      */
-    protected $notifications = [];
+    protected $notificationRegistry;
 
     /**
-     * @param array $notificationsFromConfig
+     * @param NotificationRegistry $notificationRegistry
      */
-    public function __construct(array $notificationsFromConfig)
+    public function __construct(NotificationRegistry $notificationRegistry)
     {
-        $this->registerNotificationFromConfig($notificationsFromConfig);
+        $this->notificationRegistry = $notificationRegistry;
     }
 
     /**
@@ -27,8 +27,9 @@ class NotificationCenter implements NotificationCenterInterface
      */
     public function notify(string $message)
     {
+        $notifications = $this->notificationRegistry->getAll();
         /** @var NotificationInterface $notification */
-        foreach ($this->notifications as $notification) {
+        foreach ($notifications as $notification) {
             try {
                 $notification->send($message);
             } catch (NotificationException $ex) {
@@ -36,60 +37,6 @@ class NotificationCenter implements NotificationCenterInterface
                 // @todo: log error
                 continue;
             }
-        }
-    }
-
-    /**
-     * @param string $name
-     *
-     * @return bool
-     */
-    public function existsNotification(string $name): bool
-    {
-        return isset($this->notifications[$name]);
-    }
-
-    /**
-     * @param string $name
-     *
-     * @return NotificationInterface|null
-     */
-    public function getNotification(string $name)
-    {
-        if ($this->existsNotification($name) === false) {
-            return null;
-        }
-
-        return $this->notifications[$name];
-    }
-
-    /**
-     * @param string                $name
-     * @param NotificationInterface $notification
-     */
-    public function addNotification(string $name, NotificationInterface $notification)
-    {
-        $this->notifications[$name] = $notification;
-    }
-
-    /**
-     * @param string $name
-     */
-    public function removeNotification(string $name)
-    {
-        unset($this->notifications[$name]);
-    }
-
-    /**
-     * Registers the config notifications to notification center
-     *
-     * @param array $notificationsFromConfig
-     */
-    private function registerNotificationFromConfig(array $notificationsFromConfig)
-    {
-        foreach ($notificationsFromConfig as $ident) {
-            $notification = Shopware()->Container()->get($ident);
-            $this->addNotification($ident, $notification);
         }
     }
 }
