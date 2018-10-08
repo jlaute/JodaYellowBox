@@ -85,7 +85,7 @@ class Shopware_Controllers_Widgets_YellowBox extends Enlight_Controller_Action
     {
         $tickets = $this->ticketService->getCurrentTickets();
 
-        $this->view->assign('showConfirmation', $this->pluginConfig->getShowConfirmation());
+        $this->view->assign('showConfirmation', $this->pluginConfig->get('JodaYellowBoxShowConfirmation'));
         $this->view->assign('releaseName', $this->ticketService->getCurrentReleaseName());
         $this->view->assign('tickets', $tickets);
     }

@@ -21,16 +21,18 @@ class EmailNotification implements NotificationInterface
     /**
      * @var array
      */
-    private $to = [];
+    private $to;
 
     /**
      * @param \Enlight_Components_Mail $mail
-     * @param array                    $to
+     * @param string                   $emails
      */
-    public function __construct(\Enlight_Components_Mail $mail, array $to = [])
+    public function __construct(\Enlight_Components_Mail $mail, string $emails)
     {
         $this->mail = $mail;
-        $this->to = $to;
+
+        $mails = array_filter(explode(';', $emails));
+        $this->to = array_map('trim', $mails);
     }
 
     /**

@@ -34,7 +34,7 @@ class NotificationRegistry
      */
     public function add(NotificationInterface $notification, $serviceId)
     {
-        $notifications = $this->pluginConfig->getNotifications();
+        $notifications = (array) $this->pluginConfig->get('JodaYellowBoxNotifications');
         if (\in_array($serviceId, $notifications, true)) {
             $this->notifications[] = $notification;
         }

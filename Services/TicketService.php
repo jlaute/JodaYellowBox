@@ -30,7 +30,7 @@ class TicketService implements TicketServiceInterface
         TicketStrategyInterface $ticketStrategy,
         ReleaseManagerInterface $releaseManager,
         TicketManagerInterface $ticketManager,
-        string $externalProjectId = ''
+        string $externalProjectId
     ) {
         $this->ticketStrategy = $ticketStrategy;
         $this->releaseManager = $releaseManager;

@@ -2,7 +2,6 @@
 
 declare(strict_types=1);
 
-use JodaYellowBox\Components\Config\PluginConfigInterface;
 use JodaYellowBox\Subscriber\Assets;
 use org\bovigo\vfs\vfsStream;
 use org\bovigo\vfs\vfsStreamDirectory;
@@ -46,9 +45,8 @@ class AssetsTest extends TestCase
 
         $jsDir = $this->fileSystem->url() . '/js';
         $lessDir = $this->fileSystem->url() . '/less';
-        $configMock = $this->getMockBuilder(PluginConfigInterface::class)->getMock();
 
-        $this->assetSubscriber = new Assets($lessDir, $jsDir, $configMock);
+        $this->assetSubscriber = new Assets($lessDir, $jsDir);
     }
 
     public function tearDown()
