@@ -82,28 +82,12 @@ Ext.define('Shopware.apps.Index.jodaTicketsWidget.view.Main', {
             dataIndex: 'number',
             header: '{s name=joda-tickets/number}{/s}',
             width: 90,
-            renderer: function (value, metaData, record) {
-                if (record.data.state === 'approved') {
-                    value = '<span style="color: greenyellow">'+value+'</span>';
-                } else if (record.data.state === 'rejected') {
-                    value = '<span style="color: red">'+value+'</span>';
-                }
-
-                return value;
-            }
+            renderer: me.colorStateRenderer
         }, {
             dataIndex: 'name',
             header: '{s name=joda-tickets/name}{/s}',
             flex: 1,
-            renderer: function (value, metaData, record) {
-                if (record.data.state === 'approved') {
-                    value = '<span style="color: greenyellow">'+value+'</span>';
-                } else if (record.data.state === 'rejected') {
-                    value = '<span style="color: red">'+value+'</span>';
-                }
-
-                return value;
-            }
+            renderer: me.colorStateRenderer
         }, {
             xtype: 'actioncolumn',
             width: 80,
@@ -114,7 +98,7 @@ Ext.define('Shopware.apps.Index.jodaTicketsWidget.view.Main', {
                     return me.getCorrectClassName(transitions, 'approve');
                 },
                 handler: function(view, rowIndex, colIndex, item, event, record) {
-                    me.callTransition('approve');
+                    me.callTransition(record, 'approve');
                 }
             }, {
                 tooltip: '{s name=joda-tickets/reject}{/s}',
@@ -123,7 +107,7 @@ Ext.define('Shopware.apps.Index.jodaTicketsWidget.view.Main', {
                     return me.getCorrectClassName(transitions, 'reject');
                 },
                 handler: function(view, rowIndex, colIndex, item, event, record) {
-                    me.callTransition('reject');
+                    me.callTransition(record, 'reject');
                 }
             }, {
                 tooltip: '{s name=joda-tickets/reopen}{/s}',
@@ -132,7 +116,7 @@ Ext.define('Shopware.apps.Index.jodaTicketsWidget.view.Main', {
                     return me.getCorrectClassName(transitions, 'reopen');
                 },
                 handler: function(view, rowIndex, colIndex, item, event, record) {
-                    me.callTransition('reopen');
+                    me.callTransition(record, 'reopen');
                 }
             }]
         }]
@@ -151,7 +135,7 @@ Ext.define('Shopware.apps.Index.jodaTicketsWidget.view.Main', {
         me.accountStore.reload();
     },
 
-    callTransition: function(transition) {
+    callTransition: function(record, transition) {
         var me = this;
 
         Ext.Ajax.request({
@@ -159,7 +143,7 @@ Ext.define('Shopware.apps.Index.jodaTicketsWidget.view.Main', {
             method: 'POST',
             params: {
                 id: record.get('id'),
-                transition: 'reopen'
+                transition: transition
             },
             success: function (response, operation) {
                 me.refreshView();
@@ -183,5 +167,15 @@ Ext.define('Shopware.apps.Index.jodaTicketsWidget.view.Main', {
             }
         }
         return 'x-hide-display';
+    },
+
+    colorStateRenderer: function (value, metaData, record, rowIndex, colIndex, store, view) {
+        if (record.data.state === 'approved') {
+            value = '<span style="color: greenyellow">'+value+'</span>';
+        } else if (record.data.state === 'rejected') {
+            value = '<span style="color: red">'+value+'</span>';
+        }
+
+        return value;
     }
 });
