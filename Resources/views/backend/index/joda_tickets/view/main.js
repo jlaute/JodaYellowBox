@@ -81,80 +81,58 @@ Ext.define('Shopware.apps.Index.jodaTicketsWidget.view.Main', {
         return [{
             dataIndex: 'number',
             header: '{s name=joda-tickets/number}{/s}',
-            width: 100
+            width: 90,
+            renderer: function (value, metaData, record) {
+                if (record.data.state === 'approved') {
+                    value = '<span style="color: greenyellow">'+value+'</span>';
+                } else if (record.data.state === 'rejected') {
+                    value = '<span style="color: red">'+value+'</span>';
+                }
+
+                return value;
+            }
         }, {
             dataIndex: 'name',
             header: '{s name=joda-tickets/name}{/s}',
-            flex: 1
+            flex: 1,
+            renderer: function (value, metaData, record) {
+                if (record.data.state === 'approved') {
+                    value = '<span style="color: greenyellow">'+value+'</span>';
+                } else if (record.data.state === 'rejected') {
+                    value = '<span style="color: red">'+value+'</span>';
+                }
+
+                return value;
+            }
         }, {
             xtype: 'actioncolumn',
-            width: 50,
+            width: 80,
             items: [{
                 tooltip: '{s name=joda-tickets/approve}{/s}',
                 getClass: function(v, meta, rec) {
                     var transitions = rec.get('possible_transitions');
-                    if (Ext.isArray(transitions) && Ext.Array.contains(transitions, 'approve')) {
-                        return 'sprite-tick';
-                    }
-                    return 'x-hide-visibility';
+                    return me.getCorrectClassName(transitions, 'approve');
                 },
                 handler: function(view, rowIndex, colIndex, item, event, record) {
-                    Ext.Ajax.request({
-                        url: '{url controller=JodaTicketsWidget action=transition}',
-                        method: 'POST',
-                        params: {
-                            id: record.get('id'),
-                            transition: 'approve'
-                        },
-                        success: function (response, operation) {
-                            me.refreshView();
-                        }
-                    })
+                    me.callTransition('approve');
                 }
             }, {
                 tooltip: '{s name=joda-tickets/reject}{/s}',
                 getClass: function(v, meta, rec) {
                     var transitions = rec.get('possible_transitions');
-                    if (Ext.isArray(transitions) && Ext.Array.contains(transitions, 'reject')) {
-                        return 'sprite-cross';
-                    }
-                    return 'x-hide-visibility';
+                    return me.getCorrectClassName(transitions, 'reject');
                 },
                 handler: function(view, rowIndex, colIndex, item, event, record) {
-                    Ext.Ajax.request({
-                        url: '{url controller=JodaTicketsWidget action=transition}',
-                        method: 'POST',
-                        params: {
-                            id: record.get('id'),
-                            transition: 'reject'
-                        },
-                        success: function (response, operation) {
-                            me.refreshView();
-                        }
-                    })
+                    me.callTransition('reject');
                 }
             }, {
                 tooltip: '{s name=joda-tickets/reopen}{/s}',
                 getClass: function(v, meta, rec) {
                     var transitions = rec.get('possible_transitions');
-                    console.log(transitions);
-                    if (Ext.isArray(transitions) && Ext.Array.contains(transitions, 'reopen')) {
-                        return 'sprite-pencil';
-                    }
-                    return 'x-hide-visibility';
+                    return me.getCorrectClassName(transitions, 'reopen');
                 },
                 handler: function(view, rowIndex, colIndex, item, event, record) {
-                    Ext.Ajax.request({
-                        url: '{url controller=JodaTicketsWidget action=transition}',
-                        method: 'POST',
-                        params: {
-                            id: record.get('id'),
-                            transition: 'reopen'
-                        },
-                        success: function (response, operation) {
-                            me.refreshView();
-                        }
-                    })
+                    me.callTransition('reopen');
                 }
             }]
         }]
@@ -171,5 +149,39 @@ Ext.define('Shopware.apps.Index.jodaTicketsWidget.view.Main', {
         }
 
         me.accountStore.reload();
+    },
+
+    callTransition: function(transition) {
+        var me = this;
+
+        Ext.Ajax.request({
+            url: '{url controller=JodaTicketsWidget action=transition}',
+            method: 'POST',
+            params: {
+                id: record.get('id'),
+                transition: 'reopen'
+            },
+            success: function (response, operation) {
+                me.refreshView();
+            }
+        })
+    },
+
+    getCorrectClassName: function (transitions, action) {
+        if (typeof transitions === 'object') {
+            transitions = Object.values(transitions);
+        }
+        if (Ext.isArray(transitions) && Ext.Array.contains(transitions, action)) {
+            if (action === 'reopen') {
+                return 'sprite-pencil';
+            }
+            if (action === 'reject') {
+                return 'sprite-cross';
+            }
+            if (action === 'approve') {
+                return 'sprite-tick';
+            }
+        }
+        return 'x-hide-display';
     }
 });
