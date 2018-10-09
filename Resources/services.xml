@@ -82,7 +82,7 @@
 
         <service id="joda_yellow_box.notification.email" class="JodaYellowBox\Components\NotificationCenter\Notifications\EmailNotification">
             <argument type="service" id="mail" />
-            <argument type="expression">service('joda_yellow_box.services.plugin_config').get('JodaYellowBoxNotificationEmails')</argument>
+            <argument type="expression">service('joda_yellow_box.services.plugin_config').get('JodaYellowBoxNotificationEmails') ?: ''</argument>
 
             <tag name="joda_yellow_box.notification" />
         </service>
@@ -148,6 +148,12 @@
 
         <service id="joda_yellow_box.subscriber.cron" class="JodaYellowBox\Subscriber\Cron">
             <argument type="service" id="joda_yellow_box.services.ticket" />
+            <tag name="shopware.event_subscriber" />
+        </service>
+
+        <service id="joda_yellow_box.subscriber.backend_widget" class="JodaYellowBox\Subscriber\BackendWidget">
+            <argument type="string">%joda_yellow_box.plugin_dir%</argument>
+            <argument type="string">%joda_yellow_box.view_dir%</argument>
             <tag name="shopware.event_subscriber" />
         </service>
 
