@@ -4,7 +4,6 @@ namespace JodaYellowBox\Components\Strategy;
 
 use JodaYellowBox\Components\API\Client\ClientInterface;
 use JodaYellowBox\Components\API\Struct\Issue;
-use JodaYellowBox\Components\API\Struct\IssueStatus;
 use JodaYellowBox\Components\API\Struct\Project;
 use JodaYellowBox\Models\Ticket;
 use JodaYellowBox\Models\TicketRepository;
@@ -57,10 +56,7 @@ class StateTicketStrategy implements TicketStrategyInterface
      */
     protected function fetchTickets(Project $project)
     {
-        $issueStatus = new IssueStatus();
-        $issueStatus->id = $this->externalStatusId;
-
-        $issues = $this->client->getIssuesByProject($project, $issueStatus);
+        $issues = $this->client->getIssuesByProject($project);
         if (!$issues->valid()) {
             return;
         }
