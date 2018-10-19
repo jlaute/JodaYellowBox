@@ -33,7 +33,7 @@ class StateTicketStrategySpec extends ObjectBehavior
         Project $project
     ) {
         $issues = $this->mockIssues();
-        $client->getIssuesByProject(Argument::type(Project::class), Argument::type(IssueStatus::class))->shouldBeCalled()->willReturn($issues);
+        $client->getIssuesByProject(Argument::type(Project::class))->shouldBeCalled()->willReturn($issues);
 
         $ticketRepository->findByExternalIds(Argument::is(['1234', '2']))->shouldBeCalled()->willReturn([]);
         $ticketRepository->add(Argument::type(Ticket::class))->shouldBeCalledTimes(2);
