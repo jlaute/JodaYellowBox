@@ -89,8 +89,10 @@ class StateTicketStrategy implements TicketStrategyInterface
         foreach ($tickets as $ticket) {
             if ($issue->id === $ticket->getExternalId()) {
                 $ticket->setExternalState($issue->status);
-                $ticket->setDescription($issue->description);
                 $ticket->setName($issue->name);
+                if ($issue->description) {
+                    $ticket->setDescription($issue->description);
+                }
                 if ($issue->number) {
                     $ticket->setNumber($issue->number);
                 }
