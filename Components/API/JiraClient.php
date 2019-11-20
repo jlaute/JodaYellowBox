@@ -109,7 +109,7 @@ class JiraClient extends AbstractClient
             'maxResults' => $limit,
             'startAt' => $offset,
         ];
-        $query = array_merge($defaultQuery, $query);
+        $query = array_merge($query, $defaultQuery);
 
         $status = [];
         if ($issueStatus) {
